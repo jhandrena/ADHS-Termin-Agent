@@ -5,14 +5,14 @@ from adhs_termin_agent.intake_form import intake_form
 
 
 class TestPatient(unittest.TestCase):
-    def test_patient_initialization(self):
+    def test_patient_initialization(self) -> None:
         patient = Patient(location="Berlin", specialty="Cardiology")
         self.assertEqual(patient.location, "Berlin")
         self.assertEqual(patient.specialty, "Cardiology")
 
 
 class TestIntakeForm(unittest.TestCase):
-    def test_intake_form(self):
+    def test_intake_form(self) -> None:
         # Mock input to simulate user input
         with unittest.mock.patch('builtins.input', side_effect=["Cardiology", "Berlin"]):
             patient = intake_form()
