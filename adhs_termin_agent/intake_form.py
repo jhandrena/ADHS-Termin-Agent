@@ -9,7 +9,7 @@ def intake_form() -> Patient:
     doctors = search_doctors(specialty, location)
     print("Gefundene Ärzte:")
     for doctor in doctors:
-        print(f"Name: {doctor.name}, Telefon: {doctor.phone}, Email: {doctor.email}, Adresse: {doctor.address}")
+        print(f"Name: {doctor.name}, Telefon: {doctor.phone}, Email: {doctor.email}, Adresse: {doctor.address}, URL: {doctor.url}")
     return patient
 
 if __name__ == "__main__":
