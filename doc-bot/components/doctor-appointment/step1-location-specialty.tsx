@@ -8,6 +8,7 @@ import { MapPinIcon } from 'lucide-react'
 import { specialties } from '@/app/constants'
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { searchDoctors } from '@/utils/doctor-appointment-utils'
+import { LocationHelper } from '@/utils/location-helper'
 
 export function Step1LocationSpecialty() {
   const { state, setState } = useDoctorAppointment();
@@ -35,30 +36,13 @@ export function Step1LocationSpecialty() {
     setState(prev => ({ ...prev, specialty: newSpecialty }));
   };
 
-  const useCurrentLocation = () => {
+  const useCurrentLocation = async () => {
     setGeoError(null);
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`);
-            const data = await response.json();
-            const city = data.address.city || data.address.town || data.address.village || '';
-            const postcode = data.address.postcode || '';
-            onLocationChange(city ? `${city}, ${postcode}` : postcode);
-          } catch (error) {
-            console.error("Error fetching location data:", error);
-            setGeoError("Fehler beim Abrufen des Standorts. Bitte geben Sie ihn manuell ein.");
-          }
-        },
-        (error) => {
-          console.error("Geolocation error:", error);
-          setGeoError("Standortermittlung fehlgeschlagen. Bitte geben Sie ihn manuell ein.");
-        }
-      );
+    const { location, error } = await LocationHelper.useCurrentLocation();
+    if (error) {
+      setGeoError(error);
     } else {
-      setGeoError("Geolokalisierung wird von Ihrem Browser nicht unterstützt.");
+      onLocationChange(location);
     }
   };
 
