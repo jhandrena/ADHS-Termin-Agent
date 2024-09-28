@@ -70,13 +70,22 @@ Suchergebnisse:
 {}"""
     system_prompt: str = "Antworte nur mit dem fertigen json"
     prompt: str = prompt_template.format('[{"arztname": "...","praxisname":"...","adresse":"..." }]', search_results)
-    result = callApi(prompt, "google/gemini-flash-1.5", system_prompt)
+    result = callApi(prompt, "openai/gpt-4o-mini", system_prompt)
     doctors_json = _filter_and_convert(result)
 
     return doctors_json
 
-def find_information(names) -> str:
-    pass
+def _get_doctor_information(doctor_json, doctors) -> str:
+    prompt_template: str = "Finde für den Artzt {} bei {} die Kontakt-Mail, Telefonnummer und ob man Termine per mail machen kann."
+    prompt: str = prompt_template.format(doctor_json['arztname'], doctor_json['adresse'])
+    doctor_information = callApi(prompt, "perplexity/llama-3.1-sonar-large-128k-online")
+    doctors.append(doctor_information)
+
+def find_information(doctors_json) -> str:
+    doctors = []
+    for doctor_json in doctors_json[:5]:
+        _get_doctor_information(doctor_json, doctors)
+    return doctors
 
 def information_to_doctor(information: str):
     pass
@@ -84,7 +93,16 @@ def information_to_doctor(information: str):
 if __name__ == "__main__":
     #search = name_search("Neurologe", "Karlsruhe")
     #print(search)
-    print(names_to_json("""Here is a list of neurologists in Karlsruhe, including their names and addresses, based on the provided sources:
+    #doctors_json = names_to_json(search)
+    doctors_json = json.loads("[{'arztname': 'Dr. med. Michael H. Stienen', 'praxisname': '', 'adresse': 'Stephanienstr. 57, Karlsruhe'}, {'arztname': 'Yu Jun Huang', 'praxisname': '', 'adresse': 'Amalienstr. 93, Karlsruhe'}, {'arztname': 'Dr. med. Volker Schenk', 'praxisname': '', 'adresse': 'Marstallstr. 18 a, Karlsruhe'}, {'arztname': 'Dr. med. Thies Lindenlaub', 'praxisname': '', 'adresse': 'Karlstr. 29, Karlsruhe'}, {'arztname': 'Dr. med. Anja Haberl', 'praxisname': '', 'adresse': 'Reinhold-Frank-Str. 9, Karlsruhe'}, {'arztname': 'Dr. med. Christoph Müller', 'praxisname': 'Neurologische Gemeinschaftspraxis', 'adresse': 'Karlstr. 84, Karlsruhe'}, {'arztname': 'Dr. med. Bianca Ehbauer', 'praxisname': '', 'adresse': 'Karlstr. 61, Karlsruhe'}, {'arztname': 'Neurologische Gemeinschaftspraxis (Dres. Ulrich Husemann, Alexander Hladek, Christoph Müller u.w.)', 'praxisname': '', 'adresse': 'Karlstr. 84, Karlsruhe'}, {'arztname': 'Dr. med. Tatjana Pföhler', 'praxisname': '', 'adresse': 'Karlstr. 15, Karlsruhe'}, {'arztname': 'Dr. med. Roland Niessner', 'praxisname': '', 'adresse': 'Kaiserstr. 116, Karlsruhe'}, {'arztname': 'Gemeinschaftspraxis für Neurologie, Psychiatrie und Psychotherapie', 'praxisname': '', 'adresse': 'Nowackanlage 15, 76137 Karlsruhe'}]".replace("'", '"'))
+    print(find_information(doctors_json))
+
+
+
+
+
+
+"""Here is a list of neurologists in Karlsruhe, including their names and addresses, based on the provided sources:
 
 ## Dr. med. Michael H. Stienen
 - **Adresse:** Stephanienstr. 57, Karlsruhe.
@@ -129,4 +147,4 @@ if __name__ == "__main__":
   - Till van der List, Facharzt für Psychiatrie und Psychotherapie
   - Dr. med. Monika Bottlender, Fachärztin für Psychiatrie, Psychotherapie und Psychosomatische Medizin
   - Dr. med. Franziska Uhrenbacher, Fachärztin für Neurologie.
-"""))
+"""
