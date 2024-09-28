@@ -21,6 +21,7 @@ export function Step6CallDoctors() {
     while (nextDay.getDay() === 0 || nextDay.getDay() === 6) {
       nextDay.setDate(nextDay.getDate() + 1);
     }
+    nextDay.setHours(13, 0, 0, 0);
     return nextDay;
   };
   const [dateTime, setDateTime] = useState(() => {
@@ -152,8 +153,9 @@ export function Step6CallDoctors() {
             <Button
               onClick={() => {
                 const nextWorkday = getNextWorkday();
-                nextWorkday.setHours(13, 0, 0, 0);
-                setDateTime(nextWorkday.toISOString().slice(0, 16));
+                const newDateTime = nextWorkday.toISOString().slice(0, 16);
+                setDateTime(newDateTime);
+                fetchAvailableDoctors();
               }}
               className="mt-2"
             >
