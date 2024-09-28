@@ -44,10 +44,10 @@ def search_doctors(specialty: str, location: str) -> List[Doctor]:
     ]
 
 def name_search(specialty: str, location: str) -> str: 
-    prompt_template: str = """Gib mir eine liste von Name und Addresse von Ärtzten im Fachgebiet von {} in der nähe von {}."""
-    prompt: str = prompt_template.format()
-    
-    pass
+    prompt_template: str = """Gib mir eine liste von Name und Addresse von Ärtzten im Fachgebiet von {} in {}."""
+    prompt: str = prompt_template.format(specialty,location)
+    return callApi(prompt,"perplexity/llama-3.1-sonar-large-128k-online")
+
 
 def names_to_json(search_results: str):
     pass
@@ -57,3 +57,6 @@ def find_information(names) -> str:
 
 def information_to_doctor(information: str):
     pass
+
+if __name__ == "__main__":
+    print(name_search("Kardiologe","Karlsruhe"))
