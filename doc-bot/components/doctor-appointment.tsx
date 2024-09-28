@@ -7,7 +7,6 @@ import { Step2PatientInfo } from './doctor-appointment/step2-patient-info'
 import { Step3DoctorSelection } from './doctor-appointment/step3-doctor-selection'
 import { Step4EmailCompose } from './doctor-appointment/step4-email-compose'
 import { Step5Confirmation } from './doctor-appointment/step5-confirmation'
-import { searchDoctors, generateEmailContent, sendEmails } from '../utils/doctor-appointment-utils'
 import { DoctorAppointmentProvider, useDoctorAppointment } from '../contexts/DoctorAppointmentContext'
 
 function DoctorAppointmentContent() {

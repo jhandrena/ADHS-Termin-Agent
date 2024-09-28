@@ -34,7 +34,7 @@ export function Step1LocationSpecialty() {
   };
 
   const useCurrentLocation = () => {
-    onLocationChange("Berlin");
+    onLocationChange("Karlsruhe");
   };
 
 
