@@ -38,6 +38,8 @@ export function Step3DoctorSelection() {
   const handleNext = () => {
     if (doctors.length > 0 && selectedDoctors.length > 0) {
       setState(prev => ({ ...prev, step: prev.step + 1 }));
+    } else if (doctors.length === 0 || selectedDoctors.length === 0) {
+      setState(prev => ({ ...prev, step: 6 })); // Skip to call step
     }
   };
 
@@ -173,9 +175,9 @@ export function Step3DoctorSelection() {
         <Button onClick={handleBack}>Zurück</Button>
         <Button 
           onClick={handleNext} 
-          disabled={doctors.length === 0 || selectedDoctors.length === 0 || isLoading}
+          disabled={isLoading}
         >
-          Weiter
+          {doctors.length === 0 || selectedDoctors.length === 0 ? "Direkt zum Anrufen" : "Weiter"}
         </Button>
       </div>
       <QRCodeDialog

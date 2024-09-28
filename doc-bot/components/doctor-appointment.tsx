@@ -53,9 +53,9 @@ function DoctorAppointmentContent() {
             { step: 1, label: "Ort & Fachrichtung", condition: true },
             { step: 2, label: "Patienteninfo", condition: state.step >= 2 || (state.location && state.specialty) },
             { step: 3, label: "Arztauswahl", condition: state.step >= 3 || (state.patientName && state.diagnosis) },
-            { step: 4, label: "E-Mail verfassen", condition: state.step >= 4 || state.selectedDoctors.length > 0 },
-            { step: 5, label: "Bestätigung", condition: state.step >= 5 || state.emailStatus?.success },
-            { step: 6, label: "Anrufen", condition: state.step >= 6 },
+            { step: 4, label: "E-Mail verfassen", condition: state.step >= 4 && state.selectedDoctors.length > 0 },
+            { step: 5, label: "Bestätigung", condition: state.step >= 5 && state.emailStatus?.success },
+            { step: 6, label: "Anrufen", condition: state.step >= 6 || (state.step >= 3 && state.selectedDoctors.length === 0) },
             { step: 7, label: "AI Anruf", condition: state.step === 7 },
           ].map((item, index) => (
             item.condition ? (
