@@ -46,10 +46,33 @@ const sampleDoctors = [
   },
 ]
 
-export const searchDoctors = async (location: string, specialty: string) => {
-  await new Promise(resolve => setTimeout(resolve, 3000));
-  return sampleDoctors;
-}
+export const searchDoctors = async (location: string, specialty: string): Promise<Doctor[]> => {
+  try {
+    const response = await fetch(`/doctors?location=${encodeURIComponent(location)}&specialty=${encodeURIComponent(specialty)}`, {
+      method: 'POST',
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Transform the data to match the Doctor interface
+    return data.map((doctor: any) => ({
+      id: doctor.id || Math.random().toString(36).substr(2, 9), // Generate a random ID if not provided
+      name: doctor.name,
+      specialty: specialty, // Use the provided specialty
+      email: doctor.email,
+      phone: doctor.telefon || 'N/A',
+      address: doctor.adresse || 'N/A',
+      website: doctor.website || 'N/A'
+    }));
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+    throw error;
+  }
+};
 
 export const generateEmailContent = async (selectedDoctors, patientName, patientEmail, specialty) => {
   await new Promise(resolve => setTimeout(resolve, 1500));
