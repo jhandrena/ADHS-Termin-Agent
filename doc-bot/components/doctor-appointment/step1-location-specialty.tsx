@@ -38,6 +38,7 @@ export function Step1LocationSpecialty() {
   };
 
   const onSpecialtyChange = (newSpecialty: string) => {
+    debugger;
     setState(prev => ({ ...prev, specialty: newSpecialty }));
   };
 
