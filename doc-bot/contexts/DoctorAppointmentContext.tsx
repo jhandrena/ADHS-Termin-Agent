@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Doctor, searchDoctors, triggerDoctorsSearch } from '../utils/doctor-appointment-utils';
 import Cookies from 'js-cookie';
 
+
 interface DoctorAppointmentState {
   step: number;
   location: string;
