@@ -4,18 +4,19 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { PhoneIcon, Bot } from 'lucide-react'
+import { PhoneIcon, Bot, Loader2 } from 'lucide-react'
 import { isMobileDevice } from '@/utils/device-detection'
 import { QRCodeDialog } from '@/components/qr-code-dialog'
 import { Input } from "@/components/ui/input"
 
 export function Step6CallDoctors() {
-  const { state } = useDoctorAppointment();
+  const { state, setState } = useDoctorAppointment();
   
   const [qrCodeOpen, setQRCodeOpen] = useState(false);
   const [currentPhone, setCurrentPhone] = useState('');
   const [dateTime, setDateTime] = useState('');
   const [availableDoctors, setAvailableDoctors] = useState<typeof selectedDoctors>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchAvailableDoctors = async () => {
     try {
@@ -48,10 +49,17 @@ export function Step6CallDoctors() {
   };
 
   const handleAICall = (doctorId: string) => {
+    setIsLoading(true);
     // Implement AI call functionality here
     console.log(`AI call to doctor ${doctorId}`);
 
     window.open(`http://localhost:3006/?name=${encodeURIComponent(state.patientName)}&thema=${encodeURIComponent(state.diagnosis)}&specialty=${encodeURIComponent(state.specialty)}`, '_blank');
+    
+    // Simulate a delay before moving to the next step
+    setTimeout(() => {
+      setIsLoading(false);
+      setState(prev => ({ ...prev, step: prev.step + 1 }));
+    }, 2000); // 2 seconds delay, adjust as needed
   };
 
   return (
@@ -84,8 +92,16 @@ export function Step6CallDoctors() {
               <PhoneIcon className="w-4 h-4 mr-2" />
               Anrufen
             </Button>
-            <Button onClick={() => handleAICall(doctor.id)} className="flex items-center">
-              <Bot className="w-4 h-4 mr-2" />
+            <Button 
+              onClick={() => handleAICall(doctor.id)} 
+              className="flex items-center"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Bot className="w-4 h-4 mr-2" />
+              )}
               AI Anruf
             </Button>
           </CardContent>
