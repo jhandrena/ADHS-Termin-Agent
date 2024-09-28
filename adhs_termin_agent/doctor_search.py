@@ -85,7 +85,7 @@ Telefonische Erreichbarkeit (Zeiten für jeden Wochentag)
     else:
         return doctor_information
 
-def _append_converted_doctor(information, adresse, doctors, retried=False):
+def _append_converted_doctor(information, doctor_json_source, doctors, retried=False):
     prompt_template = "{}"
     prompt = prompt_template.format(information)
     json_format = """
@@ -155,14 +155,16 @@ Wenn keine Öffnungszeiten angegeben sind und nur Termine möglich sind, wird f�
     system_template = """Du wirst aus einem Dokument informationen über einen Doktor extrahieren. Antworte mit reinem JSON ohne code block in folgendem format:\n{}\n\n\nBei öffnugszeiten und telefon erreichbarkeit müssen alle tage immer eingetragen sein, auch wenn es ein leeres array ist, hierbei ist die einzige ausnahme wenn es keine öffnugnszeiten sondern nur öffnug für termine gibt, dann ist oefnungszeiten ein string der sagt "nur termine". Du musst dich immer komplett an dieses format halten ohne ausnahme. Antwote nur mit dem json, ohne codeblock und ohne irgendwelchen anderen text. Gib nur einen Doktor an. Wenn es mehrere gibt wähle den mit mehr daten."""
     system = system_template.format(json_format)
     doctor_raw = callApi(prompt, "openai/gpt-4o-mini", system)
+    doctor_raw = doctor_raw.replace('"not set"', '""')
     try:
         doctor_json = json.loads(doctor_raw)
-        doctor_json['adresse'] = adresse
+        doctor_json['adresse'] = doctor_json_source['adresse']
+        doctor_json['name'] = doctor_json_source['name']
         doctors.append(doctor_json)
     except:
         if not retried:
             print("Retrying converting detials to doctor json")
-            _append_converted_doctor(information, adresse, doctors, True)
+            _append_converted_doctor(information, doctor_json_source, doctors, True)
         else:
             print("Failed to convert doctor details to json")
             print(doctor_raw)
@@ -170,7 +172,7 @@ Wenn keine Öffnungszeiten angegeben sind und nur Termine möglich sind, wird f�
 def _extend_doctor_json(doctor_json, doctors, count):
     info_text = _get_doctor_information(doctor_json)
     adresse = doctor_json['adresse']
-    _append_converted_doctor(info_text, adresse, doctors)
+    _append_converted_doctor(info_text, doctor_json, doctors)
     print(str(100 * int(len(doctors))/int(count)) + "%")
 
 def extendDoctors(doctors_json):
@@ -195,10 +197,11 @@ def main(specialty, region, count=5):
 def findAllDoctors(region, specialty,count=5):
     print("Finde passende Ärzte...")
     search = name_search(specialty, region, count)
-    # print(search)
+    #print(search)
     print("Verarbeite Ärzte liste...")
     doctors_json = names_to_json(search)
     doctors_json = doctors_json[:count]
+    print(doctors_json)
     print(str(len(doctors_json)) + " Ärzte gefunden...")
     print("Finde und verarbeite weitere informationen über Ärzte...")
     doctors = extendDoctors(doctors_json)
@@ -207,5 +210,5 @@ def findAllDoctors(region, specialty,count=5):
 
 
 if __name__ == "__main__":
-    main("Neurologie", "Karlsruhe")
+    main("Neurologie", "Bruchsal")
 
