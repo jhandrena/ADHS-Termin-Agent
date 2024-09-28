@@ -58,8 +58,14 @@ export function Step1LocationSpecialty() {
 
   const handleNext = () => {
     if (location && specialty) {
-      state.fetchDoctors();
-      setState(prev => ({ ...prev, step: prev.step + 1 }));
+      setState(prev => ({ 
+        ...prev, 
+        location: location,
+        specialty: specialty,
+        step: prev.step + 1 
+      }), () => {
+        state.fetchDoctors();
+      });
     }
   };
 
