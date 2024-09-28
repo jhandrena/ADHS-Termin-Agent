@@ -14,6 +14,15 @@ export function Step6CallDoctors() {
   
   const [qrCodeOpen, setQRCodeOpen] = useState(false);
   const [currentPhone, setCurrentPhone] = useState('');
+
+  const getNextWorkday = () => {
+    const now = new Date();
+    const nextDay = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    while (nextDay.getDay() === 0 || nextDay.getDay() === 6) {
+      nextDay.setDate(nextDay.getDate() + 1);
+    }
+    return nextDay;
+  };
   const [dateTime, setDateTime] = useState(() => {
     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -139,6 +148,16 @@ export function Step6CallDoctors() {
         <div className="text-gray-500 mt-2">
           <p>Keine verfügbaren Ärzte gefunden.</p>
           <p className="text-sm mt-1">Tipp: Versuchen Sie es mit einem späteren Datum, um mehr Ergebnisse zu erhalten.</p>
+          <Button
+            onClick={() => {
+              const nextWorkday = getNextWorkday();
+              nextWorkday.setHours(13, 0, 0, 0);
+              setDateTime(nextWorkday.toISOString().slice(0, 16));
+            }}
+            className="mt-2"
+          >
+            Nächsten Werktag um 13 Uhr auswählen
+          </Button>
         </div>
       )}
       {availableDoctors.map(doctor => (
