@@ -45,7 +45,7 @@ export const DoctorAppointmentProvider: React.FC<{ children: React.ReactNode }> 
     isLoading: false,
     emailStatus: null,
     fetchDoctors: async () => {
-      setState(prev => ({ ...prev, isLoading: true }));
+      setState(prev => ({ ...prev, isLoading: true, doctors: [], selectedDoctors: [] }));
       try {
         const doctors = await searchDoctors(state.location, state.specialty);
         setState(prev => ({ ...prev, doctors, isLoading: false }));
