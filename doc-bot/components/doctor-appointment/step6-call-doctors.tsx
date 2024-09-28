@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { PhoneIcon, Bot, Loader2 } from 'lucide-react'
+import { PhoneIcon, Bot, Loader2, CheckCircle2 } from 'lucide-react'
 import { isMobileDevice } from '@/utils/device-detection'
 import { QRCodeDialog } from '@/components/qr-code-dialog'
 import { Input } from "@/components/ui/input"
@@ -101,8 +101,9 @@ export function Step6CallDoctors() {
       )}
       {availableDoctors.map(doctor => (
         <Card key={doctor.id} className="mb-4">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>{doctor.name}</CardTitle>
+            <CheckCircle2 className="w-5 h-5 text-green-500" />
           </CardHeader>
           <CardContent className="flex justify-between items-center">
             <Button onClick={() => handleCall(doctor.telefon)} className="flex items-center">
