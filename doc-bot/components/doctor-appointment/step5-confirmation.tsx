@@ -63,9 +63,6 @@ export function Step5EmailConfirmation() {
           </p>
         )}
       </div>
-      <Button onClick={handleRestart}>
-        Neue Anfrage starten
-      </Button>
     </div>
   );
 }
