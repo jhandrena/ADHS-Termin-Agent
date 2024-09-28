@@ -1,13 +1,12 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { MapPinIcon, Loader2 } from 'lucide-react'
 import { specialties } from '@/app/constants'
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
-import { searchDoctors } from '@/utils/doctor-appointment-utils'
 import { LocationHelper } from '@/utils/location-helper'
 
 // Fuzzy search function
