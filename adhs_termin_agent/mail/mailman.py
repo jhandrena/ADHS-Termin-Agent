@@ -9,7 +9,7 @@ def parse_output_json():
     return data
 
 def filter_doctors_with_email(data):
-    return [doctor for doctor in data if doctor['terminOptionen']['email']]
+    return [doctor for doctor in data if doctor['terminOptionen']['email'] is True]
 
 if __name__ == "__main__":
     data = parse_output_json()
