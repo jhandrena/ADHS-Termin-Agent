@@ -1,14 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-
-interface Doctor {
-  id: number;
-  name: string;
-  specialty: string;
-  email: string;
-  phone: string;
-  address: string;
-  website: string;
-}
+import { Doctor } from '../utils/doctor-appointment-utils';
 
 interface DoctorAppointmentState {
   step: number;
