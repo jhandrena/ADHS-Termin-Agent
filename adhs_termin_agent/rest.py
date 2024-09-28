@@ -19,390 +19,440 @@ def get_doctors():
 
     #all_doctors = findAllDoctors(location, specialty)
     all_doctors = json.loads("""[
-    {
-        "email": "info@praxis-drstienen.de",
-        "name": "Dr. med. Michael H. Stienen",
-        "oeffnungszeiten": {
-            "dienstag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                },
-                {
-                    "bis": "17:00",
-                    "von": "14:00"
-                }
-            ],
-            "donnerstag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                },
-                {
-                    "bis": "17:00",
-                    "von": "14:00"
-                }
-            ],
-            "freitag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                }
-            ],
-            "mittwoch": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                }
-            ],
-            "montag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                }
-            ],
-            "samstag": [],
-            "sonntag": []
-        },
-        "patienten": {
-            "kasse": false,
-            "privat": true,
-            "selbstzahler": true
-        },
-        "telefon": "0721 669801-11",
-        "telefonErreichbarkeit": {
-            "dienstag": [],
-            "donnerstag": [],
-            "freitag": [],
-            "mittwoch": [],
-            "montag": [],
-            "samstag": [],
-            "sonntag": []
-        },
-        "terminOptionen": {
-            "email": true,
-            "online": false,
-            "telefon": true
-        },
-        "websiteLink": "www.praxis-drstienen.de"
+  {
+    "name": "Dr. med. Franziska Uhrenbacher",
+    "email": "",
+    "telefon": "0721 / 38 80 30",
+    "websiteLink": "www.neurologie-psychiatrie-karlsruhe.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
     },
-    {
-        "email": "not set",
-        "name": "Dr. Ulrich Husemann",
-        "oeffnungszeiten": {
-            "dienstag": [
-                {
-                    "bis": "17:30",
-                    "von": "12:30"
-                }
-            ],
-            "donnerstag": [
-                {
-                    "bis": "17:30",
-                    "von": "12:30"
-                }
-            ],
-            "freitag": [
-                {
-                    "bis": "not set",
-                    "von": "12:30"
-                }
-            ],
-            "mittwoch": [
-                {
-                    "bis": "not set",
-                    "von": "12:30"
-                }
-            ],
-            "montag": [
-                {
-                    "bis": "17:30",
-                    "von": "12:30"
-                }
-            ],
-            "samstag": [],
-            "sonntag": []
-        },
-        "patienten": {
-            "kasse": true,
-            "privat": true,
-            "selbstzahler": true
-        },
-        "telefon": "07 21 / 35 60 03 oder 07 21 / 35 80 89",
-        "telefonErreichbarkeit": {
-            "dienstag": [],
-            "donnerstag": [],
-            "freitag": [],
-            "mittwoch": [],
-            "montag": [],
-            "samstag": [],
-            "sonntag": []
-        },
-        "terminOptionen": {
-            "email": false,
-            "online": true,
-            "telefon": false
-        },
-        "websiteLink": "www.neuropraxiskarlsruhe.de"
+    "patienten": {
+      "privat": true,
+      "kasse": false,
+      "selbstzahler": true
     },
-    {
-        "email": "not set",
-        "name": "Neurologie am ZKM",
-        "oeffnungszeiten": {
-            "dienstag": [
-                {
-                    "bis": "18:00",
-                    "von": "13:00"
-                }
-            ],
-            "donnerstag": [
-                {
-                    "bis": "13:00",
-                    "von": "08:30"
-                }
-            ],
-            "freitag": [],
-            "mittwoch": [
-                {
-                    "bis": "18:00",
-                    "von": "13:00"
-                }
-            ],
-            "montag": [],
-            "samstag": [],
-            "sonntag": []
+    "telefonErreichbarkeit": {
+      "montag": [],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
         },
-        "patienten": {
-            "kasse": true,
-            "privat": true,
-            "selbstzahler": "not set"
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
         },
-        "telefon": "+49 721 814068",
-        "telefonErreichbarkeit": {
-            "dienstag": [
-                {
-                    "bis": "18:00",
-                    "von": "13:00"
-                }
-            ],
-            "donnerstag": [
-                {
-                    "bis": "13:00",
-                    "von": "08:30"
-                }
-            ],
-            "freitag": [],
-            "mittwoch": [
-                {
-                    "bis": "18:00",
-                    "von": "13:00"
-                }
-            ],
-            "montag": [],
-            "samstag": [],
-            "sonntag": []
-        },
-        "terminOptionen": {
-            "email": false,
-            "online": false,
-            "telefon": true
-        },
-        "websiteLink": "https://www.neurologie-am-zkm.de/"
+        {
+          "von": "nach Vereinbarung",
+          "bis": "nach Vereinbarung"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
     },
-    {
-        "email": "info@neurologie-durlach.de",
-        "name": "Dr. Mareile Brachmann",
-        "oeffnungszeiten": {
-            "dienstag": [
-                {
-                    "bis": "13:00",
-                    "von": "08:30"
-                },
-                {
-                    "bis": "18:00",
-                    "von": "15:00"
-                }
-            ],
-            "donnerstag": [
-                {
-                    "bis": "12:30",
-                    "von": "08:30"
-                },
-                {
-                    "bis": "17:00",
-                    "von": "14:00"
-                }
-            ],
-            "freitag": [
-                {
-                    "bis": "13:30",
-                    "von": "08:30"
-                }
-            ],
-            "mittwoch": [
-                {
-                    "bis": "13:30",
-                    "von": "08:30"
-                }
-            ],
-            "montag": [
-                {
-                    "bis": "13:00",
-                    "von": "08:30"
-                },
-                {
-                    "bis": "18:00",
-                    "von": "14:00"
-                }
-            ],
-            "samstag": [],
-            "sonntag": []
+    "oeffnungszeiten": {
+      "montag": [],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
         },
-        "patienten": {
-            "kasse": true,
-            "privat": true,
-            "selbstzahler": true
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
         },
-        "telefon": "+49 721 9424770",
-        "telefonErreichbarkeit": {
-            "dienstag": [
-                {
-                    "bis": "08:30",
-                    "von": "08:10"
-                }
-            ],
-            "donnerstag": [
-                {
-                    "bis": "08:30",
-                    "von": "08:10"
-                }
-            ],
-            "freitag": [
-                {
-                    "bis": "08:30",
-                    "von": "08:10"
-                }
-            ],
-            "mittwoch": [
-                {
-                    "bis": "08:30",
-                    "von": "08:10"
-                }
-            ],
-            "montag": [
-                {
-                    "bis": "08:30",
-                    "von": "08:10"
-                }
-            ],
-            "samstag": [],
-            "sonntag": []
-        },
-        "terminOptionen": {
-            "email": false,
-            "online": false,
-            "telefon": true
-        },
-        "websiteLink": "www.nap-schenk.de"
+        {
+          "von": "nach Vereinbarung",
+          "bis": "nach Vereinbarung"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
     },
-    {
-        "email": "not set",
-        "name": "Dr. Friedrich Fäßler",
-        "oeffnungszeiten": {
-            "dienstag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                },
-                {
-                    "bis": "17:30",
-                    "von": "15:00"
-                }
-            ],
-            "donnerstag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                },
-                {
-                    "bis": "17:30",
-                    "von": "15:00"
-                }
-            ],
-            "freitag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                }
-            ],
-            "mittwoch": [],
-            "montag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                },
-                {
-                    "bis": "17:30",
-                    "von": "15:00"
-                }
-            ],
-            "samstag": [],
-            "sonntag": []
+    "adresse": "Nowackanlage 15, 76137 Karlsruhe"
+  },
+  {
+    "name": "Till van der List",
+    "email": "",
+    "telefon": "0721 / 3 19 78",
+    "websiteLink": "https://www.neurologie-psychiatrie-karlsruhe.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": true,
+      "kasse": true,
+      "selbstzahler": true
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "12:00",
+          "bis": ""
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": "nur termine",
+      "donnerstag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "12:00",
+          "bis": ""
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "adresse": "Nowackanlage 15, 76137 Karlsruhe"
+  },
+  {
+    "name": "Dr. med. Monika Bottlender",
+    "email": "",
+    "telefon": "0721 / 3 19 78",
+    "websiteLink": "www.neurologie-psychiatrie-karlsruhe.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": true,
+      "kasse": false,
+      "selbstzahler": true
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "12:00",
+          "bis": "17:30"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "adresse": "Nowackanlage 15, 76137 Karlsruhe"
+  },
+  {
+    "name": "Friedrich Fässler",
+    "email": "",
+    "telefon": "0721 / 38 80 30",
+    "websiteLink": "https://www.neurologie-psychiatrie-karlsruhe.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": true,
+      "kasse": true,
+      "selbstzahler": ""
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
         },
-        "patienten": {
-            "kasse": true,
-            "privat": true,
-            "selbstzahler": "not set"
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
         },
-        "telefon": "0721 / 38 80 30",
-        "telefonErreichbarkeit": {
-            "dienstag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                },
-                {
-                    "bis": "17:30",
-                    "von": "15:00"
-                }
-            ],
-            "donnerstag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                },
-                {
-                    "bis": "17:30",
-                    "von": "15:00"
-                }
-            ],
-            "freitag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                }
-            ],
-            "mittwoch": [],
-            "montag": [
-                {
-                    "bis": "12:00",
-                    "von": "08:00"
-                },
-                {
-                    "bis": "17:30",
-                    "von": "15:00"
-                }
-            ],
-            "samstag": [],
-            "sonntag": []
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
         },
-        "terminOptionen": {
-            "email": false,
-            "online": false,
-            "telefon": true
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
         },
-        "websiteLink": "www.neurologie-psychiatrie-karlsruhe.de"
-    }
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "adresse": "Nowackanlage 15, 76137 Karlsruhe"
+  },
+  {
+    "name": "Dr. med. Petra Hubrich-Durm",
+    "email": "",
+    "telefon": "0721 / 388030",
+    "websiteLink": "www.neurologie-psychiatrie-karlsruhe.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": true,
+      "kasse": true,
+      "selbstzahler": true
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "11:00",
+          "bis": "13:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "11:30",
+          "bis": "13:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "11:00",
+          "bis": "12:30"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "00:00",
+          "bis": "12:00"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "adresse": "Nowackanlage 15, 76137 Karlsruhe"
+  }
 ]""")
     return all_doctors
 @app.route('/doctors/phone', methods=['Get'])
