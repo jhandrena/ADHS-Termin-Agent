@@ -48,68 +48,29 @@ function DoctorAppointmentContent() {
     <div className="max-w-md mx-auto mt-10">
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink 
-              onClick={() => handleBreadcrumbClick(1)}
-              className={`${state.step >= 1 ? "font-bold" : ""} cursor-pointer`}
-            >
-              Ort & Fachrichtung
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink 
-              onClick={() => handleBreadcrumbClick(2)}
-              className={`${state.step >= 2 ? "font-bold" : ""} ${(state.step >= 2 || (state.location && state.specialty)) ? "cursor-pointer" : "cursor-default"}`}
-            >
-              Patienteninfo
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink 
-              onClick={() => handleBreadcrumbClick(3)}
-              className={`${state.step >= 3 ? "font-bold" : ""} ${(state.step >= 3 || (state.patientName && state.diagnosis)) ? "cursor-pointer" : "cursor-default"}`}
-            >
-              Arztauswahl
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink 
-              onClick={() => handleBreadcrumbClick(4)}
-              className={`${state.step >= 4 ? "font-bold" : ""} ${(state.step >= 4 || state.selectedDoctors.length > 0) ? "cursor-pointer" : "cursor-default"}`}
-            >
-              E-Mail verfassen
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink 
-              onClick={() => handleBreadcrumbClick(5)}
-              className={`${state.step >= 5 ? "font-bold" : ""} ${(state.step >= 5 || state.emailStatus?.success) ? "cursor-pointer" : "cursor-default"}`}
-            >
-              Bestätigung
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink 
-              onClick={() => handleBreadcrumbClick(6)}
-              className={`${state.step >= 6 ? "font-bold" : ""} ${state.step >= 6 ? "cursor-pointer" : "cursor-default"}`}
-            >
-              Anrufen
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink 
-              onClick={() => handleBreadcrumbClick(7)}
-              className={`${state.step === 7 ? "font-bold" : ""} ${state.step === 7 ? "cursor-pointer" : "cursor-default"}`}
-            >
-              AI Anruf
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+          {[
+            { step: 1, label: "Ort & Fachrichtung", condition: true },
+            { step: 2, label: "Patienteninfo", condition: state.step >= 2 || (state.location && state.specialty) },
+            { step: 3, label: "Arztauswahl", condition: state.step >= 3 || (state.patientName && state.diagnosis) },
+            { step: 4, label: "E-Mail verfassen", condition: state.step >= 4 || state.selectedDoctors.length > 0 },
+            { step: 5, label: "Bestätigung", condition: state.step >= 5 || state.emailStatus?.success },
+            { step: 6, label: "Anrufen", condition: state.step >= 6 },
+            { step: 7, label: "AI Anruf", condition: state.step === 7 },
+          ].map((item, index) => (
+            item.condition ? (
+              <React.Fragment key={item.step}>
+                {index > 0 && <BreadcrumbSeparator />}
+                <BreadcrumbItem>
+                  <BreadcrumbLink 
+                    onClick={() => handleBreadcrumbClick(item.step)}
+                    className={`${state.step >= item.step ? "font-bold" : ""} cursor-pointer`}
+                  >
+                    {item.label}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              </React.Fragment>
+            ) : null
+          ))}
         </BreadcrumbList>
       </Breadcrumb>
       <Card className="mt-4">
