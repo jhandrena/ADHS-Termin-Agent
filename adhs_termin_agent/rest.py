@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 
 from adhs_termin_agent.doctor_search import findAllDoctors
 from adhs_termin_agent.mail.doctor_filter import get_filtered_doctors, filter_doctors_with_email
+from adhs_termin_agent.mail.mail_composer import first_draft
 
 app = Flask(__name__)
 
@@ -418,7 +419,7 @@ def greet():
     if not thema or not name:
         return "Missing 'thema' or 'name' parameter", 400
 
-    return f"Hello {name}, welcome to the {thema}!"
+    return first_draft(thema,name)
 
 
 if __name__ == '__main__':

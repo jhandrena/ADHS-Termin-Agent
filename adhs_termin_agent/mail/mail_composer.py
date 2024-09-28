@@ -3,7 +3,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=dotenv.get_key("../../.env", "OPENROUTER_API_KEY"),
+    api_key=dotenv.get_key("../.env", "OPENROUTER_API_KEY"),
 )
 
 
@@ -43,9 +43,6 @@ def first_draft(thema, name):
     prompt: str = prompt_template.format(name, thema, name)
     return callApi(prompt, "openai/gpt-4o-mini", system_prompt)
 
-
-def get_user_input(prompt):
-    return input(prompt).strip()
 
 
 if __name__ == "__main__":
