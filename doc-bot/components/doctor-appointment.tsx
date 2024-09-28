@@ -42,7 +42,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(1)}
-              className={`${state.step >= 1 ? "font-bold" : ""} cursor-pointer`}
+              className={`${state.step >= 1 ? "font-bold" : ""} ${state.step >= 1 ? "cursor-pointer" : "cursor-default"}`}
             >
               Ort & Fachrichtung
             </BreadcrumbLink>
@@ -51,7 +51,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(2)}
-              className={`${state.step >= 2 ? "font-bold" : ""} cursor-pointer`}
+              className={`${state.step >= 2 ? "font-bold" : ""} ${state.step >= 2 ? "cursor-pointer" : "cursor-default"}`}
             >
               Patienteninfo
             </BreadcrumbLink>
@@ -60,7 +60,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(3)}
-              className={`${state.step >= 3 ? "font-bold" : ""} cursor-pointer`}
+              className={`${state.step >= 3 ? "font-bold" : ""} ${state.step >= 3 ? "cursor-pointer" : "cursor-default"}`}
             >
               Arztauswahl
             </BreadcrumbLink>
@@ -69,7 +69,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(4)}
-              className={`${state.step >= 4 ? "font-bold" : ""} cursor-pointer`}
+              className={`${state.step >= 4 ? "font-bold" : ""} ${state.step >= 4 ? "cursor-pointer" : "cursor-default"}`}
             >
               E-Mail verfassen
             </BreadcrumbLink>
@@ -78,7 +78,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(5)}
-              className={`${state.step === 5 ? "font-bold" : ""} cursor-pointer`}
+              className={`${state.step === 5 ? "font-bold" : ""} ${state.step === 5 ? "cursor-pointer" : "cursor-default"}`}
             >
               Bestätigung
             </BreadcrumbLink>
