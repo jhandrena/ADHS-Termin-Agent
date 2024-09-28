@@ -7,6 +7,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { MapPinIcon } from 'lucide-react'
 import { specialties } from '@/app/constants'
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
+import { searchDoctors } from '@/utils/doctor-appointment-utils'
 
 export function Step1LocationSpecialty() {
   const { state, setState } = useDoctorAppointment();
