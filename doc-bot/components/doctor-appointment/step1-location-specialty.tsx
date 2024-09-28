@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { MapPinIcon, XIcon } from 'lucide-react'
+import { MapPinIcon } from 'lucide-react'
 import { specialties } from '@/app/constants'
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 
@@ -37,9 +37,6 @@ export function Step1LocationSpecialty() {
     onLocationChange("Berlin");
   };
 
-  const clearSpecialty = () => {
-    onSpecialtyChange("");
-  };
 
   const handleNext = () => {
     setState(prev => ({ ...prev, step: prev.step + 1 }));
@@ -80,16 +77,6 @@ export function Step1LocationSpecialty() {
             </CommandGroup>
           </CommandList>
         </Command>
-        {specialty && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-0 top-0 h-full"
-            onClick={clearSpecialty}
-          >
-            <XIcon className="h-4 w-4" />
-          </Button>
-        )}
       </div>
       <Button onClick={handleNext} disabled={!location || !specialty || isLoading}>
         {isLoading ? "Suche Ärzte..." : "Weiter"}
