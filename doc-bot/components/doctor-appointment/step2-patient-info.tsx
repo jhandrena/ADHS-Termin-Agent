@@ -1,28 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { Loader2 } from 'lucide-react'
 
 export function Step2PatientInfo() {
   const { state, setState } = useDoctorAppointment();
-  const { patientName, patientEmail, isLoading } = state;
-  const [emailError, setEmailError] = useState("");
-
-  const validateEmail = (email: string) => {
-    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return re.test(String(email).toLowerCase());
-  };
+  const { patientName, diagnosis, isLoading } = state;
 
   const handleNext = () => {
-    if (!validateEmail(patientEmail)) {
-      setEmailError("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
-      return;
-    }
-    setEmailError("");
     setState(prev => ({ ...prev, step: prev.step + 1 }));
   };
 
@@ -54,24 +43,20 @@ export function Step2PatientInfo() {
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="patientEmail">E-Mail Adresse</Label>
-        <Input
-          id="patientEmail"
-          type="email"
-          placeholder="z.B. max.mustermann@example.com"
-          value={patientEmail}
-          onChange={(e) => {
-            setState(prev => ({ ...prev, patientEmail: e.target.value }));
-            setEmailError("");
-          }}
+        <Label htmlFor="diagnosis">Diagnose</Label>
+        <Textarea
+          id="diagnosis"
+          placeholder="Bitte beschreiben Sie Ihre Diagnose oder Symptome"
+          value={diagnosis}
+          onChange={(e) => setState(prev => ({ ...prev, diagnosis: e.target.value }))}
+          rows={4}
         />
-        {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
       </div>
       <div className="flex justify-between">
         <Button onClick={handleBack}>Zurück</Button>
         <Button 
           onClick={handleNext} 
-          disabled={!patientName || !patientEmail}
+          disabled={!patientName || !diagnosis}
         >
           Weiter
         </Button>

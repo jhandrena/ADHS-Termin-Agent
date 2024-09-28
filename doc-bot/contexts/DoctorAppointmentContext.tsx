@@ -18,7 +18,7 @@ interface DoctorAppointmentState {
   selectedDoctors: Doctor[];
   emailContent: string;
   patientName: string;
-  patientEmail: string;
+  diagnosis: string;
   preferredContact: string;
   isLoading: boolean;
   emailStatus: { success: boolean; message: string } | null;
@@ -48,7 +48,7 @@ export const DoctorAppointmentProvider: React.FC<{ children: React.ReactNode }> 
     selectedDoctors: [],
     emailContent: "",
     patientName: "",
-    patientEmail: "",
+    diagnosis: "",
     preferredContact: "all",
     isLoading: false,
     emailStatus: null,
