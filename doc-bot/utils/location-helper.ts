@@ -6,12 +6,14 @@ export class LocationHelper {
           async (position) => {
             const { latitude, longitude } = position.coords;
             try {
+
               const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`);
               const data = await response.json();
-              const city = data.address.city || data.address.town || data.address.village || '';
-              
+
+              const city = data.address.municipality || data.address.city || data.name;
+              const zip = data.address.postcode
               resolve({
-                location: city,
+                location: `${zip}, ${city}`,
                 error: null
               });
             } catch (error) {
