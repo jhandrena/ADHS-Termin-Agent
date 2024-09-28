@@ -136,7 +136,10 @@ export function Step6CallDoctors() {
         <p className="text-red-500 mt-2">{error}</p>
       )}
       {!isLoading && availableDoctors.length === 0 && dateTime && !error && (
-        <p className="text-gray-500 mt-2">Keine verfügbaren Ärzte gefunden.</p>
+        <div className="text-gray-500 mt-2">
+          <p>Keine verfügbaren Ärzte gefunden.</p>
+          <p className="text-sm mt-1">Tipp: Versuchen Sie es mit einem späteren Datum, um mehr Ergebnisse zu erhalten.</p>
+        </div>
       )}
       {availableDoctors.map(doctor => (
         <Card key={doctor.id} className="mb-4">
