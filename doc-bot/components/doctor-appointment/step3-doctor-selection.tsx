@@ -31,7 +31,9 @@ export function Step3DoctorSelection() {
   };
 
   const handleNext = () => {
-    setState(prev => ({ ...prev, step: prev.step + 1 }));
+    if (doctors.length > 0 && selectedDoctors.length > 0) {
+      setState(prev => ({ ...prev, step: prev.step + 1 }));
+    }
   };
 
   const handleBack = () => {
@@ -40,12 +42,18 @@ export function Step3DoctorSelection() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <Button onClick={toggleAllDoctors} disabled={isLoading}>
-          {selectedDoctors.length === doctors.length ? "Alle abwählen" : "Alle auswählen"}
-        </Button>
-      </div>
-      <p className="text-sm text-muted-foreground">Wählen Sie die Ärzte aus, die Sie kontaktieren möchten. <br/>Im nächsten Schritt werden wir hierzu eine E-Mail formulieren.</p>
+      {doctors.length > 0 ? (
+        <>
+          <div className="flex justify-between items-center">
+            <Button onClick={toggleAllDoctors} disabled={isLoading}>
+              {selectedDoctors.length === doctors.length ? "Alle abwählen" : "Alle auswählen"}
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground">Wählen Sie die Ärzte aus, die Sie kontaktieren möchten. <br/>Im nächsten Schritt werden wir hierzu eine E-Mail formulieren.</p>
+        </>
+      ) : (
+        <p className="text-sm text-muted-foreground">Leider wurden keine Ärzte gefunden. Bitte versuchen Sie es mit einer anderen Suche.</p>
+      )}
       {isLoading ? (
         Array(3).fill(0).map((_, index) => (
           <Card key={index} className="cursor-pointer">
@@ -134,7 +142,10 @@ export function Step3DoctorSelection() {
       )}
       <div className="flex justify-between">
         <Button onClick={handleBack}>Zurück</Button>
-        <Button onClick={handleNext} disabled={selectedDoctors.length === 0 || isLoading}>
+        <Button 
+          onClick={handleNext} 
+          disabled={doctors.length === 0 || selectedDoctors.length === 0 || isLoading}
+        >
           Weiter
         </Button>
       </div>
