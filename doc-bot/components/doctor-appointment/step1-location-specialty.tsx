@@ -52,21 +52,21 @@ export function Step1LocationSpecialty() {
     }
   };
 
-  const handleNext = async () => {
+  const handleNext = () => {
     if (location && specialty) {
-      setState(prev => ({ ...prev, isLoading: true }));
-      try {
-        const doctors = await searchDoctors(location, specialty);
-        setState(prev => ({ 
-          ...prev, 
-          doctors, 
-          isLoading: false,
-          step: prev.step + 1
-        }));
-      } catch (error) {
-        console.error("Error fetching doctors:", error);
-        setState(prev => ({ ...prev, isLoading: false }));
-      }
+      setState(prev => ({ ...prev, isLoading: true, step: prev.step + 1 }));
+      searchDoctors(location, specialty)
+        .then(doctors => {
+          setState(prev => ({ 
+            ...prev, 
+            doctors, 
+            isLoading: false
+          }));
+        })
+        .catch(error => {
+          console.error("Error fetching doctors:", error);
+          setState(prev => ({ ...prev, isLoading: false }));
+        });
     }
   };
 

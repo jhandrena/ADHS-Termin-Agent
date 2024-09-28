@@ -37,10 +37,10 @@ export function Step2PatientInfo() {
           <Loader2 className="w-4 h-4 animate-spin" />
           <p>Ärzte werden geladen...</p>
         </div>
-      ) : (
-        <p className="text-sm text-muted-foreground">Ärzte wurden erfolgreich geladen.</p>
-      )}
-      <p className="text-sm">
+      ) : state.doctors.length > 0 ? (
+        <p className="text-sm text-muted-foreground italic">Ärzte wurden erfolgreich geladen.</p>
+      ) : null}
+      <p className="text-sm italic">
         Bitte geben Sie Ihren Namen und Ihre E-Mail-Adresse ein. In den nächsten Schritten werden Sie gebeten, 
         eine Diagnose (Freitext) einzugeben und Ärzte auszuwählen.
       </p>
