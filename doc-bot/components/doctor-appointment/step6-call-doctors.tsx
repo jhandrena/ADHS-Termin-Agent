@@ -17,8 +17,11 @@ export function Step6CallDoctors() {
   const [dateTime, setDateTime] = useState('');
   const [availableDoctors, setAvailableDoctors] = useState<typeof selectedDoctors>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchAvailableDoctors = async () => {
+    setIsLoading(true);
+    setError(null);
     try {
       const [date, time] = dateTime.split('T');
       const [year, month, day] = date.split('-');
@@ -31,12 +34,16 @@ export function Step6CallDoctors() {
       setAvailableDoctors(data);
     } catch (error) {
       console.error('Error fetching available doctors:', error);
+      setError('Fehler beim Abrufen der verfügbaren Ärzte. Bitte versuchen Sie es später erneut.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDateTime(e.target.value);
-    setAvailableDoctors([]); // Clear previous results
+    setAvailableDoctors([]);
+    setError(null);
   };
 
   const handleCall = (phone: string) => {
@@ -75,9 +82,22 @@ export function Step6CallDoctors() {
         />
       </div>
       {dateTime && (
-        <Button onClick={fetchAvailableDoctors} className="w-full">
-          Verfügbare Ärzte anzeigen
+        <Button onClick={fetchAvailableDoctors} className="w-full" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Ärzte werden geladen...
+            </>
+          ) : (
+            'Verfügbare Ärzte anzeigen'
+          )}
         </Button>
+      )}
+      {error && (
+        <p className="text-red-500 mt-2">{error}</p>
+      )}
+      {!isLoading && availableDoctors.length === 0 && dateTime && !error && (
+        <p className="text-gray-500 mt-2">Keine verfügbaren Ärzte gefunden.</p>
       )}
       {availableDoctors.map(doctor => (
         <Card key={doctor.id} className="mb-4">
