@@ -26,7 +26,8 @@ def callApi(prompt: str, model: str, system_message: str = ""):
     )
     completion = client.chat.completions.create(
         model=model,
-        messages=messages
+        messages=messages,
+        top_p=0.9
     )
     try:
         return (completion.choices[0].message.content)
@@ -44,7 +45,6 @@ Ort/Stadt: {}
 Basierend auf diesen Angaben, finden Sie bitte so viele der folgenden Informationen für jeden der Ärzte wie möglich:
 1. Name
 2. Adresse
-Andere wichtige infos...
 """
     #system_prompt:str = "verwende folgende quellen:arztsuche: https://arztsuche.116117.de/, yameda, doctolib, das örtliche."
     prompt: str = prompt_template.format(specialty,location,count)
@@ -70,20 +70,14 @@ Suchergebnisse:
     return doctors_json
 
 def _get_doctor_information(doctor_json, doctors = False) -> str:
-    prompt_template = """Bitte recherchieren Sie die folgenden Informationen für den Arzt:
-
-Name: {}
-Adresse: {}
-
-Basierend auf diesen Angaben, finden Sie bitte so viele der folgenden Informationen wie möglich:
-
-1. E-Mail-Adresse
-2. Telefonnummer
-3. Website-URL
-4. Terminvereinbarungsmöglichkeiten (telefonisch, per E-Mail, online)
-5. Akzeptierte Patientenversicherungen (privat, gesetzlich, Selbstzahler)
-6. Telefonische Erreichbarkeit (Zeiten für jeden Wochentag)
-7. Öffnungszeiten (für jeden Wochentag)"""
+    prompt_template = """Suche auf der Kontakt-Seite von {} nach:
+E-Mail-Adresse
+Telefonnummer
+Website-URL
+Terminvereinbarungsmöglichkeiten (telefonisch, per E-Mail, online)
+Akzeptierte Patientenversicherungen (privat, gesetzlich, Selbstzahler)
+Telefonische Erreichbarkeit (Zeiten für jeden Wochentag)
+Öffnungszeiten (für jeden Wochentag)"""
     prompt: str = prompt_template.format(doctor_json['arztname'], doctor_json['adresse'])
     doctor_information = callApi(prompt, "perplexity/llama-3.1-sonar-large-128k-online")
     if doctors:
@@ -189,7 +183,7 @@ def extendDoctors(doctors_json):
 
 
 def main(specialty, region, count=5):
-    findAllDoctors(count, region, specialty)
+    findAllDoctors(region, specialty, count)
     #info = (find_information(doctors_json))
     ##print(info)
     #print("Verarbeite informationen über die Ärzte...")
