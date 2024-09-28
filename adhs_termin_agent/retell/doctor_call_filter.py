@@ -42,20 +42,21 @@ def translate_weekday(weekday):
 def get_next_callable_doctor(date_str, time, doctors):
     date = datetime.datetime.strptime(date_str, "%d.%m.%Y")
 
-    while True:
-        weekday = date.strftime("%A").lower()
-        weekday = translate_weekday(weekday)
+    weekday = date.strftime("%A").lower()
+    print(weekday)
+    for doctorr in doctors:
+        print(doctorr)
+        if not doctorr['terminOptionen']['email'] and doctorr['telefon'] != "":
+            weekday_german = translate_weekday(weekday)
+            if weekday_german in doctorr['telefonErreichbarkeit']:
+                for time_slot in doctorr['telefonErreichbarkeit'][weekday_german]:
+                    if time_slot['von'] > time:
+                        try_again_date = '{"date":"' + date.strftime("%d.%m.%Y") + '","time":"' + time_slot['von'] + '"}'
+                        return json.loads(try_again_date)
 
-        for doctor in doctors:
-            if not doctor['terminOptionen']['email'] and doctor['telefon'] != "not set":
-                if weekday in doctor['telefonErreichbarkeit']:
-                    for time_slot in doctor['telefonErreichbarkeit'][weekday]:
-                        if time_slot['von'] > time:
-                            return doctor
-
-        # Move to the next day
-        date += datetime.timedelta(days=1)
-        time = "00:00"  # Reset time to start of the day
+    # Move to the next day
+    date += datetime.timedelta(days=1)
+    time = "00:00"  # Reset time to start of the day
 
 if __name__ == "__main__":
     doctors = parse_output_json()
