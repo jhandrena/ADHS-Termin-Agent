@@ -55,11 +55,8 @@ export function Step6CallDoctors() {
 
     window.open(`http://localhost:3006/?name=${encodeURIComponent(state.patientName)}&thema=${encodeURIComponent(state.diagnosis)}&specialty=${encodeURIComponent(state.specialty)}`, '_blank');
     
-    // Simulate a delay before moving to the next step
-    setTimeout(() => {
-      setIsLoading(false);
-      setState(prev => ({ ...prev, step: prev.step + 1 }));
-    }, 2000); // 2 seconds delay, adjust as needed
+    // Navigate to the next step immediately
+    setState(prev => ({ ...prev, step: prev.step + 1 }));
   };
 
   return (
