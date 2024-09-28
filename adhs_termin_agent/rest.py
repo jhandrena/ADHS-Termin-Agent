@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 all_doctors = []
 
+
 @app.route('/doctors', methods=['POST'])
 def get_doctors():
     global all_doctors
@@ -455,15 +456,21 @@ def get_doctors():
   }
 ]""")
     return all_doctors
+
+
 @app.route('/doctors/phone', methods=['Get'])
 def get_phonable_doctors():
     global all_doctors
     date = request.args.get('date')
     time = request.args.get('time')
+    print(type(all_doctors))
+    print(type(all_doctors[0]))
+    #available_now = get_list_of_callable_doctors_at(date, time, all_doctors)
 
-    available_now = get_list_of_callable_doctors_at(date, time, all_doctors)
-
+    available_now = get_list_of_callable_doctors_at("01.10.2024", "09:00", all_doctors)
+    print(available_now)
     return available_now
+
 
 @app.route('/doctors/mail', methods=['get'])
 def get_mailable_doctors():
@@ -479,7 +486,7 @@ def greet():
     if not thema or not name:
         return "Missing 'thema' or 'name' parameter", 400
 
-    return first_draft(thema,name)
+    return first_draft(thema, name)
 
 
 if __name__ == '__main__':
