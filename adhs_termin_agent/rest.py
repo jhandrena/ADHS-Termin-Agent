@@ -6,6 +6,7 @@ from flask_cors import CORS, cross_origin
 from adhs_termin_agent.doctor_search import findAllDoctors
 from adhs_termin_agent.mail.doctor_filter import get_filtered_doctors, filter_doctors_with_email
 from adhs_termin_agent.mail.mail_composer import first_draft
+from adhs_termin_agent.retell.doctor_call_filter import get_list_of_callable_doctors_at
 from adhs_termin_agent.retell.doctor_call_filter import get_next_callable_doctor, get_list_of_callable_doctors_at
 
 app = Flask(__name__)
@@ -475,7 +476,19 @@ def get_phonable_doctors():
     return available_now
 
 
-@app.route('/doctors/mail', methods=['get'])
+@app.route('/doctors/phone', methods=['GET'])
+@cross_origin()
+def get_phonable_doctors():
+    global all_doctors
+    date = request.args.get('date')
+    time = request.args.get('time')
+    print(type(all_doctors))
+    print(type(all_doctors[0]))
+    available_now = get_list_of_callable_doctors_at(date, time, all_doctors)
+    print(available_now)
+    return available_now
+
+@app.route('/doctors/mail', methods=['GET'])
 @cross_origin()
 def get_mailable_doctors():
     global all_doctors
