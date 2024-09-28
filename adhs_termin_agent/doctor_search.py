@@ -189,19 +189,25 @@ def extendDoctors(doctors_json):
 
 
 def main(specialty, region, count=5):
+    findAllDoctors(count, region, specialty)
+    #info = (find_information(doctors_json))
+    ##print(info)
+    #print("Verarbeite informationen über die Ärzte...")
+    #print(information_to_doctors(info))
+
+
+def findAllDoctors(region, specialty,count=5):
     print("Finde passende Ärzte...")
     search = name_search(specialty, region, count)
-    #print(search)
+    # print(search)
     print("Verarbeite Ärzte liste...")
     doctors_json = names_to_json(search)
     doctors_json = doctors_json[:count]
     print(str(len(doctors_json)) + " Ärzte gefunden...")
     print("Finde und verarbeite weitere informationen über Ärzte...")
-    print(extendDoctors(doctors_json))
-    #info = (find_information(doctors_json))
-    ##print(info)
-    #print("Verarbeite informationen über die Ärzte...")
-    #print(information_to_doctors(info))
+    doctors = extendDoctors(doctors_json)
+    print(doctors)
+    return doctors
 
 
 if __name__ == "__main__":

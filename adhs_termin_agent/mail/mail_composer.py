@@ -33,7 +33,7 @@ def callApi(prompt: str, model: str, system_message: str = ""):
         print(completion)
 
 
-def first_draft(thema, specialty, name):
+def first_draft(thema, name):
     prompt_template: str = (
         "Schreibe mir eine Email zum zu einer Terminanfrage bei einem Facharzt. "
         "Ich habe bereits eine Überweisung vom Hausarzt Mein Name ist {} und ich suche so bald wie möglich einen Termin zu {}. "
