@@ -10,6 +10,7 @@ import { DoctorAppointmentProvider, useDoctorAppointment } from '../contexts/Doc
 import { Step4Email } from "./doctor-appointment/step4-email-compose"
 import { Step5EmailConfirmation } from "./doctor-appointment/step5-confirmation"
 import { Step6CallDoctors } from "./doctor-appointment/step6-call-doctors"
+import React from "react"
 
 function DoctorAppointmentContent() {
   const { state, setState } = useDoctorAppointment();
