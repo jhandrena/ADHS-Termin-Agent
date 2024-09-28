@@ -14,12 +14,12 @@ export function QRCodeDialog({ open, onOpenChange, phoneNumber }: QRCodeDialogPr
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Scan QR Code to Call</DialogTitle>
+          <DialogTitle>QR-Code scannen zum Anrufen</DialogTitle>
         </DialogHeader>
         <div className="flex justify-center">
           <QRCodeSVG value={`tel:${phoneNumber}`} size={256} />
         </div>
-        <p className="text-center mt-4">Scan this QR code with your mobile device to initiate the call.</p>
+        <p className="text-center mt-4">Scannen Sie diesen QR-Code mit Ihrem Mobilgerät, um den Anruf zu starten.</p>
       </DialogContent>
     </Dialog>
   )
