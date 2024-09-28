@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { Loader2 } from 'lucide-react'
+import { useState } from 'react'
 
 const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,6 +16,7 @@ const isValidEmail = (email: string): boolean => {
 export function Step2PatientInfo() {
   const { state, setState } = useDoctorAppointment();
   const { patientName, patientEmail, diagnosis, isLoading } = state;
+  const [emailTouched, setEmailTouched] = useState(false);
 
   const handleNext = () => {
     setState(prev => ({ ...prev, step: prev.step + 1 }));
@@ -53,9 +55,10 @@ export function Step2PatientInfo() {
           placeholder="ihre.email@beispiel.de"
           value={patientEmail}
           onChange={(e) => setState(prev => ({ ...prev, patientEmail: e.target.value }))}
+          onBlur={() => setEmailTouched(true)}
           autoComplete="email"
         />
-        {patientEmail && !isValidEmail(patientEmail) && (
+        {emailTouched && patientEmail && !isValidEmail(patientEmail) && (
           <p className="text-sm text-red-500">Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
         )}
       </div>
