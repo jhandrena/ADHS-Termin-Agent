@@ -38,8 +38,20 @@ export function Step1LocationSpecialty() {
   };
 
 
-  const handleNext = () => {
-    setState(prev => ({ ...prev, step: prev.step + 1 }));
+  const handleNext = async () => {
+    setState(prev => ({ ...prev, isLoading: true }));
+    try {
+      const doctors = await searchDoctors(location, specialty);
+      setState(prev => ({ 
+        ...prev, 
+        doctors, 
+        step: prev.step + 1, 
+        isLoading: false 
+      }));
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      setState(prev => ({ ...prev, isLoading: false }));
+    }
   };
 
   return (

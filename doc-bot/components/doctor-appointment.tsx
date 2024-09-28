@@ -19,11 +19,7 @@ function DoctorAppointmentContent() {
       case 2:
         return <Step2PatientInfo />;
       case 3:
-        return state.doctors.length > 0 ? (
-          <Step3DoctorSelection />
-        ) : (
-          <div>Loading doctors...</div>
-        );
+        return <Step3DoctorSelection />;
       case 4:
         return <Step4EmailCompose />;
       case 5:
