@@ -1,6 +1,7 @@
 import json
 import webbrowser
 import urllib.parse
+import datetime
 
 
 def parse_output_json() -> list:
@@ -9,12 +10,14 @@ def parse_output_json() -> list:
     return data
 
 
-def get_list_of_callable_doctors_at(date, time, doctors):
+def get_list_of_callable_doctors_at(date_str, time, doctors):
+    date = datetime.datetime.strptime(date_str, "%d.%m.%Y")
+    weekday = date.strftime("%A").lower()
     callable_doctors = []
     for doctor in doctors:
         if not doctor['terminOptionen']['email'] and doctor['telefon'] != "not set":
-            for day, times in doctor['telefonErreichbarkeit'].items():
-                for time_slot in times:
+            if weekday in doctor['telefonErreichbarkeit']:
+                for time_slot in doctor['telefonErreichbarkeit'][weekday]:
                     if time_slot['von'] <= time <= time_slot['bis']:
                         callable_doctors.append(doctor)
                         break
