@@ -14,7 +14,7 @@ export const searchDoctors = async (
 ): Promise<Doctor[]> => {
   try {
     const response = await fetch(
-      `/doctors?location=${encodeURIComponent(location)}&specialty=${encodeURIComponent(specialty)}`,
+      `http://127.0.0.1:5000/doctors?location=${encodeURIComponent(location)}&specialty=${encodeURIComponent(specialty)}`,
       {
         method: 'POST',
       }
