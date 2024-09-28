@@ -30,7 +30,10 @@ function DoctorAppointmentContent() {
   };
 
   const handleBreadcrumbClick = (step: number) => {
-    if (step <= state.step) {
+    if (step <= state.step || (step === 2 && state.location && state.specialty) || 
+        (step === 3 && state.patientName && state.diagnosis) || 
+        (step === 4 && state.selectedDoctors.length > 0) || 
+        (step === 5 && state.emailStatus?.success)) {
       setState(prev => ({ ...prev, step }));
     }
   };
@@ -42,7 +45,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(1)}
-              className={`${state.step >= 1 ? "font-bold" : ""} ${state.step >= 1 ? "cursor-pointer" : "cursor-default"}`}
+              className={`${state.step >= 1 ? "font-bold" : ""} cursor-pointer`}
             >
               Ort & Fachrichtung
             </BreadcrumbLink>
@@ -51,7 +54,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(2)}
-              className={`${state.step >= 2 ? "font-bold" : ""} ${state.step >= 2 ? "cursor-pointer" : "cursor-default"}`}
+              className={`${state.step >= 2 ? "font-bold" : ""} ${(state.step >= 2 || (state.location && state.specialty)) ? "cursor-pointer" : "cursor-default"}`}
             >
               Patienteninfo
             </BreadcrumbLink>
@@ -60,7 +63,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(3)}
-              className={`${state.step >= 3 ? "font-bold" : ""} ${state.step >= 3 ? "cursor-pointer" : "cursor-default"}`}
+              className={`${state.step >= 3 ? "font-bold" : ""} ${(state.step >= 3 || (state.patientName && state.diagnosis)) ? "cursor-pointer" : "cursor-default"}`}
             >
               Arztauswahl
             </BreadcrumbLink>
@@ -69,7 +72,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(4)}
-              className={`${state.step >= 4 ? "font-bold" : ""} ${state.step >= 4 ? "cursor-pointer" : "cursor-default"}`}
+              className={`${state.step >= 4 ? "font-bold" : ""} ${(state.step >= 4 || state.selectedDoctors.length > 0) ? "cursor-pointer" : "cursor-default"}`}
             >
               E-Mail verfassen
             </BreadcrumbLink>
@@ -78,7 +81,7 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(5)}
-              className={`${state.step === 5 ? "font-bold" : ""} ${state.step === 5 ? "cursor-pointer" : "cursor-default"}`}
+              className={`${state.step === 5 ? "font-bold" : ""} ${(state.step === 5 || state.emailStatus?.success) ? "cursor-pointer" : "cursor-default"}`}
             >
               Bestätigung
             </BreadcrumbLink>
