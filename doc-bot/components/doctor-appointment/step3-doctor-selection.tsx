@@ -54,7 +54,7 @@ export function Step3DoctorSelection() {
       ) : (
         <p className="text-sm text-muted-foreground">Leider wurden keine Ärzte gefunden. Bitte versuchen Sie es mit einer anderen Suche.</p>
       )}
-      {isLoading ? (
+      {isLoading && doctors.length === 0 ? (
         Array(3).fill(0).map((_, index) => (
           <Card key={index} className="cursor-pointer">
             <CardHeader className="flex flex-row items-center space-x-4 py-2">
@@ -72,7 +72,7 @@ export function Step3DoctorSelection() {
             </CardHeader>
           </Card>
         ))
-      ) : (
+      ) : doctors.length > 0 ? (
         doctors.map((doctor) => (
           <Card key={doctor.id} className="cursor-pointer">
             <CardHeader className="py-2">
