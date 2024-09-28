@@ -64,9 +64,8 @@ export function Step1LocationSpecialty() {
         location: location,
         specialty: specialty,
         step: prev.step + 1 
-      }), () => {
-        state.fetchDoctors();
-      });
+      }));
+      state.fetchDoctors();
     }
   };
 
