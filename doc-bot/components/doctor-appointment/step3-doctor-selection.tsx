@@ -6,47 +6,41 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { MailIcon, PhoneIcon, GlobeIcon } from 'lucide-react'
+import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 
-interface Doctor {
-  id: number
-  name: string
-  specialty: string
-  email: string
-  phone: string
-  address: string
-  website: string
-}
+export function Step3DoctorSelection() {
+  const { state, setState } = useDoctorAppointment();
+  const { doctors, selectedDoctors, preferredContact } = state;
 
-interface Step3Props {
-  doctors: Doctor[]
-  selectedDoctors: Doctor[]
-  preferredContact: string
-  onDoctorSelection: (doctor: Doctor) => void
-  onPreferredContactChange: (value: string) => void
-  onNext: () => void
-  onBack: () => void
-}
-
-export function Step3DoctorSelection({ 
-  doctors, 
-  selectedDoctors, 
-  preferredContact, 
-  onDoctorSelection, 
-  onPreferredContactChange, 
-  onNext, 
-  onBack 
-}: Step3Props) {
   const toggleAllDoctors = () => {
     if (selectedDoctors.length === doctors.length) {
-      selectedDoctors.forEach(doctor => onDoctorSelection(doctor))
+      setState(prev => ({ ...prev, selectedDoctors: [] }));
     } else {
-      doctors.forEach(doctor => {
-        if (!selectedDoctors.some(d => d.id === doctor.id)) {
-          onDoctorSelection(doctor)
-        }
-      })
+      setState(prev => ({ ...prev, selectedDoctors: [...doctors] }));
     }
-  }
+  };
+
+  const onDoctorSelection = (doctor) => {
+    setState(prev => {
+      const isSelected = prev.selectedDoctors.some(d => d.id === doctor.id);
+      const newSelectedDoctors = isSelected
+        ? prev.selectedDoctors.filter(d => d.id !== doctor.id)
+        : [...prev.selectedDoctors, doctor];
+      return { ...prev, selectedDoctors: newSelectedDoctors };
+    });
+  };
+
+  const onPreferredContactChange = (value) => {
+    setState(prev => ({ ...prev, preferredContact: value }));
+  };
+
+  const handleNext = () => {
+    setState(prev => ({ ...prev, step: prev.step + 1 }));
+  };
+
+  const handleBack = () => {
+    setState(prev => ({ ...prev, step: prev.step - 1 }));
+  };
 
   const filteredDoctors = doctors.filter(doctor => {
     if (preferredContact === 'all') return true;
@@ -135,11 +129,11 @@ export function Step3DoctorSelection({
         </Card>
       ))}
       <div className="flex justify-between">
-        <Button onClick={onBack}>Zurück</Button>
-        <Button onClick={onNext} disabled={selectedDoctors.length === 0}>
+        <Button onClick={handleBack}>Zurück</Button>
+        <Button onClick={handleNext} disabled={selectedDoctors.length === 0}>
           Weiter
         </Button>
       </div>
     </div>
-  )
+  );
 }

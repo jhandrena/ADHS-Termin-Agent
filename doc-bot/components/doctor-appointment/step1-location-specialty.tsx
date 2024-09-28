@@ -6,18 +6,12 @@ import { Input } from "@/components/ui/input"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { MapPinIcon, XIcon } from 'lucide-react'
 import { specialties } from '@/app/constants'
+import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 
-interface Step1Props {
-  location: string
-  specialty: string
-  onLocationChange: (location: string) => void
-  onSpecialtyChange: (specialty: string) => void
-  onNext: () => void
-  isLoading: boolean
-}
-
-export function Step1LocationSpecialty({ location, specialty, onLocationChange, onSpecialtyChange, onNext, isLoading }: Step1Props) {
-  const [filteredSpecialties, setFilteredSpecialties] = useState(specialties)
+export function Step1LocationSpecialty() {
+  const { state, setState } = useDoctorAppointment();
+  const { location, specialty, isLoading } = state;
+  const [filteredSpecialties, setFilteredSpecialties] = useState(specialties);
 
   useEffect(() => {
     if (specialty) {
@@ -25,19 +19,31 @@ export function Step1LocationSpecialty({ location, specialty, onLocationChange, 
         specialties.filter(s =>
           s.toLowerCase().includes(specialty.toLowerCase())
         )
-      )
+      );
     } else {
-      setFilteredSpecialties(specialties)
+      setFilteredSpecialties(specialties);
     }
-  }, [specialty])
+  }, [specialty]);
+
+  const onLocationChange = (newLocation: string) => {
+    setState(prev => ({ ...prev, location: newLocation }));
+  };
+
+  const onSpecialtyChange = (newSpecialty: string) => {
+    setState(prev => ({ ...prev, specialty: newSpecialty }));
+  };
 
   const useCurrentLocation = () => {
-    onLocationChange("Berlin")
-  }
+    onLocationChange("Berlin");
+  };
 
   const clearSpecialty = () => {
-    onSpecialtyChange("")
-  }
+    onSpecialtyChange("");
+  };
+
+  const handleNext = () => {
+    setState(prev => ({ ...prev, step: prev.step + 1 }));
+  };
 
   return (
     <div className="space-y-4">
@@ -85,9 +91,9 @@ export function Step1LocationSpecialty({ location, specialty, onLocationChange, 
           </Button>
         )}
       </div>
-      <Button onClick={onNext} disabled={!location || !specialty || isLoading}>
+      <Button onClick={handleNext} disabled={!location || !specialty || isLoading}>
         {isLoading ? "Suche Ärzte..." : "Weiter"}
       </Button>
     </div>
-  )
+  );
 }

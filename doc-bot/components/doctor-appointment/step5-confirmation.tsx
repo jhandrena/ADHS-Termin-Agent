@@ -1,21 +1,28 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
+import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 
-interface Doctor {
-  id: number
-  name: string
-  specialty: string
-}
+export function Step5Confirmation() {
+  const { state, setState } = useDoctorAppointment();
+  const { location, specialty, selectedDoctors } = state;
 
-interface Step5Props {
-  location: string
-  specialty: string
-  selectedDoctors: Doctor[]
-  onRestart: () => void
-}
+  const handleRestart = () => {
+    setState({
+      step: 1,
+      location: "",
+      specialty: "",
+      doctors: [],
+      selectedDoctors: [],
+      emailContent: "",
+      patientName: "",
+      patientEmail: "",
+      preferredContact: "all",
+      isLoading: false,
+      emailStatus: null,
+    });
+  };
 
-export function Step5Confirmation({ location, specialty, selectedDoctors, onRestart }: Step5Props) {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-bold">Bestätigung</h2>
@@ -28,9 +35,9 @@ export function Step5Confirmation({ location, specialty, selectedDoctors, onRest
           <li key={doctor.id}>{doctor.name} - {doctor.specialty}</li>
         ))}
       </ul>
-      <Button onClick={onRestart}>
+      <Button onClick={handleRestart}>
         Neue Anfrage starten
       </Button>
     </div>
-  )
+  );
 }

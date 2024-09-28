@@ -4,32 +4,30 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 
-interface Step2Props {
-  patientName: string
-  patientEmail: string
-  onPatientNameChange: (name: string) => void
-  onPatientEmailChange: (email: string) => void
-  onNext: () => void
-  onBack: () => void
-}
-
-export function Step2PatientInfo({ patientName, patientEmail, onPatientNameChange, onPatientEmailChange, onNext, onBack }: Step2Props) {
-  const [emailError, setEmailError] = useState("")
+export function Step2PatientInfo() {
+  const { state, setState } = useDoctorAppointment();
+  const { patientName, patientEmail } = state;
+  const [emailError, setEmailError] = useState("");
 
   const validateEmail = (email: string) => {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return re.test(String(email).toLowerCase());
-  }
+  };
 
   const handleNext = () => {
     if (!validateEmail(patientEmail)) {
-      setEmailError("Bitte geben Sie eine gültige E-Mail-Adresse ein.")
-      return
+      setEmailError("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+      return;
     }
-    setEmailError("")
-    onNext()
-  }
+    setEmailError("");
+    setState(prev => ({ ...prev, step: prev.step + 1 }));
+  };
+
+  const handleBack = () => {
+    setState(prev => ({ ...prev, step: prev.step - 1 }));
+  };
 
   return (
     <div className="space-y-4">
@@ -39,7 +37,7 @@ export function Step2PatientInfo({ patientName, patientEmail, onPatientNameChang
           id="patientName"
           placeholder="z.B. Max Mustermann"
           value={patientName}
-          onChange={(e) => onPatientNameChange(e.target.value)}
+          onChange={(e) => setState(prev => ({ ...prev, patientName: e.target.value }))}
         />
       </div>
       <div className="space-y-2">
@@ -50,14 +48,14 @@ export function Step2PatientInfo({ patientName, patientEmail, onPatientNameChang
           placeholder="z.B. max.mustermann@example.com"
           value={patientEmail}
           onChange={(e) => {
-            onPatientEmailChange(e.target.value)
-            setEmailError("")
+            setState(prev => ({ ...prev, patientEmail: e.target.value }));
+            setEmailError("");
           }}
         />
         {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
       </div>
       <div className="flex justify-between">
-        <Button onClick={onBack}>Zurück</Button>
+        <Button onClick={handleBack}>Zurück</Button>
         <Button 
           onClick={handleNext} 
           disabled={!patientName || !patientEmail}
@@ -66,5 +64,5 @@ export function Step2PatientInfo({ patientName, patientEmail, onPatientNameChang
         </Button>
       </div>
     </div>
-  )
+  );
 }

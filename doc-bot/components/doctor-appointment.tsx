@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Step1LocationSpecialty } from './doctor-appointment/step1-location-specialty'
@@ -9,157 +8,88 @@ import { Step3DoctorSelection } from './doctor-appointment/step3-doctor-selectio
 import { Step4EmailCompose } from './doctor-appointment/step4-email-compose'
 import { Step5Confirmation } from './doctor-appointment/step5-confirmation'
 import { searchDoctors, generateEmailContent, sendEmails } from '../utils/doctor-appointment-utils'
+import { DoctorAppointmentProvider, useDoctorAppointment } from '../contexts/DoctorAppointmentContext'
 
-export function DoctorAppointment() {
-  const [state, setState] = useState({
-    step: 1,
-    location: "",
-    specialty: "",
-    doctors: [],
-    selectedDoctors: [],
-    emailContent: "",
-    patientName: "",
-    patientEmail: "",
-    preferredContact: "all",
-  })
-  const [isLoading, setIsLoading] = useState(false)
-  const [emailStatus, setEmailStatus] = useState(null)
+function DoctorAppointmentContent() {
+  const { state, setState } = useDoctorAppointment();
 
   const handleNext = async () => {
     if (state.step === 1) {
-      setIsLoading(true)
+      setState(prev => ({ ...prev, isLoading: true }));
       try {
-        const doctors = await searchDoctors()
-        setState(prev => ({ ...prev, step: 2, doctors }))
+        const doctors = await searchDoctors();
+        setState(prev => ({ ...prev, step: 2, doctors, isLoading: false }));
       } catch (error) {
-        console.error("Error fetching doctors:", error)
-      } finally {
-        setIsLoading(false)
+        console.error("Error fetching doctors:", error);
+        setState(prev => ({ ...prev, isLoading: false }));
       }
     } else if (state.step === 2) {
-      setState(prev => ({ ...prev, step: 3 }))
+      setState(prev => ({ ...prev, step: 3 }));
     } else if (state.step === 3) {
-      setIsLoading(true)
+      setState(prev => ({ ...prev, isLoading: true }));
       try {
         const emailContent = await generateEmailContent(
           state.selectedDoctors,
           state.patientName,
           state.patientEmail,
           state.specialty
-        )
-        setState(prev => ({ ...prev, step: prev.step + 1, emailContent }))
+        );
+        setState(prev => ({ ...prev, step: prev.step + 1, emailContent, isLoading: false }));
       } catch (error) {
-        console.error("Error generating email content:", error)
-      } finally {
-        setIsLoading(false)
+        console.error("Error generating email content:", error);
+        setState(prev => ({ ...prev, isLoading: false }));
       }
     } else {
-      setState(prev => ({ ...prev, step: prev.step + 1 }))
+      setState(prev => ({ ...prev, step: prev.step + 1 }));
     }
-  }
+  };
 
   const handleBack = () => {
-    setState(prev => ({ ...prev, step: Math.max(1, prev.step - 1) }))
-  }
+    setState(prev => ({ ...prev, step: Math.max(1, prev.step - 1) }));
+  };
 
-  const handleStepChange = (step) => {
+  const handleStepChange = (step: number) => {
     if (step <= state.step) {
-      setState(prev => ({ ...prev, step }))
+      setState(prev => ({ ...prev, step }));
     }
-  }
+  };
 
   const handleSendEmails = async () => {
-    setIsLoading(true)
+    setState(prev => ({ ...prev, isLoading: true }));
     try {
-      const result = await sendEmails(state.selectedDoctors, state.emailContent)
-      setEmailStatus(result)
-      if (result.success) {
-        setState(prev => ({ ...prev, step: prev.step + 1 }))
-      }
+      const result = await sendEmails(state.selectedDoctors, state.emailContent);
+      setState(prev => ({ 
+        ...prev, 
+        emailStatus: result, 
+        step: result.success ? prev.step + 1 : prev.step,
+        isLoading: false 
+      }));
     } catch (error) {
-      console.error("Error sending emails:", error)
-      setEmailStatus({ success: false, message: "Failed to send emails. Please try again." })
-    } finally {
-      setIsLoading(false)
+      console.error("Error sending emails:", error);
+      setState(prev => ({ 
+        ...prev, 
+        emailStatus: { success: false, message: "Failed to send emails. Please try again." },
+        isLoading: false 
+      }));
     }
-  }
+  };
 
   const renderStep = () => {
     switch (state.step) {
       case 1:
-        return (
-          <Step1LocationSpecialty
-            location={state.location}
-            specialty={state.specialty}
-            onLocationChange={(location) => setState(prev => ({ ...prev, location }))}
-            onSpecialtyChange={(specialty) => setState(prev => ({ ...prev, specialty }))}
-            onNext={handleNext}
-            isLoading={isLoading}
-          />
-        )
+        return <Step1LocationSpecialty />;
       case 2:
-        return (
-          <Step2PatientInfo
-            patientName={state.patientName}
-            patientEmail={state.patientEmail}
-            onPatientNameChange={(patientName) => setState(prev => ({ ...prev, patientName }))}
-            onPatientEmailChange={(patientEmail) => setState(prev => ({ ...prev, patientEmail }))}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        )
+        return <Step2PatientInfo />;
       case 3:
-        return (
-          <Step3DoctorSelection
-            doctors={state.doctors}
-            selectedDoctors={state.selectedDoctors}
-            preferredContact={state.preferredContact}
-            onDoctorSelection={(doctor) => {
-              setState(prev => {
-                const isSelected = prev.selectedDoctors.some(d => d.id === doctor.id)
-                const newSelectedDoctors = isSelected
-                  ? prev.selectedDoctors.filter(d => d.id !== doctor.id)
-                  : [...prev.selectedDoctors, doctor]
-                return { ...prev, selectedDoctors: newSelectedDoctors }
-              })
-            }}
-            onPreferredContactChange={(preferredContact) => setState(prev => ({ ...prev, preferredContact }))}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        )
+        return <Step3DoctorSelection />;
       case 4:
-        return (
-          <Step4EmailCompose
-            emailContent={state.emailContent}
-            onEmailContentChange={(emailContent) => setState(prev => ({ ...prev, emailContent }))}
-            onSendEmails={handleSendEmails}
-            onBack={handleBack}
-            isLoading={isLoading}
-            emailStatus={emailStatus}
-          />
-        )
+        return <Step4EmailCompose />;
       case 5:
-        return (
-          <Step5Confirmation
-            location={state.location}
-            specialty={state.specialty}
-            selectedDoctors={state.selectedDoctors}
-            onRestart={() => setState({
-              step: 1,
-              location: "",
-              specialty: "",
-              doctors: [],
-              selectedDoctors: [],
-              emailContent: "",
-              patientName: "",
-              patientEmail: "",
-              preferredContact: "all",
-            })}
-          />
-        )
+        return <Step5Confirmation />;
+      default:
+        return null;
     }
-  }
+  };
 
   return (
     <div className="max-w-md mx-auto mt-10">
@@ -203,5 +133,13 @@ export function DoctorAppointment() {
         <CardContent>{renderStep()}</CardContent>
       </Card>
     </div>
-  )
+  );
+}
+
+export function DoctorAppointment() {
+  return (
+    <DoctorAppointmentProvider>
+      <DoctorAppointmentContent />
+    </DoctorAppointmentProvider>
+  );
 }

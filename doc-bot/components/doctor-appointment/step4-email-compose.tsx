@@ -3,24 +3,41 @@
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { MailIcon } from 'lucide-react'
+import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
+import { sendEmails } from '@/utils/doctor-appointment-utils'
 
-interface Step4Props {
-  emailContent: string
-  onEmailContentChange: (content: string) => void
-  onSendEmails: () => void
-  onBack: () => void
-  isLoading: boolean
-  emailStatus: { success: boolean; message: string } | null
-}
+export function Step4EmailCompose() {
+  const { state, setState } = useDoctorAppointment();
+  const { emailContent, isLoading, emailStatus, selectedDoctors } = state;
 
-export function Step4EmailCompose({ 
-  emailContent, 
-  onEmailContentChange, 
-  onSendEmails, 
-  onBack, 
-  isLoading, 
-  emailStatus 
-}: Step4Props) {
+  const onEmailContentChange = (content: string) => {
+    setState(prev => ({ ...prev, emailContent: content }));
+  };
+
+  const handleSendEmails = async () => {
+    setState(prev => ({ ...prev, isLoading: true }));
+    try {
+      const result = await sendEmails(selectedDoctors, emailContent);
+      setState(prev => ({ 
+        ...prev, 
+        emailStatus: result, 
+        step: result.success ? prev.step + 1 : prev.step,
+        isLoading: false 
+      }));
+    } catch (error) {
+      console.error("Error sending emails:", error);
+      setState(prev => ({ 
+        ...prev, 
+        emailStatus: { success: false, message: "Failed to send emails. Please try again." },
+        isLoading: false 
+      }));
+    }
+  };
+
+  const handleBack = () => {
+    setState(prev => ({ ...prev, step: prev.step - 1 }));
+  };
+
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">Überprüfen und bearbeiten Sie die E-Mail an die ausgewählten Ärzte:</p>
@@ -36,9 +53,9 @@ export function Step4EmailCompose({
         </p>
       )}
       <div className="flex justify-between">
-        <Button onClick={onBack}>Zurück</Button>
+        <Button onClick={handleBack}>Zurück</Button>
         <Button 
-          onClick={onSendEmails} 
+          onClick={handleSendEmails} 
           disabled={!emailContent || isLoading}
           className="flex items-center"
         >
@@ -47,5 +64,5 @@ export function Step4EmailCompose({
         </Button>
       </div>
     </div>
-  )
+  );
 }
