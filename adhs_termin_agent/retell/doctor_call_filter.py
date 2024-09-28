@@ -40,7 +40,7 @@ if __name__ == "__main__":
     #date = input("Bitte geben Sie das Datum ein (TT.MM.JJJJ): ")
     #time = input("Bitte geben Sie die Uhrzeit ein (HH:MM): ")
 
-    callable_doctors_at = get_list_of_callable_doctors_at("30.09.2024", "08:00", doctors)
+    callable_doctors_at = get_list_of_callable_doctors_at("01.10.2024", "08:15", doctors)
 
     for doctor in callable_doctors_at:
         print(f"Name: {doctor['name']}, Telefon: {doctor['telefon']}")
