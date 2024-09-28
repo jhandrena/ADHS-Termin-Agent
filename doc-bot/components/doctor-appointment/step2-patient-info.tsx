@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
+import { Loader2 } from 'lucide-react'
 
 export function Step2PatientInfo() {
   const { state, setState } = useDoctorAppointment();
-  const { patientName, patientEmail } = state;
+  const { patientName, patientEmail, isLoading } = state;
   const [emailError, setEmailError] = useState("");
 
   const validateEmail = (email: string) => {
@@ -31,6 +32,18 @@ export function Step2PatientInfo() {
 
   return (
     <div className="space-y-4">
+      {isLoading ? (
+        <div className="flex items-center space-x-2">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          <p>Ärzte werden geladen...</p>
+        </div>
+      ) : (
+        <p className="text-sm text-muted-foreground">Ärzte wurden erfolgreich geladen.</p>
+      )}
+      <p className="text-sm">
+        Bitte geben Sie Ihren Namen und Ihre E-Mail-Adresse ein. In den nächsten Schritten werden Sie gebeten, 
+        eine Diagnose (Freitext) einzugeben und Ärzte auszuwählen.
+      </p>
       <div className="space-y-2">
         <Label htmlFor="patientName">Name</Label>
         <Input
