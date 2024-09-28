@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Doctor, searchDoctors, triggerDoctorsSearch } from '../utils/doctor-appointment-utils';
+import Cookies from 'js-cookie';
 
 interface DoctorAppointmentState {
   step: number;
@@ -33,30 +34,44 @@ export const useDoctorAppointment = () => {
 };
 
 export const DoctorAppointmentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<DoctorAppointmentState>({
-    step: 1,
-    location: "",
-    specialty: "",
-    doctors: [],
-    selectedDoctors: [],
-    emailContent: "",
-    patientName: "",
-    patientEmail: "",
-    diagnosis: "",
-    preferredContact: "all",
-    isLoading: false,
-    emailStatus: null,
-    fetchDoctors: async (location: string, specialty: string) => {
-      try {
-        await triggerDoctorsSearch(location, specialty);
-        const doctors = await searchDoctors(location, specialty);
-        
-        setState(prev => ({ ...prev, doctors, selectedDoctors: [] }));
-      } catch (error) {
-        console.error("Error fetching doctors:", error);
-      }
-    },
+  const [state, setState] = useState<DoctorAppointmentState>(() => {
+    const savedState = Cookies.get('patientInfo');
+    const initialState = {
+      step: 1,
+      location: "",
+      specialty: "",
+      doctors: [],
+      selectedDoctors: [],
+      emailContent: "",
+      patientName: "",
+      patientEmail: "",
+      diagnosis: "",
+      preferredContact: "all",
+      isLoading: false,
+      emailStatus: null,
+      fetchDoctors: async (location: string, specialty: string) => {
+        try {
+          await triggerDoctorsSearch(location, specialty);
+          const doctors = await searchDoctors(location, specialty);
+          
+          setState(prev => ({ ...prev, doctors, selectedDoctors: [] }));
+        } catch (error) {
+          console.error("Error fetching doctors:", error);
+        }
+      },
+    };
+
+    return savedState ? { ...initialState, ...JSON.parse(savedState) } : initialState;
   });
+
+  useEffect(() => {
+    Cookies.set('patientInfo', JSON.stringify({
+      patientName: state.patientName,
+      patientEmail: state.patientEmail,
+      diagnosis: state.diagnosis,
+      preferredContact: state.preferredContact,
+    }), { expires: 30 }); // Cookie expires in 30 days
+  }, [state.patientName, state.patientEmail, state.diagnosis, state.preferredContact]);
 
   return (
     <DoctorAppointmentContext.Provider value={{ state, setState }}>
