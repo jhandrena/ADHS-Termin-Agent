@@ -14,7 +14,7 @@ interface DoctorAppointmentState {
   preferredContact: string;
   isLoading: boolean;
   emailStatus: { success: boolean; message: string } | null;
-  fetchDoctors: () => Promise<void>;
+  fetchDoctors: (location: string, specialty: string) => Promise<void>;
 }
 
 interface DoctorAppointmentContextType {
@@ -46,9 +46,9 @@ export const DoctorAppointmentProvider: React.FC<{ children: React.ReactNode }> 
     preferredContact: "all",
     isLoading: false,
     emailStatus: null,
-    fetchDoctors: async () => {
+    fetchDoctors: async (location: string, specialty: string) => {
       try {
-        const doctors = await searchDoctors(state.location, state.specialty);
+        const doctors = await searchDoctors(location, specialty);
         setState(prev => ({ ...prev, doctors, selectedDoctors: [] }));
       } catch (error) {
         console.error("Error fetching doctors:", error);

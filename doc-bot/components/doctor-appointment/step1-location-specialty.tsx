@@ -65,7 +65,7 @@ export function Step1LocationSpecialty() {
         step: prev.step + 1,
         isLoading: true
       }));
-      await state.fetchDoctors();
+      await state.fetchDoctors(location, specialty);
       setState(prev => ({ ...prev, isLoading: false }));
     }
   };

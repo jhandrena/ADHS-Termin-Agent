@@ -10,7 +10,8 @@ export function Step4Email() {
   const { selectedDoctors, patientName, patientEmail, specialty } = state;
 
   const handleOpenMailClient = async () => {
-    const emailContent = await generateEmailContent(selectedDoctors, patientName, patientEmail, specialty);
+    
+    const emailContent = await generateEmailContent(patientName, patientEmail, specialty);
     const subject = encodeURIComponent(`Terminanfrage für ${specialty}`);
     const body = encodeURIComponent(emailContent);
     const bcc = selectedDoctors.map(doctor => doctor.email).join(',');
