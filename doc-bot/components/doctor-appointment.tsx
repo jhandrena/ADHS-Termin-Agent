@@ -5,8 +5,8 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import { Step1LocationSpecialty } from './doctor-appointment/step1-location-specialty'
 import { Step2PatientInfo } from './doctor-appointment/step2-patient-info'
 import { Step3DoctorSelection } from './doctor-appointment/step3-doctor-selection'
-import { Step4EmailCompose } from './doctor-appointment/step4-email-compose'
-import { Step5Confirmation } from './doctor-appointment/step5-confirmation'
+import { Step4Email } from './doctor-appointment/step4-email'
+import { Step5EmailConfirmation } from './doctor-appointment/step5-email-confirmation'
 import { DoctorAppointmentProvider, useDoctorAppointment } from '../contexts/DoctorAppointmentContext'
 
 function DoctorAppointmentContent() {
