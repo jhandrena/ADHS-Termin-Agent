@@ -158,6 +158,7 @@ export function Step6CallDoctors() {
                 fetchAvailableDoctors();
               }}
               className="mt-2"
+              variant="secondary"
             >
               Nächsten Werktag um 13 Uhr auswählen
             </Button>
