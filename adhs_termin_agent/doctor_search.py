@@ -76,75 +76,121 @@ Suchergebnisse:
     return doctors_json
 
 def _get_doctor_information(doctor_json, doctors) -> str:
-    prompt_template: str = "Finde für den Artzt {} bei {} die Kontakt-Mail, Telefonnummer und ob man Termine per mail machen kann."
+    """
+    Mail
+    TElefonnummer
+    website-link
+    termin optinoen {
+    "mail":bool,
+    "telefon": bool
+    "online": bool
+    }
+    privat/kassenartzt
+    erreichbarkeit 
+
+    """
+    prompt_template: str = "Deine Aufgabe ist es, informationen über Ärtzte herauszufinden. Finde für deinen Arzt namens {} bei {} die mail, telefonnummer und die website. Finde auch heraus, ob man termine per mail, telefonisch und online verinbaren kann. Es ist auch wichtig zu wissen, ob es sich um einen Privat oder Kassen arzt handelt. Gib zum schluss auch die erreichbarkeits zeiten und öffnungs zeiten kann."
     prompt: str = prompt_template.format(doctor_json['arztname'], doctor_json['adresse'])
     doctor_information = callApi(prompt, "perplexity/llama-3.1-sonar-large-128k-online")
     doctors.append(doctor_information)
 
 def find_information(doctors_json) -> str:
     doctors = []
-    for doctor_json in doctors_json[:5]:
-        _get_doctor_information(doctor_json, doctors)
+    threads = []
+    for doctor_json in doctors_json:
+        threads.append(threading.Thread(target=_get_doctor_information, args=(doctor_json, doctors)))
+        threads[-1].start()
+    for thread in threads:
+        thread.join()
     return doctors
 
-def information_to_doctor(information: str):
-    pass
+def information_to_doctors(information: List[str]):
+    doctors = []
+    threads = []
+    for info in information:
+        threads.append(threading.Thread(target=_append_converted_doctor, args=(info, doctors, )))
+        threads[-1].start()
+    for thread in threads:
+        thread.join()
+    return doctors
+
+def _append_converted_doctor(information, doctors, retried=False):
+    prompt_template = "{}"
+    prompt = prompt_template.format(information)
+    json_format = """
+{
+"name": <der name>
+"email": <die email oder "not set">
+"telefon": <die telefon nummer oder "not set">
+"websiteLink": <eine valide website url oder "not set">
+"terminOptionen": {
+    "telefon": <boolean: ob man per telefon einen termin machen kann>
+    "email": <boolean: ob man per email einen termin machen kann>
+    "online": <boolean: ob man online einen termin machen kann>
+    }
+"patienten": {
+    "privat": <boolean | not set: ob privatversicherte patienten angenommen werden>
+    "kasse": <boolean | not set: ob kassenversicherte patienten angenommen werden>
+    "selbstzahler": <boolean | not set: ob selbstzahler patienten angenommen werden>
+    }
+"telefonErreichbarkeit": <nur gesetzt wenn telefon nummer gegeben ist, wenn keine erreichbarkeits zeiten gefunden wurde ist es "not found">{
+    "montag": [
+            {
+                "von": <str: start der erreichbarkeit in 24h format, geschrieben als hh:mm, z.b. 08:30>, "bis": <str: ende der erreichbarkeit im 24h format, geschrieben als hh:mm, z.b. 08:30>   
+            },
+            {
+                "von": ..., "bis": ...
+            },
+            ...
+        ],
+    "dienstag": [
+            {
+                "von": <str: start der erreichbarkeit in 24h format, geschrieben als hh:mm, z.b. 08:30>, "bis": <str: ende der erreichbarkeit im 24h format, geschrieben als hh:mm, z.b. 08:30>   
+            },
+            {
+                "von": ..., "bis": ...
+            },
+            ...
+        ],
+    "mittwoch": [
+        ...
+    ],
+    "donnerstag": [...],
+    "freitag": [...],
+    "samstag": [...],
+    "sonntag": [...]
+    }
+"oeffnungszeiten": {
+<gleiches forat wie die telefon erreichbarkeit - wenn es keine öffnungszeiten gibt UND man erst einen termin braucht ist oeffnungszeiten der string "nur termine">
+}
+}
+"""
+    system_template = """Du wirst aus einem Dokument informationen über einen Doktor extrahieren. Antworte mit reinem JSON ohne code block in folgendem format:\n{}\n\n\nBei öffnugszeiten und telefon erreichbarkeit müssen alle tage immer eingetragen sein, auch wenn es ein leeres array ist, hierbei ist die einzige ausnahme wenn es keine öffnugnszeiten sondern nur öffnug für termine gibt, dann ist oefnungszeiten ein string der sagt "nur termine". Du musst dich immer komplett an dieses format halten ohne ausnahme. Antwote nur mit dem json, ohne codeblock und ohne irgendwelchen anderen text."""
+    system = system_template.format(json_format)
+    doctor_raw = callApi(prompt, "openai/gpt-4o-mini", system)
+    try:
+        doctor_json = json.loads(doctor_raw)
+        doctors.append(doctor_json)
+    except:
+        if not retried:
+            print("Retrying converting detials to doctor json")
+            _append_converted_doctor(information, doctors, True)
+        else:
+            print("Failed to convert doctor details to json")
+
 
 if __name__ == "__main__":
-    #search = name_search("Neurologe", "Karlsruhe")
+    print("Finde passende Ärzte...")
+    search = name_search("Neurologe", "Karlsruhe")
     #print(search)
-    #doctors_json = names_to_json(search)
-    doctors_json = json.loads("[{'arztname': 'Dr. med. Michael H. Stienen', 'praxisname': '', 'adresse': 'Stephanienstr. 57, Karlsruhe'}, {'arztname': 'Yu Jun Huang', 'praxisname': '', 'adresse': 'Amalienstr. 93, Karlsruhe'}, {'arztname': 'Dr. med. Volker Schenk', 'praxisname': '', 'adresse': 'Marstallstr. 18 a, Karlsruhe'}, {'arztname': 'Dr. med. Thies Lindenlaub', 'praxisname': '', 'adresse': 'Karlstr. 29, Karlsruhe'}, {'arztname': 'Dr. med. Anja Haberl', 'praxisname': '', 'adresse': 'Reinhold-Frank-Str. 9, Karlsruhe'}, {'arztname': 'Dr. med. Christoph Müller', 'praxisname': 'Neurologische Gemeinschaftspraxis', 'adresse': 'Karlstr. 84, Karlsruhe'}, {'arztname': 'Dr. med. Bianca Ehbauer', 'praxisname': '', 'adresse': 'Karlstr. 61, Karlsruhe'}, {'arztname': 'Neurologische Gemeinschaftspraxis (Dres. Ulrich Husemann, Alexander Hladek, Christoph Müller u.w.)', 'praxisname': '', 'adresse': 'Karlstr. 84, Karlsruhe'}, {'arztname': 'Dr. med. Tatjana Pföhler', 'praxisname': '', 'adresse': 'Karlstr. 15, Karlsruhe'}, {'arztname': 'Dr. med. Roland Niessner', 'praxisname': '', 'adresse': 'Kaiserstr. 116, Karlsruhe'}, {'arztname': 'Gemeinschaftspraxis für Neurologie, Psychiatrie und Psychotherapie', 'praxisname': '', 'adresse': 'Nowackanlage 15, 76137 Karlsruhe'}]".replace("'", '"'))
-    print(find_information(doctors_json))
+    print("Verarbeite Ärzte liste...")
+    doctors_json = names_to_json(search)
+    doctors_json = doctors_json[:10]
+    print("Finde weitere informationen über Ärzte...")
+    info = (find_information(doctors_json))
+    #print(info)
+    print("Verarbeite informationen über die Ärzte...")
+    print(information_to_doctors(info))
 
 
 
-
-
-
-"""Here is a list of neurologists in Karlsruhe, including their names and addresses, based on the provided sources:
-
-## Dr. med. Michael H. Stienen
-- **Adresse:** Stephanienstr. 57, Karlsruhe.
-
-## Yu Jun Huang
-- **Adresse:** Amalienstr. 93, Karlsruhe.
-
-## Dr. med. Volker Schenk
-- **Adresse:** Marstallstr. 18 a, Karlsruhe
-- **Spezialgebiete:** Neurologie, Psychiatrie, Psychosomatische Grundversorgung, Physikalische Therapie & Balneologie.
-
-## Dr. med. Thies Lindenlaub
-- **Adresse:** Karlstr. 29, Karlsruhe.
-
-## Dr. med. Anja Haberl
-- **Adresse:** Reinhold-Frank-Str. 9, Karlsruhe
-- **Spezialgebiete:** Neurologie und Psychiatrie.
-
-## Dr. med. Christoph Müller
-- **Adresse:** Hildebrandstr. 20, Karlsruhe.
-- **Adresse:** Karlstr. 84, Karlsruhe (Neurologische Gemeinschaftspraxis).
-
-## Dr. med. Bianca Ehbauer
-- **Adresse:** Karlstr. 61, Karlsruhe
-- **Spezialgebiete:** Neurologie und Psychiatrie, ärztliche Psychotherapie.
-
-## Neurologische Gemeinschaftspraxis (Dres. Ulrich Husemann, Alexander Hladek, Christoph Müller u.w.)
-- **Adresse:** Karlstr. 84, Karlsruhe.
-
-## Dr. med. Tatjana Pföhler
-- **Adresse:** Karlstr. 15, Karlsruhe.
-
-## Dr. med. Roland Niessner
-- **Adresse:** Kaiserstr. 116, Karlsruhe
-- **Spezialgebiete:** Neurologie, Psychiatrie, Psychotherapie, Psychosomatische Grundversorgung.
-
-## Gemeinschaftspraxis für Neurologie, Psychiatrie und Psychotherapie
-- **Adresse:** Nowackanlage 15, 76137 Karlsruhe
-- **Ärzte-Team:**
-  - Friedrich Fässler, Facharzt für Neurologie und Psychiatrie
-  - Dr. med. Petra Hubrich-Durm, Fachärztin für Neurologie, Psychiatrie und Psychotherapie
-  - Till van der List, Facharzt für Psychiatrie und Psychotherapie
-  - Dr. med. Monika Bottlender, Fachärztin für Psychiatrie, Psychotherapie und Psychosomatische Medizin
-  - Dr. med. Franziska Uhrenbacher, Fachärztin für Neurologie.
-"""
