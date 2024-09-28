@@ -8,7 +8,11 @@ def parse_output_json():
         data = json.load(file)
     return data
 
+def filter_doctors_with_email(data):
+    return [doctor for doctor in data if doctor['terminOptionen']['email']]
+
 if __name__ == "__main__":
     data = parse_output_json()
-    print(data)  # For debugging purposes, you can remove this line later
+    doctors_with_email = filter_doctors_with_email(data)
+    print(doctors_with_email)  # For debugging purposes, you can remove this line later
     sendeEmailRoutine()
