@@ -38,6 +38,7 @@ export function Step2PatientInfo() {
           placeholder="z.B. Max Mustermann"
           value={patientName}
           onChange={(e) => setState(prev => ({ ...prev, patientName: e.target.value }))}
+          autoComplete="name"
         />
       </div>
       <div className="space-y-2">
