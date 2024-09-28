@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { MapPinIcon } from 'lucide-react'
+import { MapPinIcon, Loader2 } from 'lucide-react'
 import { specialties } from '@/app/constants'
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { searchDoctors } from '@/utils/doctor-appointment-utils'
@@ -15,6 +15,7 @@ export function Step1LocationSpecialty() {
   const { location, specialty, isLoading } = state;
   const [filteredSpecialties, setFilteredSpecialties] = useState(specialties);
   const [geoError, setGeoError] = useState<string | null>(null);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
   useEffect(() => {
     if (specialty) {
@@ -38,11 +39,16 @@ export function Step1LocationSpecialty() {
 
   const useCurrentLocation = async () => {
     setGeoError(null);
-    const { location, error } = await LocationHelper.useCurrentLocation();
-    if (error) {
-      setGeoError(error);
-    } else {
-      onLocationChange(location);
+    setIsLoadingLocation(true);
+    try {
+      const { location, error } = await LocationHelper.useCurrentLocation();
+      if (error) {
+        setGeoError(error);
+      } else {
+        onLocationChange(location);
+      }
+    } finally {
+      setIsLoadingLocation(false);
     }
   };
 
@@ -73,8 +79,17 @@ export function Step1LocationSpecialty() {
           onChange={(e) => onLocationChange(e.target.value)}
           className="flex-grow"
         />
-        <Button onClick={useCurrentLocation} variant="outline" className="flex items-center">
-          <MapPinIcon className="w-4 h-4 mr-2" />
+        <Button 
+          onClick={useCurrentLocation} 
+          variant="outline" 
+          className="flex items-center"
+          disabled={isLoadingLocation}
+        >
+          {isLoadingLocation ? (
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          ) : (
+            <MapPinIcon className="w-4 h-4 mr-2" />
+          )}
           Aktueller Standort
         </Button>
       </div>
