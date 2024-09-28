@@ -67,26 +67,28 @@ export function Step3DoctorSelection() {
       ) : (
         doctors.map((doctor) => (
           <Card key={doctor.id} className="cursor-pointer">
-            <CardHeader className="flex flex-row items-center space-x-4 py-2">
-              <Checkbox
-                checked={selectedDoctors.some(d => d.id === doctor.id)}
-                onCheckedChange={() => onDoctorSelection(doctor)}
-              />
-              <div className="flex-grow">
-                <CardTitle>{doctor.name}</CardTitle>
-                <CardContent className="p-0">
-                  <p className="text-sm text-muted-foreground">{doctor.specialty}</p>
-                  <p className="text-sm text-muted-foreground">{doctor.address}</p>
-                </CardContent>
+            <CardHeader className="py-2">
+              <div className="flex items-center space-x-4">
+                <Checkbox
+                  checked={selectedDoctors.some(d => d.id === doctor.id)}
+                  onCheckedChange={() => onDoctorSelection(doctor)}
+                />
+                <div className="flex-grow">
+                  <CardTitle className="text-lg">{doctor.name}</CardTitle>
+                  <CardContent className="p-0">
+                    <p className="text-sm text-muted-foreground">{doctor.specialty}</p>
+                    <p className="text-sm text-muted-foreground">{doctor.address}</p>
+                  </CardContent>
+                </div>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex justify-end mt-2 space-x-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" asChild>
+                      <Button variant="ghost" size="sm" asChild>
                         <a href={`tel:${doctor.phone}`} className="text-primary hover:text-primary-foreground">
-                          <PhoneIcon className="w-4 h-4" />
-                          <span className="sr-only">Anrufen</span>
+                          <PhoneIcon className="w-4 h-4 mr-1" />
+                          <span className="hidden sm:inline">Anrufen</span>
                         </a>
                       </Button>
                     </TooltipTrigger>
@@ -98,10 +100,10 @@ export function Step3DoctorSelection() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" asChild>
+                      <Button variant="ghost" size="sm" asChild>
                         <a href={`mailto:${doctor.email}`} className="text-primary hover:text-primary-foreground">
-                          <MailIcon className="w-4 h-4" />
-                          <span className="sr-only">E-Mail senden</span>
+                          <MailIcon className="w-4 h-4 mr-1" />
+                          <span className="hidden sm:inline">E-Mail</span>
                         </a>
                       </Button>
                     </TooltipTrigger>
@@ -113,10 +115,10 @@ export function Step3DoctorSelection() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" asChild>
+                      <Button variant="ghost" size="sm" asChild>
                         <a href={doctor.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-foreground">
-                          <GlobeIcon className="w-4 h-4" />
-                          <span className="sr-only">Website besuchen</span>
+                          <GlobeIcon className="w-4 h-4 mr-1" />
+                          <span className="hidden sm:inline">Website</span>
                         </a>
                       </Button>
                     </TooltipTrigger>
