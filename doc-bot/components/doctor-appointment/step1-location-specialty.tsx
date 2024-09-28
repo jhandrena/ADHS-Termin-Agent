@@ -26,24 +26,6 @@ export function Step1LocationSpecialty() {
     }
   }, [specialty]);
 
-  useEffect(() => {
-    if (location && specialty) {
-      setState(prev => ({ ...prev, isLoading: true }));
-      searchDoctors(location, specialty)
-        .then(doctors => {
-          setState(prev => ({ 
-            ...prev, 
-            doctors, 
-            isLoading: false 
-          }));
-        })
-        .catch(error => {
-          console.error("Error fetching doctors:", error);
-          setState(prev => ({ ...prev, isLoading: false }));
-        });
-    }
-  }, [location, specialty, setState]);
-
   const onLocationChange = (newLocation: string) => {
     setState(prev => ({ ...prev, location: newLocation }));
   };
@@ -56,8 +38,22 @@ export function Step1LocationSpecialty() {
     onLocationChange("Karlsruhe");
   };
 
-  const handleNext = () => {
-    setState(prev => ({ ...prev, step: prev.step + 1 }));
+  const handleNext = async () => {
+    if (location && specialty) {
+      setState(prev => ({ ...prev, isLoading: true }));
+      try {
+        const doctors = await searchDoctors(location, specialty);
+        setState(prev => ({ 
+          ...prev, 
+          doctors, 
+          isLoading: false,
+          step: prev.step + 1
+        }));
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+        setState(prev => ({ ...prev, isLoading: false }));
+      }
+    }
   };
 
   return (
