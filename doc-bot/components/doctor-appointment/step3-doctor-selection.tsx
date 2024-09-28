@@ -8,6 +8,15 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { MailIcon, PhoneIcon, GlobeIcon } from 'lucide-react'
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 
+import React from 'react';
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Skeleton } from "@/components/ui/skeleton"
+import { MailIcon, PhoneIcon, GlobeIcon } from 'lucide-react'
+import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
+
 export function Step3DoctorSelection() {
   const { state, setState } = useDoctorAppointment();
   const { doctors, selectedDoctors, isLoading } = state;
@@ -139,7 +148,7 @@ export function Step3DoctorSelection() {
             </CardHeader>
           </Card>
         ))
-      )}
+      ) : null}
       <div className="flex justify-between">
         <Button onClick={handleBack}>Zurück</Button>
         <Button 
