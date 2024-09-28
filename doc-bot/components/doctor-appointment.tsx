@@ -9,6 +9,7 @@ import { Step3DoctorSelection } from './doctor-appointment/step3-doctor-selectio
 import { DoctorAppointmentProvider, useDoctorAppointment } from '../contexts/DoctorAppointmentContext'
 import { Step4Email } from "./doctor-appointment/step4-email-compose"
 import { Step5EmailConfirmation } from "./doctor-appointment/step5-confirmation"
+import { Step6CallDoctors } from "./doctor-appointment/step6-call-doctors"
 
 function DoctorAppointmentContent() {
   const { state, setState } = useDoctorAppointment();
@@ -25,6 +26,8 @@ function DoctorAppointmentContent() {
         return <Step4Email />;
       case 5:
         return <Step5EmailConfirmation />;
+      case 6:
+        return <Step6CallDoctors />;
       default:
         return null;
     }
@@ -82,9 +85,18 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(5)}
-              className={`${state.step === 5 ? "font-bold" : ""} ${(state.step === 5 || state.emailStatus?.success) ? "cursor-pointer" : "cursor-default"}`}
+              className={`${state.step >= 5 ? "font-bold" : ""} ${(state.step >= 5 || state.emailStatus?.success) ? "cursor-pointer" : "cursor-default"}`}
             >
               Bestätigung
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink 
+              onClick={() => handleBreadcrumbClick(6)}
+              className={`${state.step === 6 ? "font-bold" : ""} ${state.step === 6 ? "cursor-pointer" : "cursor-default"}`}
+            >
+              Anrufen
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>

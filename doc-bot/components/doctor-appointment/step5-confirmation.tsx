@@ -4,13 +4,11 @@ import { Button } from "@/components/ui/button"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 
 export function Step5EmailConfirmation() {
-  const { state } = useDoctorAppointment();
+  const { state, setState } = useDoctorAppointment();
   const { location, specialty, selectedDoctors } = state;
 
   const handleTryCall = () => {
-    if (selectedDoctors.length > 0) {
-      window.location.href = `tel:${selectedDoctors[0].phone}`;
-    }
+    setState(prev => ({ ...prev, step: 6 }));
   };
 
   return (
