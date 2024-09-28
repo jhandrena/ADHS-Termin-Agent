@@ -160,7 +160,7 @@ export function Step6CallDoctors() {
               className="mt-2"
               variant="secondary"
             >
-              Nächsten Werktag um 13 Uhr auswählen
+              Stattdessen Nächsten Werktag auswählen
             </Button>
           </div>
         </div>
