@@ -22,13 +22,12 @@ def get_user_exclusions(doctors):
         return [doctor for i, doctor in enumerate(doctors) if i not in excluded_indices]
     return doctors
 
-def write_filtered_json(doctors, filename='filtered_doctors.json'):
+def get_filtered_doctors(doctors):
     complete_doctors = [
         doctor for doctor in doctors
         if doctor['name'] != "not set" and doctor['email'] != "not set" and doctor['telefon'] != "not set"
     ]
-    with open(filename, 'w', encoding='utf-8') as file:
-        json.dump(complete_doctors, file, ensure_ascii=False, indent=4)
+    return complete_doctors
 
 if __name__ == "__main__":
     data = parse_output_json()
@@ -37,5 +36,8 @@ if __name__ == "__main__":
     print("Doctors to contact:")
     for doctor in doctors_to_contact:
         print(doctor['name'])
-    write_filtered_json(doctors_to_contact)
+    complete_doctors = get_filtered_doctors(doctors_to_contact)
+    print("Filtered doctors with complete information:")
+    for doctor in complete_doctors:
+        print(doctor['name'])
 
