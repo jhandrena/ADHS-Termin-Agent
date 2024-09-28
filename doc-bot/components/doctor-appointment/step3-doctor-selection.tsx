@@ -1,5 +1,6 @@
 'use client'
 
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -7,12 +8,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Skeleton } from "@/components/ui/skeleton"
 import { MailIcon, PhoneIcon, GlobeIcon } from 'lucide-react'
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
-
-import React from 'react';
+import { isMobileDevice } from '@/utils/device-detection'
+import { QRCodeDialog } from '@/components/qr-code-dialog'
 
 export function Step3DoctorSelection() {
   const { state, setState } = useDoctorAppointment();
   const { doctors, selectedDoctors, isLoading } = state;
+  const [qrCodeOpen, setQRCodeOpen] = useState(false);
+  const [currentPhone, setCurrentPhone] = useState('');
 
   const toggleAllDoctors = () => {
     if (selectedDoctors.length === doctors.length) {
@@ -40,6 +43,15 @@ export function Step3DoctorSelection() {
 
   const handleBack = () => {
     setState(prev => ({ ...prev, step: prev.step - 1 }));
+  };
+
+  const handleCall = (phone: string) => {
+    if (isMobileDevice()) {
+      window.location.href = `tel:${phone}`;
+    } else {
+      setCurrentPhone(phone);
+      setQRCodeOpen(true);
+    }
   };
 
   return (
@@ -96,11 +108,14 @@ export function Step3DoctorSelection() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="sm" asChild>
-                        <a href={`tel:${doctor.phone}`} className="text-primary hover:text-primary-foreground">
-                          <PhoneIcon className="w-4 h-4 mr-1" />
-                          <span className="hidden sm:inline">Anrufen</span>
-                        </a>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => handleCall(doctor.phone)}
+                        className="text-primary hover:text-primary-foreground"
+                      >
+                        <PhoneIcon className="w-4 h-4 mr-1" />
+                        <span className="hidden sm:inline">Anrufen</span>
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent className="bg-secondary text-secondary-foreground">
@@ -152,6 +167,11 @@ export function Step3DoctorSelection() {
           Weiter
         </Button>
       </div>
+      <QRCodeDialog
+        open={qrCodeOpen}
+        onOpenChange={setQRCodeOpen}
+        phoneNumber={currentPhone}
+      />
     </div>
   );
 }
