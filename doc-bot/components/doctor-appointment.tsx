@@ -28,6 +28,8 @@ function DoctorAppointmentContent() {
         return <Step5EmailConfirmation />;
       case 6:
         return <Step6CallDoctors />;
+      case 7:
+        return <Step7AICall />;
       default:
         return null;
     }
@@ -94,9 +96,18 @@ function DoctorAppointmentContent() {
           <BreadcrumbItem>
             <BreadcrumbLink 
               onClick={() => handleBreadcrumbClick(6)}
-              className={`${state.step === 6 ? "font-bold" : ""} ${state.step === 6 ? "cursor-pointer" : "cursor-default"}`}
+              className={`${state.step >= 6 ? "font-bold" : ""} ${state.step >= 6 ? "cursor-pointer" : "cursor-default"}`}
             >
               Anrufen
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink 
+              onClick={() => handleBreadcrumbClick(7)}
+              className={`${state.step === 7 ? "font-bold" : ""} ${state.step === 7 ? "cursor-pointer" : "cursor-default"}`}
+            >
+              AI Anruf
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
