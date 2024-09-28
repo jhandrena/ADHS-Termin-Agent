@@ -59,17 +59,24 @@ export function Step1LocationSpecialty() {
 
   const handleNext = () => {
     if (location && specialty) {
-      setState(prev => ({ ...prev, isLoading: true, step: prev.step + 1 }));
+      setState(prev => ({ ...prev, isLoading: true }));
       searchDoctors(location, specialty)
         .then(doctors => {
-          setState(prev => ({ 
-            ...prev, 
-            doctors, 
-            isLoading: false
-          }));
+          if (doctors.length === 0) {
+            setGeoError("Keine Ärzte gefunden. Bitte versuchen Sie es mit einem anderen Ort oder einer anderen Fachrichtung.");
+            setState(prev => ({ ...prev, isLoading: false }));
+          } else {
+            setState(prev => ({ 
+              ...prev, 
+              doctors, 
+              isLoading: false,
+              step: prev.step + 1
+            }));
+          }
         })
         .catch(error => {
           console.error("Error fetching doctors:", error);
+          setGeoError("Fehler beim Abrufen der Ärzte. Bitte versuchen Sie es später erneut.");
           setState(prev => ({ ...prev, isLoading: false }));
         });
     }
