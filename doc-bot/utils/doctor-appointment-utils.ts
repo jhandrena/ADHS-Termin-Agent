@@ -48,10 +48,7 @@ const sampleDoctors = [
 
 export const searchDoctors = async (location: string, specialty: string) => {
   await new Promise(resolve => setTimeout(resolve, 3000));
-  return sampleDoctors.filter(doctor => 
-    doctor.address.toLowerCase().includes(location.toLowerCase()) &&
-    doctor.specialty.toLowerCase() === specialty.toLowerCase()
-  );
+  return sampleDoctors;
 }
 
 export const generateEmailContent = async (selectedDoctors, patientName, patientEmail, specialty) => {
