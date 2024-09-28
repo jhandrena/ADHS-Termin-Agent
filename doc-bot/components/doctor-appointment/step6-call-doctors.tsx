@@ -14,7 +14,11 @@ export function Step6CallDoctors() {
   
   const [qrCodeOpen, setQRCodeOpen] = useState(false);
   const [currentPhone, setCurrentPhone] = useState('');
-  const [dateTime, setDateTime] = useState('');
+  const [dateTime, setDateTime] = useState(() => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    return now.toISOString().slice(0, 16);
+  });
   const [availableDoctors, setAvailableDoctors] = useState<typeof state.selectedDoctors>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
