@@ -125,10 +125,10 @@ export const triggerDoctorsSearch = async (
 export const generateEmailContent = async (
   patientName: string,
   patientEmail: string,
-  specialty: string
+  reason: string
 ): Promise<string> => {
   try {
-    const response = await fetch(`http://127.0.0.1:5000/mail?thema=${encodeURIComponent(specialty)}&name=${encodeURIComponent(patientName)}`, {
+    const response = await fetch(`http://127.0.0.1:5000/mail?thema=${encodeURIComponent(reason)}&name=${encodeURIComponent(patientName)}`, {
       method: 'GET',
     });
 

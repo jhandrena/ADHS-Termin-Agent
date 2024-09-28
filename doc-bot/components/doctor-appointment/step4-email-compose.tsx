@@ -7,12 +7,12 @@ import { generateEmailContent } from '@/utils/doctor-appointment-utils'
 
 export function Step4Email() {
   const { state, setState } = useDoctorAppointment();
-  const { selectedDoctors, patientName, patientEmail, specialty } = state;
+  const { selectedDoctors, patientName, patientEmail, diagnosis } = state;
 
   const handleOpenMailClient = async () => {
     
-    const emailContent = await generateEmailContent(patientName, patientEmail, specialty);
-    const subject = encodeURIComponent(`Terminanfrage für ${specialty}`);
+    const emailContent = await generateEmailContent(patientName, patientEmail, diagnosis);
+    const subject = encodeURIComponent(`Terminanfrage für ${diagnosis}`);
     const body = encodeURIComponent(emailContent);
     const bcc = selectedDoctors.map(doctor => doctor.email).join(',');
     const mailtoLink = `mailto:?bcc=${bcc}&subject=${subject}&body=${body}`;
