@@ -13,6 +13,7 @@ export function Step1LocationSpecialty() {
   const { state, setState } = useDoctorAppointment();
   const { location, specialty, isLoading } = state;
   const [filteredSpecialties, setFilteredSpecialties] = useState(specialties);
+  const [geoError, setGeoError] = useState<string | null>(null);
 
   useEffect(() => {
     if (specialty) {
@@ -35,7 +36,30 @@ export function Step1LocationSpecialty() {
   };
 
   const useCurrentLocation = () => {
-    onLocationChange("Karlsruhe");
+    setGeoError(null);
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`);
+            const data = await response.json();
+            const city = data.address.city || data.address.town || data.address.village || '';
+            const postcode = data.address.postcode || '';
+            onLocationChange(city ? `${city}, ${postcode}` : postcode);
+          } catch (error) {
+            console.error("Error fetching location data:", error);
+            setGeoError("Fehler beim Abrufen des Standorts. Bitte geben Sie ihn manuell ein.");
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          setGeoError("Standortermittlung fehlgeschlagen. Bitte geben Sie ihn manuell ein.");
+        }
+      );
+    } else {
+      setGeoError("Geolokalisierung wird von Ihrem Browser nicht unterstützt.");
+    }
   };
 
   const handleNext = async () => {
@@ -70,6 +94,7 @@ export function Step1LocationSpecialty() {
           Aktueller Standort
         </Button>
       </div>
+      {geoError && <p className="text-red-500 text-sm">{geoError}</p>}
       <div className="relative">
         <Command className="rounded-lg border shadow-md">
           <CommandInput 
