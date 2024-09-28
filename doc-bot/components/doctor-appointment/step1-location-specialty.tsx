@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
@@ -10,23 +10,28 @@ import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { searchDoctors } from '@/utils/doctor-appointment-utils'
 import { LocationHelper } from '@/utils/location-helper'
 
+// Fuzzy search function
+const fuzzySearch = (query: string, text: string) => {
+  const queryLower = query.toLowerCase();
+  const textLower = text.toLowerCase();
+  let queryIndex = 0;
+  for (let i = 0; i < textLower.length && queryIndex < queryLower.length; i++) {
+    if (queryLower[queryIndex] === textLower[i]) {
+      queryIndex++;
+    }
+  }
+  return queryIndex === queryLower.length;
+};
+
 export function Step1LocationSpecialty() {
   const { state, setState } = useDoctorAppointment();
   const { location, specialty, isLoading } = state;
-  const [filteredSpecialties, setFilteredSpecialties] = useState(specialties);
   const [geoError, setGeoError] = useState<string | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
-  useEffect(() => {
-    if (specialty) {
-      setFilteredSpecialties(
-        specialties.filter(s =>
-          s.toLowerCase().includes(specialty.toLowerCase())
-        )
-      );
-    } else {
-      setFilteredSpecialties(specialties);
-    }
+  const filteredSpecialties = useMemo(() => {
+    if (!specialty) return specialties;
+    return specialties.filter(s => fuzzySearch(specialty, s));
   }, [specialty]);
 
   const onLocationChange = (newLocation: string) => {
