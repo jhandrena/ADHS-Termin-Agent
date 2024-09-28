@@ -41,17 +41,20 @@ def open_mailto_link(doctors, subject, body):
             webbrowser.open(mailto_link)
 
 
-if __name__ == "__main__":
-    data = parse_output_json()
-    doctors_with_email = filter_doctors_with_email(data)
+def create_mass_emailing(doctors, subject, specialty, name):
+    doctors_with_email = filter_doctors_with_email(doctors)
     doctors_to_contact = get_user_exclusions(doctors_with_email)
     print("Doctors to contact:")
     for doctor in doctors_to_contact:
         print(doctor['name'])
     complete_doctors = get_filtered_doctors(doctors_to_contact)
     from adhs_termin_agent.mail.mail_composer import first_draft
-
-    email_body = first_draft("ADS Diagnose", "Neurologe", "Anna Karenina")
+    email_body = first_draft(subject, specialty, name)
     open_mailto_link(complete_doctors, "Termin Anfrage", email_body)
     for doctor in complete_doctors:
         print(doctor['name'])
+
+
+if __name__ == "__main__":
+    data = parse_output_json()
+    create_mass_emailing(data, "ADS Diagnose", "Neurologe","Anna Karenina")
