@@ -17,7 +17,7 @@ function DoctorAppointmentContent() {
     if (state.step === 1) {
       setState(prev => ({ ...prev, isLoading: true }));
       try {
-        const doctors = await searchDoctors();
+        const doctors = await searchDoctors(state.location, state.specialty);
         setState(prev => ({ ...prev, step: 2, doctors, isLoading: false }));
       } catch (error) {
         console.error("Error fetching doctors:", error);
@@ -81,7 +81,11 @@ function DoctorAppointmentContent() {
       case 2:
         return <Step2PatientInfo />;
       case 3:
-        return <Step3DoctorSelection />;
+        return state.doctors.length > 0 ? (
+          <Step3DoctorSelection />
+        ) : (
+          <div>Loading doctors...</div>
+        );
       case 4:
         return <Step4EmailCompose />;
       case 5:
