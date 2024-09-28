@@ -82,15 +82,15 @@ export function Step1LocationSpecialty() {
         <Button 
           onClick={useCurrentLocation} 
           variant="outline" 
-          className="flex items-center"
+          className="flex items-center justify-center w-10 h-10 p-0"
           disabled={isLoadingLocation}
+          title="Aktueller Standort"
         >
           {isLoadingLocation ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            <Loader2 className="w-5 h-5 animate-spin" />
           ) : (
-            <MapPinIcon className="w-4 h-4 mr-2" />
+            <MapPinIcon className="w-5 h-5" />
           )}
-          Aktueller Standort
         </Button>
       </div>
       {geoError && <p className="text-red-500 text-sm">{geoError}</p>}
