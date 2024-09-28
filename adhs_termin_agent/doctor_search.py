@@ -35,8 +35,7 @@ def callApi(prompt: str, model: str, system_message: str = ""):
         print(completion)
 
 def name_search(specialty: str, location: str, count: int) -> str: 
-    prompt_template = """Erstelle eine Liste von Ärzten im Fachgebiet {} aus {}. Diese Liste soll {} einträge beinhalten und für jeden Arzt den Namen und die Adresse auflisten. Gute Quellen um Ärzte zu finden sind das örtliche, arztsuche.116117.de, doctolib und yameda."""
-    prompt_template2 = """
+    prompt_template = """
 Bitte recherchieren Sie mindestens {} Ärzte, welche diese bedingungen erfüllen:
 
 Fachgebiet: {}
