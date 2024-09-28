@@ -3,15 +3,15 @@
 import json
 
 
-def parse_output_json():
+def parse_output_json() -> list:
     with open('output.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
     return data
 
-def filter_doctors_with_email(data):
+def filter_doctors_with_email(data: list) -> list:
     return [doctor for doctor in data if doctor['terminOptionen']['email'] is True]
 
-def get_user_exclusions(doctors):
+def get_user_exclusions(doctors: list) -> list:
     print("Available doctors:")
     for index, doctor in enumerate(doctors):
         print(f"{index}: {doctor['name']}")
@@ -22,7 +22,7 @@ def get_user_exclusions(doctors):
         return [doctor for i, doctor in enumerate(doctors) if i not in excluded_indices]
     return doctors
 
-def get_filtered_doctors(doctors):
+def get_filtered_doctors(doctors: list) -> list:
     complete_doctors = [
         doctor for doctor in doctors
         if doctor['name'] != "not set" and doctor['email'] != "not set" and doctor['telefon'] != "not set"
