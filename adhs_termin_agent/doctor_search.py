@@ -33,26 +33,9 @@ def callApi(prompt: str, model: str, system_message: str = ""):
     except:
         print(completion)
 
-class Doctor:
-    def __init__(self, name: str, phone: str, email: str, address: str, url: str) -> None:
-        self.name = name
-        self.phone = phone
-        self.email = email
-        self.address = address
-        self.url = url
-
-def search_doctors(specialty: str, location: str) -> List[Doctor]:
-    search_results = name_search(specialty, location)
-
-
-    return [
-        Doctor(name="Dr. Müller", phone="123-456-7890", email="dr.mueller@example.com", address="123 Main St, Berlin", url="http://drmueller.com"),
-        Doctor(name="Dr. Schmidt", phone="098-765-4321", email="dr.schmidt@example.com", address="456 Elm St, Berlin", url="http://drschmidt.com"),
-    ]
-
 def name_search(specialty: str, location: str) -> str: 
-    prompt_template: str = """Gib mir eine liste mit namen und Adressen von {} in {}. """
-    system_prompt:str = "verwende folgende quellen:arztsuche: https://arztsuche.116117.de/, yameda, doctolib, das örtliche"
+    prompt_template: str = """Gib mir eine Ärzte liste mit Namen und Adressen von {} in {}. Die Liste sollte im optimalfall 20 einträge lang sein."""
+    system_prompt:str = "verwende folgende quellen:arztsuche: https://arztsuche.116117.de/, yameda, doctolib, das örtliche."
     prompt: str = prompt_template.format(specialty,location,system_prompt)
     return callApi(prompt,"perplexity/llama-3.1-sonar-large-128k-online")
 
@@ -75,24 +58,14 @@ Suchergebnisse:
 
     return doctors_json
 
-def _get_doctor_information(doctor_json, doctors) -> str:
-    """
-    Mail
-    TElefonnummer
-    website-link
-    termin optinoen {
-    "mail":bool,
-    "telefon": bool
-    "online": bool
-    }
-    privat/kassenartzt
-    erreichbarkeit 
-
-    """
+def _get_doctor_information(doctor_json, doctors = False) -> str:
     prompt_template: str = "Deine Aufgabe ist es, informationen über Ärtzte herauszufinden. Finde für deinen Arzt namens {} bei {} die mail, telefonnummer und die website. Finde auch heraus, ob man termine per mail, telefonisch und online verinbaren kann. Es ist auch wichtig zu wissen, ob es sich um einen Privat oder Kassen arzt handelt. Gib zum schluss auch die erreichbarkeits zeiten und öffnungs zeiten kann."
     prompt: str = prompt_template.format(doctor_json['arztname'], doctor_json['adresse'])
     doctor_information = callApi(prompt, "perplexity/llama-3.1-sonar-large-128k-online")
-    doctors.append(doctor_information)
+    if doctors:
+        doctors.append(doctor_information)
+    else:
+        return doctor_information
 
 def find_information(doctors_json) -> str:
     doctors = []
@@ -178,19 +151,38 @@ def _append_converted_doctor(information, doctors, retried=False):
         else:
             print("Failed to convert doctor details to json")
 
+def _extend_doctor_json(doctor_json, doctors, count):
+    info_text = _get_doctor_information(doctor_json)
+    _append_converted_doctor(info_text, doctors)
+    print(str(100 * int(len(doctors))/int(count)) + "%")
 
-if __name__ == "__main__":
+def extendDoctors(doctors_json):
+    doctors = []
+    threads = []
+    for doctor_json in doctors_json:
+        threads.append(threading.Thread(target=_extend_doctor_json, args=(doctor_json, doctors, len(doctors_json))))
+        threads[-1].start()
+    for thread in threads:
+        thread.join()
+    return doctors
+
+
+def main(specialty, region):
     print("Finde passende Ärzte...")
-    search = name_search("Neurologe", "Karlsruhe")
+    search = name_search(specialty, region)
     #print(search)
     print("Verarbeite Ärzte liste...")
     doctors_json = names_to_json(search)
-    doctors_json = doctors_json[:10]
-    print("Finde weitere informationen über Ärzte...")
-    info = (find_information(doctors_json))
-    #print(info)
-    print("Verarbeite informationen über die Ärzte...")
-    print(information_to_doctors(info))
+    doctors_json = doctors_json[:20]
+    print(str(len(doctors_json)) + " Ärzte gefunden...")
+    print("Finde und verarbeite weitere informationen über Ärzte...")
+    print(extendDoctors(doctors_json))
+    #info = (find_information(doctors_json))
+    ##print(info)
+    #print("Verarbeite informationen über die Ärzte...")
+    #print(information_to_doctors(info))
 
 
+if __name__ == "__main__":
+    main("Neurologie", "Karlsruhe")
 
