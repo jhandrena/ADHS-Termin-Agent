@@ -1,4 +1,6 @@
 import json
+import webbrowser
+import urllib.parse
 
 
 def parse_output_json() -> list:
@@ -31,6 +33,12 @@ def get_filtered_doctors(doctors: list) -> list:
     return complete_doctors
 
 
+def open_mailto_link(doctors, subject, body):
+    for doctor in doctors:
+        if doctor['email'] != "not set":
+            mailto_link = f"mailto:{doctor['email']}?subject={urllib.parse.quote(subject)}&body={urllib.parse.quote(body)}"
+            webbrowser.open(mailto_link)
+
 if __name__ == "__main__":
     data = parse_output_json()
     doctors_with_email = filter_doctors_with_email(data)
@@ -39,6 +47,9 @@ if __name__ == "__main__":
     for doctor in doctors_to_contact:
         print(doctor['name'])
     complete_doctors = get_filtered_doctors(doctors_to_contact)
-    print("Filtered doctors with complete information:")
+    from adhs_termin_agent.mail.mail_composer import first_draft
+
+    email_body = first_draft("ADS Diagnose", "Neurologe", "Anna Karenina")
+    open_mailto_link(complete_doctors, "Termin Anfrage", email_body)
     for doctor in complete_doctors:
         print(doctor['name'])
