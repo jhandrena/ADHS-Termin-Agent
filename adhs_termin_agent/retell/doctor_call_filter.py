@@ -20,8 +20,10 @@ def get_list_of_callable_doctors_at(date_str, time, doctors):
             if weekday in doctor['telefonErreichbarkeit']:
                 for time_slot in doctor['telefonErreichbarkeit'][weekday]:
                     if time_slot['von'] <= time <= time_slot['bis']:
+                        print("you can call: "+doctor['name'])
                         callable_doctors.append(doctor)
                         break
+
     return callable_doctors
 
 
