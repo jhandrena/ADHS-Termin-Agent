@@ -9,7 +9,7 @@ import { Loader2 } from 'lucide-react'
 
 export function Step2PatientInfo() {
   const { state, setState } = useDoctorAppointment();
-  const { patientName, diagnosis, isLoading } = state;
+  const { patientName, patientEmail, diagnosis, isLoading } = state;
 
   const handleNext = () => {
     setState(prev => ({ ...prev, step: prev.step + 1 }));
@@ -39,6 +39,17 @@ export function Step2PatientInfo() {
         />
       </div>
       <div className="space-y-2">
+        <Label htmlFor="patientEmail">E-Mail</Label>
+        <Input
+          id="patientEmail"
+          type="email"
+          placeholder="ihre.email@beispiel.de"
+          value={patientEmail}
+          onChange={(e) => setState(prev => ({ ...prev, patientEmail: e.target.value }))}
+          autoComplete="email"
+        />
+      </div>
+      <div className="space-y-2">
         <Label htmlFor="diagnosis">Diagnose</Label>
         <Textarea
           id="diagnosis"
@@ -52,7 +63,7 @@ export function Step2PatientInfo() {
         <Button onClick={handleBack}>Zurück</Button>
         <Button 
           onClick={handleNext} 
-          disabled={!patientName || !diagnosis}
+          disabled={!patientName || !patientEmail || !diagnosis}
         >
           Weiter
         </Button>

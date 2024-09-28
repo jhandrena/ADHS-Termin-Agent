@@ -17,16 +17,18 @@ export function Step5Confirmation() {
       emailContent: "",
       patientName: "",
       patientEmail: "",
+      diagnosis: "",
       preferredContact: "all",
       isLoading: false,
       emailStatus: null,
+      fetchDoctors: state.fetchDoctors,
     });
   };
 
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-bold">Bestätigung</h2>
-      <p>Ihre E-Mails wurden erfolgreich gesendet.</p>
+      <p>Ihr E-Mail-Programm wurde geöffnet, um die ausgewählten Ärzte zu kontaktieren.</p>
       <p>Ort: {location}</p>
       <p>Fachrichtung: {specialty}</p>
       <p>Kontaktierte Ärzte:</p>

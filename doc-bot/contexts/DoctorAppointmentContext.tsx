@@ -9,6 +9,7 @@ interface DoctorAppointmentState {
   selectedDoctors: Doctor[];
   emailContent: string;
   patientName: string;
+  patientEmail: string;
   diagnosis: string;
   preferredContact: string;
   isLoading: boolean;

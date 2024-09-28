@@ -1,37 +1,22 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 import { MailIcon } from 'lucide-react'
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
-import { sendEmails } from '@/utils/doctor-appointment-utils'
+import { generateEmailContent } from '@/utils/doctor-appointment-utils'
 
 export function Step4EmailCompose() {
   const { state, setState } = useDoctorAppointment();
-  const { emailContent, isLoading, emailStatus, selectedDoctors } = state;
+  const { selectedDoctors, patientName, patientEmail, specialty } = state;
 
-  const onEmailContentChange = (content: string) => {
-    setState(prev => ({ ...prev, emailContent: content }));
-  };
-
-  const handleSendEmails = async () => {
-    setState(prev => ({ ...prev, isLoading: true }));
-    try {
-      const result = await sendEmails(selectedDoctors, emailContent);
-      setState(prev => ({ 
-        ...prev, 
-        emailStatus: result, 
-        step: result.success ? prev.step + 1 : prev.step,
-        isLoading: false 
-      }));
-    } catch (error) {
-      console.error("Error sending emails:", error);
-      setState(prev => ({ 
-        ...prev, 
-        emailStatus: { success: false, message: "Failed to send emails. Please try again." },
-        isLoading: false 
-      }));
-    }
+  const handleOpenMailClient = async () => {
+    const emailContent = await generateEmailContent(selectedDoctors, patientName, patientEmail, specialty);
+    const subject = encodeURIComponent(`Terminanfrage für ${specialty}`);
+    const body = encodeURIComponent(emailContent);
+    const bcc = selectedDoctors.map(doctor => doctor.email).join(',');
+    const mailtoLink = `mailto:?bcc=${bcc}&subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    setState(prev => ({ ...prev, step: prev.step + 1 }));
   };
 
   const handleBack = () => {
@@ -40,28 +25,16 @@ export function Step4EmailCompose() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">Überprüfen und bearbeiten Sie die E-Mail an die ausgewählten Ärzte:</p>
-      <Textarea
-        placeholder="Ihre Nachricht an die Ärzte..."
-        value={emailContent}
-        onChange={(e) => onEmailContentChange(e.target.value)}
-        rows={10}
-      />
-      {emailStatus && (
-        <p className={emailStatus.success ? "text-green-600" : "text-red-600"}>
-          {emailStatus.message}
-        </p>
-      )}
+      <p className="text-sm text-muted-foreground">Klicken Sie auf den Button, um Ihre E-Mail-Anwendung zu öffnen und die Ärzte zu kontaktieren:</p>
+      <Button 
+        onClick={handleOpenMailClient} 
+        className="w-full h-20 text-lg flex items-center justify-center"
+      >
+        <MailIcon className="w-6 h-6 mr-2" />
+        E-Mail-Programm öffnen
+      </Button>
       <div className="flex justify-between">
         <Button onClick={handleBack}>Zurück</Button>
-        <Button 
-          onClick={handleSendEmails} 
-          disabled={!emailContent || isLoading}
-          className="flex items-center"
-        >
-          <MailIcon className="w-4 h-4 mr-2" />
-          {isLoading ? "Sende E-Mails..." : "E-Mails senden"}
-        </Button>
       </div>
     </div>
   );
