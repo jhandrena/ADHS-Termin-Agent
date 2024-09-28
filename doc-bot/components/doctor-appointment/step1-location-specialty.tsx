@@ -57,7 +57,6 @@ export function Step1LocationSpecialty() {
   };
 
   const handleNext = async () => {
-    debugger
     if (location && specialty) {
       setState(prev => ({ 
         ...prev, 
