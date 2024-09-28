@@ -1,4 +1,33 @@
 from typing import List, Dict
+from openai import OpenAI
+import threading
+import dotenv
+
+client = OpenAI(
+  base_url="https://openrouter.ai/api/v1",
+  api_key=dotenv.get_key("../.env", "OPENROUTER_API_KEY"),
+)
+
+def callApi(prompt: str, model: str, system_message: str = ""):
+    messages = []
+    if system_message.strip() != "":
+        messages.append(
+            {
+                "role": "system",
+                "content": system_message
+            }
+        )
+    messages.append(
+        {
+            "role": "user",
+            "content": prompt
+        }
+    )
+    completion = client.chat.completions.create(
+        model=model,
+        messages=messages
+    )
+    return (completion.choices[0].message.content)
 
 class Doctor:
     def __init__(self, name: str, phone: str, email: str, address: str, url: str) -> None:
@@ -9,8 +38,22 @@ class Doctor:
         self.url = url
 
 def search_doctors(specialty: str, location: str) -> List[Doctor]:
-    # Dummy implementation simulating an LLM call
     return [
         Doctor(name="Dr. Müller", phone="123-456-7890", email="dr.mueller@example.com", address="123 Main St, Berlin", url="http://drmueller.com"),
         Doctor(name="Dr. Schmidt", phone="098-765-4321", email="dr.schmidt@example.com", address="456 Elm St, Berlin", url="http://drschmidt.com"),
     ]
+
+def name_search(specialty: str, location: str) -> str: 
+    prompt_template: str = """Gib mir eine liste von Name und Addresse von Ärtzten im Fachgebiet von {} in der nähe von {}."""
+    prompt: str = prompt_template.format()
+    
+    pass
+
+def names_to_json(search_results: str):
+    pass
+
+def find_information(names) -> str:
+    pass
+
+def information_to_doctor(information: str):
+    pass
