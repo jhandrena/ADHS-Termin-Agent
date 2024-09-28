@@ -19,6 +19,7 @@ export function Step6CallDoctors() {
 
   const fetchAvailableDoctors = async () => {
     try {
+      debugger
       const response = await fetch(`http://127.0.0.1:5000/doctors/phone?date=${encodeURIComponent(dateTime.split('T')[0])}&time=${encodeURIComponent(dateTime.split('T')[1])}`);
       if (!response.ok) {
         throw new Error('Failed to fetch available doctors');
