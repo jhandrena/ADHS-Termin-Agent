@@ -1,16 +1,26 @@
 'use client'
 
+import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { PhoneIcon, Bot } from 'lucide-react'
+import { isMobileDevice } from '@/utils/device-detection'
+import { QRCodeDialog } from '@/components/qr-code-dialog'
 
 export function Step6CallDoctors() {
   const { state } = useDoctorAppointment();
   const { selectedDoctors } = state;
+  const [qrCodeOpen, setQRCodeOpen] = useState(false);
+  const [currentPhone, setCurrentPhone] = useState('');
 
   const handleCall = (phone: string) => {
-    window.location.href = `tel:${phone}`;
+    if (isMobileDevice()) {
+      window.location.href = `tel:${phone}`;
+    } else {
+      setCurrentPhone(phone);
+      setQRCodeOpen(true);
+    }
   };
 
   const handleAICall = (doctorId: string) => {
@@ -38,6 +48,11 @@ export function Step6CallDoctors() {
           </CardContent>
         </Card>
       ))}
+      <QRCodeDialog
+        open={qrCodeOpen}
+        onOpenChange={setQRCodeOpen}
+        phoneNumber={currentPhone}
+      />
     </div>
   );
 }
