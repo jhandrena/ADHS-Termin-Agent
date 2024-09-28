@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -15,13 +15,7 @@ export function Step6CallDoctors() {
   const [qrCodeOpen, setQRCodeOpen] = useState(false);
   const [currentPhone, setCurrentPhone] = useState('');
   const [dateTime, setDateTime] = useState('');
-  const [availableDoctors, setAvailableDoctors] = useState(selectedDoctors);
-
-  useEffect(() => {
-    if (dateTime) {
-      fetchAvailableDoctors();
-    }
-  }, [dateTime]);
+  const [availableDoctors, setAvailableDoctors] = useState<typeof selectedDoctors>([]);
 
   const fetchAvailableDoctors = async () => {
     try {
@@ -34,6 +28,11 @@ export function Step6CallDoctors() {
     } catch (error) {
       console.error('Error fetching available doctors:', error);
     }
+  };
+
+  const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateTime(e.target.value);
+    setAvailableDoctors([]); // Clear previous results
   };
 
   const handleCall = (phone: string) => {
@@ -61,10 +60,15 @@ export function Step6CallDoctors() {
           type="datetime-local"
           id="dateTime"
           value={dateTime}
-          onChange={(e) => setDateTime(e.target.value)}
+          onChange={handleDateTimeChange}
           className="block w-full"
         />
       </div>
+      {dateTime && (
+        <Button onClick={fetchAvailableDoctors} className="w-full">
+          Verfügbare Ärzte anzeigen
+        </Button>
+      )}
       {availableDoctors.map(doctor => (
         <Card key={doctor.id} className="mb-4">
           <CardHeader>
