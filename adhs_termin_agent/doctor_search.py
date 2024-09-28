@@ -44,8 +44,9 @@ def search_doctors(specialty: str, location: str) -> List[Doctor]:
     ]
 
 def name_search(specialty: str, location: str) -> str: 
-    prompt_template: str = """Gib mir eine liste von Name und Addresse von Ärtzten im Fachgebiet von {} in {}."""
-    prompt: str = prompt_template.format(specialty,location)
+    prompt_template: str = """Gib mir eine liste mit namen und Adressen von {} in {}. """
+    system_prompt:str = "verwende folgende quellen:arztsuche: https://arztsuche.116117.de/, yameda, doctolib, das örtliche"
+    prompt: str = prompt_template.format(specialty,location,system_prompt)
     return callApi(prompt,"perplexity/llama-3.1-sonar-large-128k-online")
 
 
@@ -59,4 +60,4 @@ def information_to_doctor(information: str):
     pass
 
 if __name__ == "__main__":
-    print(name_search("Kardiologe","Karlsruhe"))
+    print(name_search("Neurologe","Karlsruhe"))
