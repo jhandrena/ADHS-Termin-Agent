@@ -57,15 +57,17 @@ export function Step1LocationSpecialty() {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (location && specialty) {
       setState(prev => ({ 
         ...prev, 
         location: location,
         specialty: specialty,
-        step: prev.step + 1 
+        step: prev.step + 1,
+        isLoading: true
       }));
-      state.fetchDoctors();
+      await state.fetchDoctors();
+      setState(prev => ({ ...prev, isLoading: false }));
     }
   };
 
