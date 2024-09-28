@@ -10,7 +10,7 @@ import { Step5Confirmation } from './doctor-appointment/step5-confirmation'
 import { DoctorAppointmentProvider, useDoctorAppointment } from '../contexts/DoctorAppointmentContext'
 
 function DoctorAppointmentContent() {
-  const { state } = useDoctorAppointment();
+  const { state, setState } = useDoctorAppointment();
 
   const renderStep = () => {
     switch (state.step) {
@@ -29,36 +29,57 @@ function DoctorAppointmentContent() {
     }
   };
 
+  const handleBreadcrumbClick = (step: number) => {
+    if (step <= state.step) {
+      setState(prev => ({ ...prev, step }));
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto mt-10">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink className={state.step >= 1 ? "font-bold cursor-pointer" : "cursor-pointer"}>
+            <BreadcrumbLink 
+              onClick={() => handleBreadcrumbClick(1)}
+              className={`${state.step >= 1 ? "font-bold" : ""} cursor-pointer`}
+            >
               Ort & Fachrichtung
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink className={state.step >= 2 ? "font-bold cursor-pointer" : "cursor-pointer"}>
+            <BreadcrumbLink 
+              onClick={() => handleBreadcrumbClick(2)}
+              className={`${state.step >= 2 ? "font-bold" : ""} cursor-pointer`}
+            >
               Patienteninfo
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink className={state.step >= 3 ? "font-bold cursor-pointer" : "cursor-pointer"}>
+            <BreadcrumbLink 
+              onClick={() => handleBreadcrumbClick(3)}
+              className={`${state.step >= 3 ? "font-bold" : ""} cursor-pointer`}
+            >
               Arztauswahl
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink className={state.step >= 4 ? "font-bold cursor-pointer" : "cursor-pointer"}>
+            <BreadcrumbLink 
+              onClick={() => handleBreadcrumbClick(4)}
+              className={`${state.step >= 4 ? "font-bold" : ""} cursor-pointer`}
+            >
               E-Mail verfassen
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink className={state.step === 5 ? "font-bold cursor-pointer" : "cursor-pointer"}>
+            <BreadcrumbLink 
+              onClick={() => handleBreadcrumbClick(5)}
+              className={`${state.step === 5 ? "font-bold" : ""} cursor-pointer`}
+            >
               Bestätigung
             </BreadcrumbLink>
           </BreadcrumbItem>
