@@ -1,6 +1,7 @@
 
 
 import json
+from some_module import sendeEmailRoutine  # Replace 'some_module' with the actual module name
 
 def parse_output_json():
     with open('adhs_termin_agent/mail/output.json', 'r', encoding='utf-8') as file:
