@@ -32,9 +32,9 @@ def callApi(prompt: str, model: str, system_message: str = ""):
 
 
 def first_draft(thema, specialty, name):
-    prompt_template: str = """Schreibe mir eine Email zum zu einer terminanfrage bei einem Facharzt der {}. Mein Name ist {} und ich suche so bald wie möglich einen Termin zu {}. Beginne mit 'Sehr geehrte Damen und Herren' und Ende mit 'Mit freundlichen Grüßen {}'"""
+    prompt_template: str = """Schreibe mir eine Email zum zu einer Terminanfrage bei einem Facharzt. Ich habe bereits eine Überweisung vom Hausarzt Mein Name ist {} und ich suche so bald wie möglich einen Termin zu {}. Beginne mit 'Guten Tag' und Ende mit 'Mit freundlichen Grüßen {}'"""
     system_prompt: str = "Antworte nur mit dem Email Text. Der Text sollte keine optionalen Felder beinhalten"
-    prompt: str = prompt_template.format(specialty,name,thema,name)
+    prompt: str = prompt_template.format(name,thema,name)
     return callApi(prompt, "openai/gpt-4o-mini", system_prompt)
 
 
