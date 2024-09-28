@@ -1,0 +1,792 @@
+[
+  {
+    "name": "Dr. med. Bianca Ehbauer",
+    "email": "not set",
+    "telefon": "not set",
+    "websiteLink": "not set",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": true
+    },
+    "patienten": {
+      "privat": "not set",
+      "kasse": "not set",
+      "selbstzahler": "not set"
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "18:30",
+          "bis": "20:00"
+        }
+      ],
+      "dienstag": [],
+      "mittwoch": [],
+      "donnerstag": [],
+      "freitag": [],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": "nur termine"
+  },
+  {
+    "name": "Dr. med. Christoph Müller",
+    "email": "not set",
+    "telefon": "not set",
+    "websiteLink": "not set",
+    "terminOptionen": {
+      "telefon": "not set",
+      "email": "not set",
+      "online": "not set"
+    },
+    "patienten": {
+      "privat": "not set",
+      "kasse": "not set",
+      "selbstzahler": "not set"
+    },
+    "telefonErreichbarkeit": {
+      "montag": [],
+      "dienstag": [],
+      "mittwoch": [],
+      "donnerstag": [],
+      "freitag": [],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": "nur termine"
+  },
+  {
+    "name": "Dr. med. Volker Schenk",
+    "email": "info@nap-schenk.de",
+    "telefon": "0721 9 42 47 70",
+    "websiteLink": "not set",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": true,
+      "kasse": true,
+      "selbstzahler": "not set"
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "08:10",
+          "bis": "08:30"
+        }
+      ],
+      "dienstag": [],
+      "mittwoch": [
+        {
+          "von": "08:10",
+          "bis": "08:30"
+        }
+      ],
+      "donnerstag": [],
+      "freitag": [
+        {
+          "von": "08:10",
+          "bis": "08:30"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "08:10",
+          "bis": "08:30"
+        }
+      ],
+      "dienstag": [],
+      "mittwoch": [
+        {
+          "von": "08:10",
+          "bis": "08:30"
+        }
+      ],
+      "donnerstag": [],
+      "freitag": [
+        {
+          "von": "08:10",
+          "bis": "08:30"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    }
+  },
+  {
+    "name": "Dr. med. Thies Lindenlaub",
+    "email": "not set",
+    "telefon": "0721 / 24084",
+    "websiteLink": "www.neuro29.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": false,
+      "kasse": true,
+      "selbstzahler": "not set"
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "09:00",
+          "bis": "11:00"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "12:00",
+          "bis": "14:30"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "08:00",
+          "bis": "14:45"
+        },
+        {
+          "von": "18:00",
+          "bis": "19:00"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "07:45",
+          "bis": "12:15"
+        }
+      ],
+      "freitag": [],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "09:00",
+          "bis": "11:00"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "12:00",
+          "bis": "14:30"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "08:00",
+          "bis": "14:45"
+        },
+        {
+          "von": "18:00",
+          "bis": "19:00"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "07:45",
+          "bis": "12:15"
+        }
+      ],
+      "freitag": [
+        "nur termine"
+      ],
+      "samstag": [],
+      "sonntag": []
+    }
+  },
+  {
+    "name": "Yu Jun Huang",
+    "email": "not set",
+    "telefon": "0721 / 47007070",
+    "websiteLink": "not set",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": true,
+      "kasse": true,
+      "selbstzahler": true
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:00",
+          "bis": "18:00"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:00",
+          "bis": "18:00"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "08:30",
+          "bis": "14:00"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:00",
+          "bis": "18:00"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:30",
+          "bis": "14:00"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:00",
+          "bis": "18:00"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:00",
+          "bis": "18:00"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "08:30",
+          "bis": "14:00"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:00",
+          "bis": "18:00"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:30",
+          "bis": "14:00"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    }
+  },
+  {
+    "name": "Dr. med. Anja Haberl",
+    "email": "not set",
+    "telefon": "0721 / 845404",
+    "websiteLink": "https://www.praxis-anja-haberl.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": true,
+      "kasse": true,
+      "selbstzahler": true
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "12:30",
+          "bis": "16:00"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "12:30",
+          "bis": "16:00"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "12:30",
+          "bis": "not found"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "12:30",
+          "bis": "16:00"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "12:30",
+          "bis": "not found"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "12:30",
+          "bis": "16:00"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "12:30",
+          "bis": "16:00"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "12:30",
+          "bis": "not found"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "12:30",
+          "bis": "16:00"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "12:30",
+          "bis": "not found"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    }
+  },
+  {
+    "name": "Dr. med. Michael H. Stienen",
+    "email": "info@praxis-drstienen.de",
+    "telefon": "0721 669801-11",
+    "websiteLink": "www.praxis-drstienen.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": true,
+      "online": false
+    },
+    "patienten": {
+      "privat": true,
+      "kasse": false,
+      "selbstzahler": true
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "14:00",
+          "bis": "17:00"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "14:00",
+          "bis": "17:00"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": "nur termine"
+  },
+  {
+    "name": "nicht gesetzt",
+    "email": "not set",
+    "telefon": "0721/356003",
+    "websiteLink": "www.neuropraxiskarlsruhe.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": "not set",
+      "kasse": true,
+      "selbstzahler": "not set"
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:30",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:30",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:30",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:30",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:30",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        },
+        {
+          "von": "14:30",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:30",
+          "bis": "12:30"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    }
+  },
+  {
+    "name": "Gemeinschaftspraxis für Neurologie, Psychiatrie und Psychotherapie",
+    "email": "praxis@neurologie-psychiatrie-karlsruhe.de",
+    "telefon": "0721 / 38 80 30",
+    "websiteLink": "http://www.neurologie-psychiatrie-karlsruhe.de",
+    "terminOptionen": {
+      "telefon": true,
+      "email": true,
+      "online": false
+    },
+    "patienten": {
+      "privat": false,
+      "kasse": true,
+      "selbstzahler": false
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "not found",
+          "bis": "not found"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "samstag": [
+        {
+          "von": "not found",
+          "bis": "not found"
+        }
+      ],
+      "sonntag": [
+        {
+          "von": "not found",
+          "bis": "not found"
+        }
+      ]
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "mittwoch": [
+        {
+          "von": "not found",
+          "bis": "not found"
+        }
+      ],
+      "donnerstag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "15:00",
+          "bis": "17:30"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "08:00",
+          "bis": "12:00"
+        }
+      ],
+      "samstag": [
+        {
+          "von": "not found",
+          "bis": "not found"
+        }
+      ],
+      "sonntag": [
+        {
+          "von": "not found",
+          "bis": "not found"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Dr. med. Roland Niessner",
+    "email": "not set",
+    "telefon": "0721 2 13 83",
+    "websiteLink": "not set",
+    "terminOptionen": {
+      "telefon": true,
+      "email": false,
+      "online": false
+    },
+    "patienten": {
+      "privat": true,
+      "kasse": true,
+      "selbstzahler": "not set"
+    },
+    "telefonErreichbarkeit": {
+      "montag": [
+        {
+          "von": "09:00",
+          "bis": "12:00"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "09:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "14:00",
+          "bis": "17:00"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "09:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "14:00",
+          "bis": "17:00"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "09:00",
+          "bis": "12:00"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    },
+    "oeffnungszeiten": {
+      "montag": [
+        {
+          "von": "09:00",
+          "bis": "12:00"
+        }
+      ],
+      "dienstag": [
+        {
+          "von": "09:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "14:00",
+          "bis": "17:00"
+        }
+      ],
+      "mittwoch": [],
+      "donnerstag": [
+        {
+          "von": "09:00",
+          "bis": "12:00"
+        },
+        {
+          "von": "14:00",
+          "bis": "17:00"
+        }
+      ],
+      "freitag": [
+        {
+          "von": "09:00",
+          "bis": "12:00"
+        }
+      ],
+      "samstag": [],
+      "sonntag": []
+    }
+  }
+]

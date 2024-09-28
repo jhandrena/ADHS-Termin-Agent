@@ -26,34 +26,28 @@ def callApi(prompt: str, model: str, system_message: str = ""):
     )
     completion = client.chat.completions.create(
         model=model,
-        messages=messages
+        messages=messages,
+        top_p=0.9
     )
     try:
         return (completion.choices[0].message.content)
     except:
         print(completion)
 
-class Doctor:
-    def __init__(self, name: str, phone: str, email: str, address: str, url: str) -> None:
-        self.name = name
-        self.phone = phone
-        self.email = email
-        self.address = address
-        self.url = url
+def name_search(specialty: str, location: str, count: int) -> str: 
+    prompt_template = """Erstelle eine Liste von Ärzten im Fachgebiet {} aus {}. Diese Liste soll {} einträge beinhalten und für jeden Arzt den Namen und die Adresse auflisten. Gute Quellen um Ärzte zu finden sind das örtliche, arztsuche.116117.de, doctolib und yameda."""
+    prompt_template2 = """
+Bitte recherchieren Sie mindestens {} Ärzte, welche diese bedingungen erfüllen:
 
-def search_doctors(specialty: str, location: str) -> List[Doctor]:
-    search_results = name_search(specialty, location)
+Fachgebiet: {}
+Ort/Stadt: {}
 
-
-    return [
-        Doctor(name="Dr. Müller", phone="123-456-7890", email="dr.mueller@example.com", address="123 Main St, Berlin", url="http://drmueller.com"),
-        Doctor(name="Dr. Schmidt", phone="098-765-4321", email="dr.schmidt@example.com", address="456 Elm St, Berlin", url="http://drschmidt.com"),
-    ]
-
-def name_search(specialty: str, location: str) -> str: 
-    prompt_template: str = """Gib mir eine liste mit namen und Adressen von {} in {}. """
-    system_prompt:str = "verwende folgende quellen:arztsuche: https://arztsuche.116117.de/, yameda, doctolib, das örtliche"
-    prompt: str = prompt_template.format(specialty,location,system_prompt)
+Basierend auf diesen Angaben, finden Sie bitte so viele der folgenden Informationen für jeden der Ärzte wie möglich:
+1. Name
+2. Adresse
+"""
+    #system_prompt:str = "verwende folgende quellen:arztsuche: https://arztsuche.116117.de/, yameda, doctolib, das örtliche."
+    prompt: str = prompt_template.format(specialty,location,count)
     return callApi(prompt,"perplexity/llama-3.1-sonar-large-128k-online")
 
 
@@ -75,97 +69,90 @@ Suchergebnisse:
 
     return doctors_json
 
-def _get_doctor_information(doctor_json, doctors) -> str:
-    """
-    Mail
-    TElefonnummer
-    website-link
-    termin optinoen {
-    "mail":bool,
-    "telefon": bool
-    "online": bool
-    }
-    privat/kassenartzt
-    erreichbarkeit 
-
-    """
-    prompt_template: str = "Deine Aufgabe ist es, informationen über Ärtzte herauszufinden. Finde für deinen Arzt namens {} bei {} die mail, telefonnummer und die website. Finde auch heraus, ob man termine per mail, telefonisch und online verinbaren kann. Es ist auch wichtig zu wissen, ob es sich um einen Privat oder Kassen arzt handelt. Gib zum schluss auch die erreichbarkeits zeiten und öffnungs zeiten kann."
+def _get_doctor_information(doctor_json, doctors = False) -> str:
+    prompt_template = """Suche auf der Kontakt-Seite von {} nach:
+E-Mail-Adresse
+Telefonnummer
+Website-URL
+Terminvereinbarungsmöglichkeiten (telefonisch, per E-Mail, online)
+Akzeptierte Patientenversicherungen (privat, gesetzlich, Selbstzahler)
+Telefonische Erreichbarkeit (Zeiten für jeden Wochentag)
+Öffnungszeiten (für jeden Wochentag)"""
     prompt: str = prompt_template.format(doctor_json['arztname'], doctor_json['adresse'])
     doctor_information = callApi(prompt, "perplexity/llama-3.1-sonar-large-128k-online")
-    doctors.append(doctor_information)
-
-def find_information(doctors_json) -> str:
-    doctors = []
-    threads = []
-    for doctor_json in doctors_json:
-        threads.append(threading.Thread(target=_get_doctor_information, args=(doctor_json, doctors)))
-        threads[-1].start()
-    for thread in threads:
-        thread.join()
-    return doctors
-
-def information_to_doctors(information: List[str]):
-    doctors = []
-    threads = []
-    for info in information:
-        threads.append(threading.Thread(target=_append_converted_doctor, args=(info, doctors, )))
-        threads[-1].start()
-    for thread in threads:
-        thread.join()
-    return doctors
+    if doctors:
+        doctors.append(doctor_information)
+    else:
+        return doctor_information
 
 def _append_converted_doctor(information, doctors, retried=False):
     prompt_template = "{}"
     prompt = prompt_template.format(information)
     json_format = """
 {
-"name": <der name>
-"email": <die email oder "not set">
-"telefon": <die telefon nummer oder "not set">
-"websiteLink": <eine valide website url oder "not set">
-"terminOptionen": {
-    "telefon": <boolean: ob man per telefon einen termin machen kann>
-    "email": <boolean: ob man per email einen termin machen kann>
-    "online": <boolean: ob man online einen termin machen kann>
-    }
-"patienten": {
-    "privat": <boolean | not set: ob privatversicherte patienten angenommen werden>
-    "kasse": <boolean | not set: ob kassenversicherte patienten angenommen werden>
-    "selbstzahler": <boolean | not set: ob selbstzahler patienten angenommen werden>
-    }
-"telefonErreichbarkeit": <nur gesetzt wenn telefon nummer gegeben ist, wenn keine erreichbarkeits zeiten gefunden wurde ist es "not found">{
+  "name": "Der vollständige Name der Praxis oder des Arztes",
+  "email": "Die E-Mail-Adresse der Praxis oder 'not set', wenn keine angegeben",
+  "telefon": "Die Telefonnummer der Praxis oder 'not set', wenn keine angegeben",
+  "websiteLink": "Eine gültige Website-URL der Praxis oder 'not set', wenn keine angegeben",
+  "terminOptionen": {
+    "telefon": true/false,
+    "email": true/false,
+    "online": true/false
+  },
+  "patienten": {
+    "privat": true/false/"not set",
+    "kasse": true/false/"not set",
+    "selbstzahler": true/false/"not set"
+  },
+  "telefonErreichbarkeit": {
     "montag": [
-            {
-                "von": <str: start der erreichbarkeit in 24h format, geschrieben als hh:mm, z.b. 08:30>, "bis": <str: ende der erreichbarkeit im 24h format, geschrieben als hh:mm, z.b. 08:30>   
-            },
-            {
-                "von": ..., "bis": ...
-            },
-            ...
-        ],
-    "dienstag": [
-            {
-                "von": <str: start der erreichbarkeit in 24h format, geschrieben als hh:mm, z.b. 08:30>, "bis": <str: ende der erreichbarkeit im 24h format, geschrieben als hh:mm, z.b. 08:30>   
-            },
-            {
-                "von": ..., "bis": ...
-            },
-            ...
-        ],
-    "mittwoch": [
-        ...
+      {
+        "von": "hh:mm",
+        "bis": "hh:mm"
+      },
+      {
+        "von": "hh:mm",
+        "bis": "hh:mm"
+      },
+      ...
     ],
-    "donnerstag": [...],
-    "freitag": [...],
-    "samstag": [...],
-    "sonntag": [...]
-    }
-"oeffnungszeiten": {
-<gleiches forat wie die telefon erreichbarkeit - wenn es keine öffnungszeiten gibt UND man erst einen termin braucht ist oeffnungszeiten der string "nur termine">
+    "dienstag": [ ... ],
+    "mittwoch": [ ... ],
+    "donnerstag": [ ... ],
+    "freitag": [ ... ],
+    "samstag": [ ... ],
+    "sonntag": [ ... ]
+  },
+  "oeffnungszeiten": {
+    "montag": [
+      {
+        "von": "hh:mm",
+        "bis": "hh:mm"
+      },
+      {
+        "von": "hh:mm",
+        "bis": "hh:mm"
+      },
+      ...
+    ],
+    "dienstag": [ ... ],
+    "mittwoch": [ ... ],
+    "donnerstag": [ ... ],
+    "freitag": [ ... ],
+    "samstag": [ ... ],
+    "sonntag": [ ... ]
+  }
 }
-}
+
+.
+Für Felder wie "email", "telefon" und "websiteLink" wird "not set" verwendet, wenn keine Information verfügbar ist.
+Die "terminOptionen" und "patienten" Felder verwenden boolesche Werte (true/false). Bei "patienten" ist auch "not set" möglich, wenn keine Information verfügbar ist.
+"telefonErreichbarkeit" ist nur gesetzt, wenn eine Telefonnummer angegeben ist. Wenn keine Erreichbarkeitszeiten gefunden wurden, wird das array für den Tag leer gelassen.
+Die Zeitangaben in "telefonErreichbarkeit" und "oeffnungszeiten" folgen dem 24-Stunden-Format (hh:mm).
+Wenn keine Öffnungszeiten angegeben sind und nur Termine möglich sind, wird für "oeffnungszeiten" der String "nur termine" verwendet.
+
 """
-    system_template = """Du wirst aus einem Dokument informationen über einen Doktor extrahieren. Antworte mit reinem JSON ohne code block in folgendem format:\n{}\n\n\nBei öffnugszeiten und telefon erreichbarkeit müssen alle tage immer eingetragen sein, auch wenn es ein leeres array ist, hierbei ist die einzige ausnahme wenn es keine öffnugnszeiten sondern nur öffnug für termine gibt, dann ist oefnungszeiten ein string der sagt "nur termine". Du musst dich immer komplett an dieses format halten ohne ausnahme. Antwote nur mit dem json, ohne codeblock und ohne irgendwelchen anderen text."""
+    system_template = """Du wirst aus einem Dokument informationen über einen Doktor extrahieren. Antworte mit reinem JSON ohne code block in folgendem format:\n{}\n\n\nBei öffnugszeiten und telefon erreichbarkeit müssen alle tage immer eingetragen sein, auch wenn es ein leeres array ist, hierbei ist die einzige ausnahme wenn es keine öffnugnszeiten sondern nur öffnug für termine gibt, dann ist oefnungszeiten ein string der sagt "nur termine". Du musst dich immer komplett an dieses format halten ohne ausnahme. Antwote nur mit dem json, ohne codeblock und ohne irgendwelchen anderen text. Gib nur einen Doktor an. Wenn es mehrere gibt wähle den mit mehr daten."""
     system = system_template.format(json_format)
     doctor_raw = callApi(prompt, "openai/gpt-4o-mini", system)
     try:
@@ -177,20 +164,46 @@ def _append_converted_doctor(information, doctors, retried=False):
             _append_converted_doctor(information, doctors, True)
         else:
             print("Failed to convert doctor details to json")
+            print(doctor_raw)
+
+def _extend_doctor_json(doctor_json, doctors, count):
+    info_text = _get_doctor_information(doctor_json)
+    _append_converted_doctor(info_text, doctors)
+    print(str(100 * int(len(doctors))/int(count)) + "%")
+
+def extendDoctors(doctors_json):
+    doctors = []
+    threads = []
+    for doctor_json in doctors_json:
+        threads.append(threading.Thread(target=_extend_doctor_json, args=(doctor_json, doctors, len(doctors_json))))
+        threads[-1].start()
+    for thread in threads:
+        thread.join()
+    return doctors
+
+
+def main(specialty, region, count=5):
+    findAllDoctors(region, specialty, count)
+    #info = (find_information(doctors_json))
+    ##print(info)
+    #print("Verarbeite informationen über die Ärzte...")
+    #print(information_to_doctors(info))
+
+
+def findAllDoctors(region, specialty,count=5):
+    print("Finde passende Ärzte...")
+    search = name_search(specialty, region, count)
+    # print(search)
+    print("Verarbeite Ärzte liste...")
+    doctors_json = names_to_json(search)
+    doctors_json = doctors_json[:count]
+    print(str(len(doctors_json)) + " Ärzte gefunden...")
+    print("Finde und verarbeite weitere informationen über Ärzte...")
+    doctors = extendDoctors(doctors_json)
+    print(doctors)
+    return doctors
 
 
 if __name__ == "__main__":
-    print("Finde passende Ärzte...")
-    search = name_search("Neurologe", "Karlsruhe")
-    #print(search)
-    print("Verarbeite Ärzte liste...")
-    doctors_json = names_to_json(search)
-    doctors_json = doctors_json[:10]
-    print("Finde weitere informationen über Ärzte...")
-    info = (find_information(doctors_json))
-    #print(info)
-    print("Verarbeite informationen über die Ärzte...")
-    print(information_to_doctors(info))
-
-
+    main("Neurologie", "Karlsruhe")
 
