@@ -46,11 +46,11 @@ export function Step6CallDoctors() {
     return () => clearTimeout(timer);
   }, [aiCallInProgress]);
 
-  const fetchAvailableDoctors = async () => {
+  const fetchAvailableDoctors = async (dateTimeValue = dateTime) => {
     setIsLoading(true);
     setError(null);
     try {
-      const [date, time] = dateTime.split('T');
+      const [date, time] = dateTimeValue.split('T');
       const [year, month, day] = date.split('-');
       const formattedDate = `${day}.${month}.${year}`;
       const response = await fetch(`http://127.0.0.1:5000/doctors/phone?date=${encodeURIComponent(formattedDate)}&time=${encodeURIComponent(time)}`);
@@ -71,6 +71,13 @@ export function Step6CallDoctors() {
     setDateTime(e.target.value);
     setAvailableDoctors([]);
     setError(null);
+  };
+
+  const handleSelectNextWorkday = () => {
+    const nextWorkday = getNextWorkday();
+    const newDateTime = nextWorkday.toISOString().slice(0, 16);
+    setDateTime(newDateTime);
+    fetchAvailableDoctors(newDateTime);
   };
 
   const handleCall = (phone: string) => {
