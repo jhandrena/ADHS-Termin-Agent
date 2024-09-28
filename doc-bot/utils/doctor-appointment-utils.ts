@@ -1,3 +1,25 @@
+export interface PatientenInfo {
+  kasse: boolean;
+  privat: boolean;
+  selbstzahler: string;
+}
+
+export interface TelefonErreichbarkeit {
+  montag: string[];
+  dienstag: string[];
+  mittwoch: string[];
+  donnerstag: string[];
+  freitag: string[];
+  samstag: string[];
+  sonntag: string[];
+}
+
+export interface TerminOptionen {
+  email: boolean;
+  online: boolean;
+  telefon: boolean;
+}
+
 export interface Doctor {
   id: string;
   name: string;
@@ -6,6 +28,11 @@ export interface Doctor {
   phone: string;
   address: string;
   website: string;
+  oeffnungszeiten: string;
+  patienten: PatientenInfo;
+  telefonErreichbarkeit: TelefonErreichbarkeit;
+  terminOptionen: TerminOptionen;
+  websiteLink: string;
 }
 
 export const searchDoctors = async (
@@ -34,7 +61,28 @@ export const searchDoctors = async (
       email: doctor.email,
       phone: doctor.telefon || 'N/A',
       address: doctor.adresse || 'N/A',
-      website: doctor.website || 'N/A'
+      website: doctor.websiteLink || 'N/A',
+      oeffnungszeiten: doctor.oeffnungszeiten || 'Nicht angegeben',
+      patienten: {
+        kasse: doctor.patienten?.kasse || false,
+        privat: doctor.patienten?.privat || false,
+        selbstzahler: doctor.patienten?.selbstzahler || 'Nicht angegeben',
+      },
+      telefonErreichbarkeit: {
+        montag: doctor.telefonErreichbarkeit?.montag || [],
+        dienstag: doctor.telefonErreichbarkeit?.dienstag || [],
+        mittwoch: doctor.telefonErreichbarkeit?.mittwoch || [],
+        donnerstag: doctor.telefonErreichbarkeit?.donnerstag || [],
+        freitag: doctor.telefonErreichbarkeit?.freitag || [],
+        samstag: doctor.telefonErreichbarkeit?.samstag || [],
+        sonntag: doctor.telefonErreichbarkeit?.sonntag || [],
+      },
+      terminOptionen: {
+        email: doctor.terminOptionen?.email || false,
+        online: doctor.terminOptionen?.online || false,
+        telefon: doctor.terminOptionen?.telefon || false,
+      },
+      websiteLink: doctor.websiteLink || 'N/A',
     })) as Doctor[];
   } catch (error) {
     console.error("Error fetching doctors:", error);
