@@ -85,7 +85,7 @@ Telefonische Erreichbarkeit (Zeiten für jeden Wochentag)
     else:
         return doctor_information
 
-def _append_converted_doctor(information, doctors, retried=False):
+def _append_converted_doctor(information, adresse, doctors, retried=False):
     prompt_template = "{}"
     prompt = prompt_template.format(information)
     json_format = """
@@ -157,18 +157,20 @@ Wenn keine Öffnungszeiten angegeben sind und nur Termine möglich sind, wird f�
     doctor_raw = callApi(prompt, "openai/gpt-4o-mini", system)
     try:
         doctor_json = json.loads(doctor_raw)
+        doctor_json['adresse'] = adresse
         doctors.append(doctor_json)
     except:
         if not retried:
             print("Retrying converting detials to doctor json")
-            _append_converted_doctor(information, doctors, True)
+            _append_converted_doctor(information, adresse, doctors, True)
         else:
             print("Failed to convert doctor details to json")
             print(doctor_raw)
 
 def _extend_doctor_json(doctor_json, doctors, count):
     info_text = _get_doctor_information(doctor_json)
-    _append_converted_doctor(info_text, doctors)
+    adresse = doctor_json['adresse']
+    _append_converted_doctor(info_text, adresse, doctors)
     print(str(100 * int(len(doctors))/int(count)) + "%")
 
 def extendDoctors(doctors_json):
