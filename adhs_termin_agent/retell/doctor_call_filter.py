@@ -13,16 +13,7 @@ def parse_output_json() -> list:
 def get_list_of_callable_doctors_at(date_str, time, doctors):
     date = datetime.datetime.strptime(date_str, "%d.%m.%Y")
     weekday = date.strftime("%A").lower()
-    weekday_translation = {
-        "monday": "montag",
-        "tuesday": "dienstag",
-        "wednesday": "mittwoch",
-        "thursday": "donnerstag",
-        "friday": "freitag",
-        "saturday": "samstag",
-        "sunday": "sonntag"
-    }
-    weekday = weekday_translation[weekday]
+    weekday = translate_weekday(weekday)
     callable_doctors = []
     for doctor in doctors:
         if not doctor['terminOptionen']['email'] and doctor['telefon'] != "not set":
@@ -34,8 +25,7 @@ def get_list_of_callable_doctors_at(date_str, time, doctors):
     return callable_doctors
 
 
-def get_next_callable_doctor(date_str, time, doctors):
-    date = datetime.datetime.strptime(date_str, "%d.%m.%Y")
+def translate_weekday(weekday):
     weekday_translation = {
         "monday": "montag",
         "tuesday": "dienstag",
@@ -45,10 +35,16 @@ def get_next_callable_doctor(date_str, time, doctors):
         "saturday": "samstag",
         "sunday": "sonntag"
     }
+    weekday = weekday_translation[weekday]
+    return weekday
+
+
+def get_next_callable_doctor(date_str, time, doctors):
+    date = datetime.datetime.strptime(date_str, "%d.%m.%Y")
 
     while True:
         weekday = date.strftime("%A").lower()
-        weekday = weekday_translation[weekday]
+        weekday = translate_weekday(weekday)
 
         for doctor in doctors:
             if not doctor['terminOptionen']['email'] and doctor['telefon'] != "not set":
@@ -72,4 +68,4 @@ if __name__ == "__main__":
     for doctor in callable_doctors_at:
         print(f"Name: {doctor['name']}, Telefon: {doctor['telefon']}")
 
-    print(get_next_callable_doctor())
+    print(get_next_callable_doctor("01.10.2024", "08:15", doctors))
