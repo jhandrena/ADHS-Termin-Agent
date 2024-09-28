@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input"
 
 export function Step6CallDoctors() {
   const { state } = useDoctorAppointment();
-  const { selectedDoctors } = state;
+  
   const [qrCodeOpen, setQRCodeOpen] = useState(false);
   const [currentPhone, setCurrentPhone] = useState('');
   const [dateTime, setDateTime] = useState('');
