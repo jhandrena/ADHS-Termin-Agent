@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Skeleton } from "@/components/ui/skeleton"
 import { MailIcon, PhoneIcon, GlobeIcon } from 'lucide-react'
@@ -11,7 +10,7 @@ import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 
 export function Step3DoctorSelection() {
   const { state, setState } = useDoctorAppointment();
-  const { doctors, selectedDoctors, preferredContact, isLoading } = state;
+  const { doctors, selectedDoctors, isLoading } = state;
 
   const toggleAllDoctors = () => {
     if (selectedDoctors.length === doctors.length) {
@@ -31,10 +30,6 @@ export function Step3DoctorSelection() {
     });
   };
 
-  const onPreferredContactChange = (value) => {
-    setState(prev => ({ ...prev, preferredContact: value }));
-  };
-
   const handleNext = () => {
     setState(prev => ({ ...prev, step: prev.step + 1 }));
   };
@@ -43,35 +38,12 @@ export function Step3DoctorSelection() {
     setState(prev => ({ ...prev, step: prev.step - 1 }));
   };
 
-  const filteredDoctors = doctors.filter(doctor => {
-    if (preferredContact === 'all') return true;
-    if (preferredContact === 'email') return doctor.email;
-    if (preferredContact === 'phone') return doctor.phone;
-    if (preferredContact === 'website') return doctor.website;
-    return true;
-  });
-
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <Button onClick={toggleAllDoctors} disabled={isLoading}>
           {selectedDoctors.length === doctors.length ? "Alle abwählen" : "Alle auswählen"}
         </Button>
-        <Select
-          value={preferredContact}
-          onValueChange={onPreferredContactChange}
-          disabled={isLoading}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Bevorzugter Kontakt" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Alle Kontaktmöglichkeiten</SelectItem>
-            <SelectItem value="email">E-Mail</SelectItem>
-            <SelectItem value="phone">Telefon</SelectItem>
-            <SelectItem value="website">Website</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
       <p className="text-sm text-muted-foreground">Wählen Sie die Ärzte aus, die Sie kontaktieren möchten:</p>
       {isLoading ? (
@@ -93,7 +65,7 @@ export function Step3DoctorSelection() {
           </Card>
         ))
       ) : (
-        filteredDoctors.map((doctor) => (
+        doctors.map((doctor) => (
           <Card key={doctor.id} className="cursor-pointer">
             <CardHeader className="flex flex-row items-center space-x-4 py-2">
               <Checkbox
@@ -118,7 +90,7 @@ export function Step3DoctorSelection() {
                         </a>
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent className="bg-secondary text-secondary-foreground">
                       <p>Anrufen</p>
                     </TooltipContent>
                   </Tooltip>
@@ -133,7 +105,7 @@ export function Step3DoctorSelection() {
                         </a>
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent className="bg-secondary text-secondary-foreground">
                       <p>E-Mail senden</p>
                     </TooltipContent>
                   </Tooltip>
@@ -148,7 +120,7 @@ export function Step3DoctorSelection() {
                         </a>
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent className="bg-secondary text-secondary-foreground">
                       <p>Website besuchen</p>
                     </TooltipContent>
                   </Tooltip>
