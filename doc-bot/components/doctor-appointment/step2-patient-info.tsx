@@ -26,11 +26,8 @@ export function Step2PatientInfo() {
           <Loader2 className="w-4 h-4 animate-spin" />
           <p>Ärzte werden im Hintergrund geladen...</p>
         </div>
-      ) : state.doctors.length > 0 ? (
-        <p className="text-sm text-muted-foreground italic">Ärzte wurden erfolgreich geladen.</p>
-      ) : (
-        <p className="text-sm text-muted-foreground italic">Ärzte werden geladen...</p>
-      )}
+      ) : <p className="text-sm text-muted-foreground italic">Ärzte wurden erfolgreich geladen.</p>
+      }
       <div className="space-y-2">
         <Label htmlFor="patientName">Name</Label>
         <Input
