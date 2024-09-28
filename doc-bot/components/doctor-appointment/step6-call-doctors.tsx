@@ -50,6 +50,8 @@ export function Step6CallDoctors() {
   const handleAICall = (doctorId: string) => {
     // Implement AI call functionality here
     console.log(`AI call to doctor ${doctorId}`);
+
+    window.open(`http://localhost:3006/?name=${encodeURIComponent(state.patientName)}&thema=${encodeURIComponent(state.diagnosis)}&specialty=${encodeURIComponent(state.specialty)}`, '_blank');
   };
 
   return (

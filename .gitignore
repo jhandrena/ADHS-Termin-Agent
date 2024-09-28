@@ -1,3 +1,10 @@
 /.env
 .aider*
-./adhs_termin_agent/__pycache__
+adhs_termin_agent/__pycache__/__init__.cpython-312.pyc
+adhs_termin_agent/__pycache__/doctor_search.cpython-312.pyc
+adhs_termin_agent/mail/__pycache__/__init__.cpython-312.pyc
+adhs_termin_agent/mail/__pycache__/doctor_filter.cpython-312.pyc
+adhs_termin_agent/mail/__pycache__/mail_composer.cpython-312.pyc
+adhs_termin_agent/retell/__pycache__/__init__.cpython-312.pyc
+adhs_termin_agent/retell/__pycache__/doctor_call_filter.cpython-312.pyc
+ui/node_modules/.cache/@babel/register/.babel.7.5.5.dev.json
