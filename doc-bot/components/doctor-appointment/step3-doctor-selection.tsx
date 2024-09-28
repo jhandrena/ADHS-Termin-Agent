@@ -45,7 +45,7 @@ export function Step3DoctorSelection() {
           {selectedDoctors.length === doctors.length ? "Alle abwählen" : "Alle auswählen"}
         </Button>
       </div>
-      <p className="text-sm text-muted-foreground">Wählen Sie die Ärzte aus, die Sie kontaktieren möchten:</p>
+      <p className="text-sm text-muted-foreground">Wählen Sie die Ärzte aus, die Sie kontaktieren möchten. <br/>Im nächsten Schritt werden wir hierzu eine E-Mail formulieren.</p>
       {isLoading ? (
         Array(3).fill(0).map((_, index) => (
           <Card key={index} className="cursor-pointer">

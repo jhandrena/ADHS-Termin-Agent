@@ -29,9 +29,6 @@ export function Step2PatientInfo() {
       ) : state.doctors.length > 0 ? (
         <p className="text-sm text-muted-foreground italic">Ärzte wurden erfolgreich geladen.</p>
       ) : null}
-      <p className="text-sm italic">
-        Bitte geben Sie Ihren Namen und die Diagnose ein um fortzufahren.
-      </p>
       <div className="space-y-2">
         <Label htmlFor="patientName">Name</Label>
         <Input
@@ -46,7 +43,7 @@ export function Step2PatientInfo() {
         <Label htmlFor="diagnosis">Diagnose</Label>
         <Textarea
           id="diagnosis"
-          placeholder="Bitte beschreiben Sie Ihre Diagnose oder Symptome"
+          placeholder="Diagnose auf der Überweisung"
           value={diagnosis}
           onChange={(e) => setState(prev => ({ ...prev, diagnosis: e.target.value }))}
           rows={4}
