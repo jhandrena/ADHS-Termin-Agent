@@ -36,9 +36,10 @@ def get_filtered_doctors(doctors: list) -> list:
 def open_mailto_link(doctors, subject, body):
     for doctor in doctors:
         if doctor['email'] != "not set":
-            mailto_link = f"mailto:{"dummy"}?subject={urllib.parse.quote(subject)+"%20"+doctor['email']}&body={urllib.parse.quote(body)}"
+            mailto_link = f"mailto:{doctor['email']}?subject={urllib.parse.quote(subject)}&body={urllib.parse.quote(body)}"
             print(mailto_link)
             webbrowser.open(mailto_link)
+
 
 if __name__ == "__main__":
     data = parse_output_json()
