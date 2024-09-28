@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Doctor, searchDoctors } from '../utils/doctor-appointment-utils';
+import { Doctor, searchDoctors, triggerDoctorsSearch } from '../utils/doctor-appointment-utils';
 
 interface DoctorAppointmentState {
   step: number;
@@ -48,7 +48,9 @@ export const DoctorAppointmentProvider: React.FC<{ children: React.ReactNode }> 
     emailStatus: null,
     fetchDoctors: async (location: string, specialty: string) => {
       try {
+        await triggerDoctorsSearch(location, specialty);
         const doctors = await searchDoctors(location, specialty);
+        
         setState(prev => ({ ...prev, doctors, selectedDoctors: [] }));
       } catch (error) {
         console.error("Error fetching doctors:", error);

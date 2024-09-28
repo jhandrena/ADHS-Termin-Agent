@@ -48,9 +48,9 @@ export const searchDoctors = async (
 ): Promise<Doctor[]> => {
   try {
     const response = await fetch(
-      `http://127.0.0.1:5000/doctors?location=${encodeURIComponent(location)}&specialty=${encodeURIComponent(specialty)}`,
+      `http://127.0.0.1:5000/doctors/mail`,
       {
-        method: 'POST',
+        method: 'GET',
       }
     );
 
@@ -92,6 +92,30 @@ export const searchDoctors = async (
       },
       websiteLink: doctor.websiteLink,
     })) as Doctor[];
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+    throw error;
+  }
+};
+
+
+export const triggerDoctorsSearch = async (
+  location: string,
+  specialty: string
+): Promise<void> => {
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:5000/doctors?location=${encodeURIComponent(location)}&specialty=${encodeURIComponent(specialty)}`,
+      {
+        method: 'POST',
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    await response.json();
   } catch (error) {
     console.error("Error fetching doctors:", error);
     throw error;

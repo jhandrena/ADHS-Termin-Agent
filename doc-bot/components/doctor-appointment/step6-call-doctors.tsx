@@ -80,7 +80,7 @@ export function Step6CallDoctors() {
             <CardTitle>{doctor.name}</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
-            <Button onClick={() => handleCall(doctor.phone)} className="flex items-center">
+            <Button onClick={() => handleCall(doctor.telefon)} className="flex items-center">
               <PhoneIcon className="w-4 h-4 mr-2" />
               Anrufen
             </Button>
