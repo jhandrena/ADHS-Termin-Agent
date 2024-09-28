@@ -96,11 +96,21 @@ export const generateEmailContent = async (
   patientEmail: string,
   specialty: string
 ): Promise<string> => {
-  await new Promise(resolve => setTimeout(resolve, 1500));
-  
-  const doctorSpecialties = selectedDoctors.map(d => d.specialty).join(", ");
-  
-  return `Sehr geehrte Damen und Herren,
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/mail?thema=${encodeURIComponent(specialty)}&name=${encodeURIComponent(patientName)}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const emailContent = await response.text();
+    return emailContent;
+  } catch (error) {
+    console.error("Error generating email content:", error);
+    // Fallback to a default message if the API call fails
+    return `Sehr geehrte Damen und Herren,
 
 ich bin ${patientName} und ich suche einen Termin bei einem Facharzt für ${specialty}.
 
@@ -108,6 +118,7 @@ Bitte kontaktieren Sie mich unter ${patientEmail} für weitere Informationen ode
 
 Mit freundlichen Grüßen,
 ${patientName}`;
+  }
 }
 
 export const sendEmails = async (
