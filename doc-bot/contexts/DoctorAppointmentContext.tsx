@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Doctor } from '../utils/doctor-appointment-utils';
+import { Doctor, searchDoctors } from '../utils/doctor-appointment-utils';
 
 interface DoctorAppointmentState {
   step: number;
@@ -13,6 +13,7 @@ interface DoctorAppointmentState {
   preferredContact: string;
   isLoading: boolean;
   emailStatus: { success: boolean; message: string } | null;
+  fetchDoctors: () => Promise<void>;
 }
 
 interface DoctorAppointmentContextType {
@@ -43,6 +44,16 @@ export const DoctorAppointmentProvider: React.FC<{ children: React.ReactNode }> 
     preferredContact: "all",
     isLoading: false,
     emailStatus: null,
+    fetchDoctors: async () => {
+      setState(prev => ({ ...prev, isLoading: true }));
+      try {
+        const doctors = await searchDoctors(state.location, state.specialty);
+        setState(prev => ({ ...prev, doctors, isLoading: false }));
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+        setState(prev => ({ ...prev, isLoading: false }));
+      }
+    },
   });
 
   return (
