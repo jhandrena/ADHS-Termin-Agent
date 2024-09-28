@@ -148,16 +148,18 @@ export function Step6CallDoctors() {
         <div className="text-gray-500 mt-2">
           <p>Keine verfügbaren Ärzte gefunden.</p>
           <p className="text-sm mt-1">Tipp: Versuchen Sie es mit einem späteren Datum, um mehr Ergebnisse zu erhalten.</p>
-          <Button
-            onClick={() => {
-              const nextWorkday = getNextWorkday();
-              nextWorkday.setHours(13, 0, 0, 0);
-              setDateTime(nextWorkday.toISOString().slice(0, 16));
-            }}
-            className="mt-2"
-          >
-            Nächsten Werktag um 13 Uhr auswählen
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              onClick={() => {
+                const nextWorkday = getNextWorkday();
+                nextWorkday.setHours(13, 0, 0, 0);
+                setDateTime(nextWorkday.toISOString().slice(0, 16));
+              }}
+              className="mt-2"
+            >
+              Nächsten Werktag um 13 Uhr auswählen
+            </Button>
+          </div>
         </div>
       )}
       {availableDoctors.map(doctor => (
