@@ -1,7 +1,7 @@
 'use client'
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import QRCode from 'qrcode.react'
+import {QRCodeSVG} from 'qrcode.react';
 
 interface QRCodeDialogProps {
   open: boolean
@@ -17,7 +17,7 @@ export function QRCodeDialog({ open, onOpenChange, phoneNumber }: QRCodeDialogPr
           <DialogTitle>Scan QR Code to Call</DialogTitle>
         </DialogHeader>
         <div className="flex justify-center">
-          <QRCode value={`tel:${phoneNumber}`} size={256} />
+          <QRCodeSVG value={`tel:${phoneNumber}`} size={256} />
         </div>
         <p className="text-center mt-4">Scan this QR code with your mobile device to initiate the call.</p>
       </DialogContent>
