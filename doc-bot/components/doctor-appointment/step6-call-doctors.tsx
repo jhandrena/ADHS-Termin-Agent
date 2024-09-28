@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -15,9 +15,22 @@ export function Step6CallDoctors() {
   const [qrCodeOpen, setQRCodeOpen] = useState(false);
   const [currentPhone, setCurrentPhone] = useState('');
   const [dateTime, setDateTime] = useState('');
-  const [availableDoctors, setAvailableDoctors] = useState<typeof selectedDoctors>([]);
+  const [availableDoctors, setAvailableDoctors] = useState<typeof state.selectedDoctors>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [aiCallInProgress, setAiCallInProgress] = useState(false);
+  const [aiCallCompleted, setAiCallCompleted] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (aiCallInProgress) {
+      timer = setTimeout(() => {
+        setAiCallInProgress(false);
+        setAiCallCompleted(true);
+      }, 30000);
+    }
+    return () => clearTimeout(timer);
+  }, [aiCallInProgress]);
 
   const fetchAvailableDoctors = async () => {
     setIsLoading(true);
@@ -56,15 +69,37 @@ export function Step6CallDoctors() {
   };
 
   const handleAICall = (doctorId: string) => {
-    setIsLoading(true);
+    setAiCallInProgress(true);
     // Implement AI call functionality here
     console.log(`AI call to doctor ${doctorId}`);
 
     window.open(`http://localhost:3006/?name=${encodeURIComponent(state.patientName)}&thema=${encodeURIComponent(state.diagnosis)}&specialty=${encodeURIComponent(state.specialty)}`, '_blank');
-    
-    // Navigate to the next step immediately
-    setState(prev => ({ ...prev, step: prev.step + 1 }));
   };
+
+  if (aiCallInProgress) {
+    return (
+      <div className="flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-16 h-16 animate-spin text-primary" />
+        <p className="text-lg font-semibold">KI-Assistent führt den Anruf durch...</p>
+      </div>
+    );
+  }
+
+  if (aiCallCompleted) {
+    const selectedDoctor = availableDoctors[0]; // Use the first available doctor for this example
+    return (
+      <div className="flex flex-col items-center justify-center space-y-4">
+        <CheckCircle2 className="w-16 h-16 text-green-500" />
+        <h2 className="text-2xl font-bold">Termin bestätigt!</h2>
+        <p className="text-lg">Ein Termin wurde erfolgreich für Sie vereinbart.</p>
+        <div className="text-left">
+          <p><strong>Arzt:</strong> {selectedDoctor?.name || 'Name nicht verfügbar'}</p>
+          <p><strong>Datum:</strong> {dateTime ? new Date(dateTime).toLocaleDateString() : 'Datum nicht verfügbar'}</p>
+          <p><strong>Uhrzeit:</strong> {dateTime ? new Date(dateTime).toLocaleTimeString() : 'Uhrzeit nicht verfügbar'}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
