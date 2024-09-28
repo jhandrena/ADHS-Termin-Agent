@@ -41,8 +41,7 @@ export function Step2PatientInfo() {
         <p className="text-sm text-muted-foreground italic">Ärzte wurden erfolgreich geladen.</p>
       ) : null}
       <p className="text-sm italic">
-        Bitte geben Sie Ihren Namen und Ihre E-Mail-Adresse ein. In den nächsten Schritten werden Sie gebeten, 
-        eine Diagnose (Freitext) einzugeben und Ärzte auszuwählen.
+        Bitte geben Sie Ihren Namen und die Diagnose ein um fortzufahren.
       </p>
       <div className="space-y-2">
         <Label htmlFor="patientName">Name</Label>
