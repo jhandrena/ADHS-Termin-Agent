@@ -462,20 +462,6 @@ def get_doctors():
 ]""")
     return all_doctors
 
-
-@app.route('/doctors/phone', methods=['Get'])
-@cross_origin()
-def get_phonable_doctors():
-    global all_doctors
-    date = request.args.get('date')
-    time = request.args.get('time')
-    print(type(all_doctors))
-    print(type(all_doctors[0]))
-    available_now = get_list_of_callable_doctors_at(date, time, all_doctors)
-    print(available_now)
-    return available_now
-
-
 @app.route('/doctors/phone', methods=['GET'])
 @cross_origin()
 def get_phonable_doctors():
