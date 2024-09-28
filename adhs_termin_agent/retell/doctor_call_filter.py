@@ -24,7 +24,7 @@ def get_list_of_callable_doctors_at(date, time, doctors):
 if __name__ == "__main__":
     doctors = parse_output_json()
 
-    date = input("Bitte geben Sie das Datum ein (TT.MM.JJJJ): ")
-    time = input("Bitte geben Sie die Uhrzeit ein (HH:MM): ")
+    #date = input("Bitte geben Sie das Datum ein (TT.MM.JJJJ): ")
+    #time = input("Bitte geben Sie die Uhrzeit ein (HH:MM): ")
 
-    get_list_of_callable_doctors_at(date,time,doctors)
+    callable_doctors_at = get_list_of_callable_doctors_at("30.09.2024", "18:40", doctors)
