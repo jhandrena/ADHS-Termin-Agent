@@ -70,8 +70,9 @@ export const DoctorAppointmentProvider: React.FC<{ children: React.ReactNode }> 
       patientName: state.patientName,
       patientEmail: state.patientEmail,
       preferredContact: state.preferredContact,
+      location: state.location,
     }), { expires: 30 }); // Cookie expires in 30 days
-  }, [state.patientName, state.patientEmail, state.preferredContact]);
+  }, [state.patientName, state.patientEmail, state.preferredContact, state.location]);
 
   return (
     <DoctorAppointmentContext.Provider value={{ state, setState }}>
