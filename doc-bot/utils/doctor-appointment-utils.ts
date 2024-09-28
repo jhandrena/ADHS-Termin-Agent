@@ -139,3 +139,25 @@ export const sendEmails = async (
   
   return { success: true, message: "Emails sent successfully" };
 }
+
+export const getNextCallableDoctor = async (doctors: Doctor[]): Promise<Doctor | null> => {
+  const now = new Date();
+  const currentDay = now.toLocaleDateString('de-DE', { weekday: 'long' }).toLowerCase();
+  const currentTime = now.getHours() * 60 + now.getMinutes();
+
+  for (const doctor of doctors) {
+    const availableTimes = doctor.telefonErreichbarkeit[currentDay];
+    for (const timeRange of availableTimes) {
+      const [start, end] = timeRange.split('-').map(t => {
+        const [hours, minutes] = t.split(':').map(Number);
+        return hours * 60 + minutes;
+      });
+
+      if (currentTime >= start && currentTime <= end) {
+        return doctor;
+      }
+    }
+  }
+
+  return null;
+}
