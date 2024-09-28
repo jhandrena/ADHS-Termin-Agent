@@ -5,7 +5,7 @@ import { MailIcon } from 'lucide-react'
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { generateEmailContent } from '@/utils/doctor-appointment-utils'
 
-export function Step4EmailCompose() {
+export function Step4Email() {
   const { state, setState } = useDoctorAppointment();
   const { selectedDoctors, patientName, patientEmail, specialty } = state;
 

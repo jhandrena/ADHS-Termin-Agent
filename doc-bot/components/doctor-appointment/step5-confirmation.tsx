@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 
-export function Step5Confirmation() {
+export function Step5EmailConfirmation() {
   const { state, setState } = useDoctorAppointment();
   const { location, specialty, selectedDoctors } = state;
 

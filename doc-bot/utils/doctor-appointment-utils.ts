@@ -1,7 +1,6 @@
 export interface PatientenInfo {
   kasse: boolean;
   privat: boolean;
-  selbstzahler: string;
 }
 
 export interface TelefonErreichbarkeit {

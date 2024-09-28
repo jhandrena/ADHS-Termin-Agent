@@ -21,9 +21,9 @@ function DoctorAppointmentContent() {
       case 3:
         return <Step3DoctorSelection />;
       case 4:
-        return <Step4EmailCompose />;
+        return <Step4Email />;
       case 5:
-        return <Step5Confirmation />;
+        return <Step5EmailConfirmation />;
       default:
         return null;
     }
