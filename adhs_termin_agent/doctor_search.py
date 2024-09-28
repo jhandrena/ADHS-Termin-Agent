@@ -159,7 +159,10 @@ Wenn keine Öffnungszeiten angegeben sind und nur Termine möglich sind, wird f�
         doctor_json = json.loads(doctor_raw)
         doctor_json['adresse'] = doctor_json_source['adresse']
         doctor_json['name'] = doctor_json_source['arztname']
-        doctors.append(doctor_json)
+        if (doctor_json["terminOptionen"]["email"] == True and doctor_json["email"].strip() == "") or (doctor_json["terminOptionen"]["telefon"] == True and doctor_json["telefon"].strip() == ""):
+            pass
+        else:
+            doctors.append(doctor_json)
     except Exception as e:
         if not retried:
             print("Retrying converting detials to doctor json")
@@ -185,7 +188,7 @@ def extendDoctors(doctors_json):
     return doctors
 
 
-def main(specialty, region, count=5):
+def main(specialty, region, count=40):
     findAllDoctors(region, specialty, count)
     #info = (find_information(doctors_json))
     ##print(info)
@@ -193,7 +196,7 @@ def main(specialty, region, count=5):
     #print(information_to_doctors(info))
 
 
-def findAllDoctors(region, specialty,count=5):
+def findAllDoctors(region, specialty,count=40):
     print("Finde passende Ärzte...")
     search = name_search(specialty, region, count)
     #print(search)
