@@ -147,7 +147,12 @@ export function Step3DoctorSelection() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button variant="ghost" size="sm" asChild>
-                          <a href={doctor.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-foreground">
+                          <a 
+                            href={doctor.website.startsWith('http') ? doctor.website : `https://${doctor.website}`} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-primary hover:text-primary-foreground"
+                          >
                             <GlobeIcon className="w-4 h-4 mr-1" />
                             <span className="hidden sm:inline">Website</span>
                           </a>
