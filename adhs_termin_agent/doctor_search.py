@@ -159,14 +159,14 @@ Wenn keine Öffnungszeiten angegeben sind und nur Termine möglich sind, wird f�
     try:
         doctor_json = json.loads(doctor_raw)
         doctor_json['adresse'] = doctor_json_source['adresse']
-        doctor_json['name'] = doctor_json_source['name']
+        doctor_json['name'] = doctor_json_source['arztname']
         doctors.append(doctor_json)
-    except:
+    except Exception as e:
         if not retried:
             print("Retrying converting detials to doctor json")
             _append_converted_doctor(information, doctor_json_source, doctors, True)
         else:
-            print("Failed to convert doctor details to json")
+            print("Failed to convert doctor details to json: "+ str(e))
             print(doctor_raw)
 
 def _extend_doctor_json(doctor_json, doctors, count):
