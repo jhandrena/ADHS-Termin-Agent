@@ -16,10 +16,10 @@ def get_list_of_callable_doctors_at(date_str, time, doctors):
     weekday = translate_weekday(weekday)
     callable_doctors = []
     for doctor in doctors:
-        if not doctor['terminOptionen']['email'] and doctor['telefon'] != "not set":
+        if doctor['telefon'] != "not set":
             if weekday in doctor['telefonErreichbarkeit']:
                 for time_slot in doctor['telefonErreichbarkeit'][weekday]:
-                    if time_slot['von'] <= time <= time_slot['bis'] and date_str in doctor['oeffnungszeiten'].get(weekday, []):
+                    if time_slot['von'] <= time <= time_slot['bis']:
                         callable_doctors.append(doctor)
                         break
     return callable_doctors

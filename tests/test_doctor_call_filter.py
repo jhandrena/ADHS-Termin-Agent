@@ -12,7 +12,7 @@ class TestDoctorCallFilter(unittest.TestCase):
                     "montag": [{"von": "08:00", "bis": "12:00"}]
                 },
                 "oeffnungszeiten": {
-                    "montag": ["01.10.2024"]
+                    "montag": [{"von": "08:00", "bis": "12:00"}]
                 }
             },
             {
@@ -22,13 +22,13 @@ class TestDoctorCallFilter(unittest.TestCase):
                     "dienstag": [{"von": "09:00", "bis": "17:00"}]
                 },
                 "oeffnungszeiten": {
-                    "dienstag": ["02.10.2024"]
+                    "dienstag": [{"von": "09:00", "bis": "17:00"}]
                 }
             }
         ]
 
     def test_callable_doctors(self):
-        result = get_list_of_callable_doctors_at("01.10.2024", "09:00", self.doctors)
+        result = get_list_of_callable_doctors_at("30.09.2024", "09:00", self.doctors)
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['name'], "Dr. A")
 
