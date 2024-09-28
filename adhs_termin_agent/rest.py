@@ -13,5 +13,13 @@ def get_doctors():
 
 
 
-if __name__ == '__main__':
+@app.route('/greet', methods=['GET'])
+def greet():
+    thema = request.args.get('thema')
+    name = request.args.get('name')
+
+    if not thema or not name:
+        return "Missing 'thema' or 'name' parameter", 400
+
+    return f"Hello {name}, welcome to the {thema}!"
     app.run(debug=True)
