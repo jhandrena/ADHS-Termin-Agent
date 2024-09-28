@@ -12,7 +12,7 @@ def parse_output_json() -> list:
 def get_list_of_callable_doctors_at(date, time, doctors):
     callable_doctors = []
     for doctor in doctors:
-        if not doctor['terminOptionen']['email']:
+        if not doctor['terminOptionen']['email'] and doctor['telefon'] != "not set":
             for day, times in doctor['telefonErreichbarkeit'].items():
                 for time_slot in times:
                     if time_slot['von'] <= time <= time_slot['bis']:
