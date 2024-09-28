@@ -35,6 +35,14 @@ export interface Doctor {
   websiteLink: string;
 }
 
+// Simple UUID generator
+const generateUUID = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+};
+
 export const searchDoctors = async (
   location: string,
   specialty: string
@@ -56,6 +64,7 @@ export const searchDoctors = async (
     // Transform the data to match the Doctor interface
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return data.map((doctor: any) => ({
+      id: doctor.id || generateUUID(), // Generate UUID if id is empty
       name: doctor.name,
       specialty: specialty, // Use the provided specialty
       email: doctor.email,
