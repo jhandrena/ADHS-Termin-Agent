@@ -1,14 +1,30 @@
-export const searchDoctors = async (location: string, specialty: string): Promise<Doctor[]> => {
+export interface Doctor {
+  id: string;
+  name: string;
+  specialty: string;
+  email: string;
+  phone: string;
+  address: string;
+  website: string;
+}
+
+export const searchDoctors = async (
+  location: string,
+  specialty: string
+): Promise<Doctor[]> => {
   try {
-    const response = await fetch(`/doctors?location=${encodeURIComponent(location)}&specialty=${encodeURIComponent(specialty)}`, {
-      method: 'POST',
-    });
+    const response = await fetch(
+      `/doctors?location=${encodeURIComponent(location)}&specialty=${encodeURIComponent(specialty)}`,
+      {
+        method: 'POST',
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data: any[] = await response.json();
     
     // Transform the data to match the Doctor interface
     return data.map((doctor: any) => ({
@@ -19,14 +35,19 @@ export const searchDoctors = async (location: string, specialty: string): Promis
       phone: doctor.telefon || 'N/A',
       address: doctor.adresse || 'N/A',
       website: doctor.website || 'N/A'
-    }));
+    })) as Doctor[];
   } catch (error) {
     console.error("Error fetching doctors:", error);
     throw error;
   }
 };
 
-export const generateEmailContent = async (selectedDoctors, patientName, patientEmail, specialty) => {
+export const generateEmailContent = async (
+  selectedDoctors: Doctor[],
+  patientName: string,
+  patientEmail: string,
+  specialty: string
+): Promise<string> => {
   await new Promise(resolve => setTimeout(resolve, 1500));
   
   const doctorSpecialties = selectedDoctors.map(d => d.specialty).join(", ");
@@ -41,7 +62,10 @@ Mit freundlichen Grüßen,
 ${patientName}`;
 }
 
-export const sendEmails = async (doctors, emailContent) => {
+export const sendEmails = async (
+  doctors: Doctor[],
+  emailContent: string
+): Promise<{ success: boolean; message: string }> => {
   await new Promise(resolve => setTimeout(resolve, 1500));
   
   console.log("Sending emails to:", doctors.map(d => d.email).join(", "));
