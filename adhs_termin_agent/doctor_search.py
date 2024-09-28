@@ -26,7 +26,8 @@ def callApi(prompt: str, model: str, system_message: str = ""):
     )
     completion = client.chat.completions.create(
         model=model,
-        messages=messages
+        messages=messages,
+        top_p=0.9
     )
     try:
         return (completion.choices[0].message.content)
@@ -44,7 +45,6 @@ Ort/Stadt: {}
 Basierend auf diesen Angaben, finden Sie bitte so viele der folgenden Informationen für jeden der Ärzte wie möglich:
 1. Name
 2. Adresse
-Andere wichtige infos...
 """
     #system_prompt:str = "verwende folgende quellen:arztsuche: https://arztsuche.116117.de/, yameda, doctolib, das örtliche."
     prompt: str = prompt_template.format(specialty,location,count)
@@ -70,20 +70,14 @@ Suchergebnisse:
     return doctors_json
 
 def _get_doctor_information(doctor_json, doctors = False) -> str:
-    prompt_template = """Bitte recherchieren Sie die folgenden Informationen für den Arzt:
-
-Name: {}
-Adresse: {}
-
-Basierend auf diesen Angaben, finden Sie bitte so viele der folgenden Informationen wie möglich:
-
-1. E-Mail-Adresse
-2. Telefonnummer
-3. Website-URL
-4. Terminvereinbarungsmöglichkeiten (telefonisch, per E-Mail, online)
-5. Akzeptierte Patientenversicherungen (privat, gesetzlich, Selbstzahler)
-6. Telefonische Erreichbarkeit (Zeiten für jeden Wochentag)
-7. Öffnungszeiten (für jeden Wochentag)"""
+    prompt_template = """Suche auf der Kontakt-Seite von {} nach:
+E-Mail-Adresse
+Telefonnummer
+Website-URL
+Terminvereinbarungsmöglichkeiten (telefonisch, per E-Mail, online)
+Akzeptierte Patientenversicherungen (privat, gesetzlich, Selbstzahler)
+Telefonische Erreichbarkeit (Zeiten für jeden Wochentag)
+Öffnungszeiten (für jeden Wochentag)"""
     prompt: str = prompt_template.format(doctor_json['arztname'], doctor_json['adresse'])
     doctor_information = callApi(prompt, "perplexity/llama-3.1-sonar-large-128k-online")
     if doctors:
@@ -91,7 +85,7 @@ Basierend auf diesen Angaben, finden Sie bitte so viele der folgenden Informatio
     else:
         return doctor_information
 
-def _append_converted_doctor(information, doctors, retried=False):
+def _append_converted_doctor(information, doctor_json_source, doctors, retried=False):
     prompt_template = "{}"
     prompt = prompt_template.format(information)
     json_format = """
@@ -161,20 +155,24 @@ Wenn keine Öffnungszeiten angegeben sind und nur Termine möglich sind, wird f�
     system_template = """Du wirst aus einem Dokument informationen über einen Doktor extrahieren. Antworte mit reinem JSON ohne code block in folgendem format:\n{}\n\n\nBei öffnugszeiten und telefon erreichbarkeit müssen alle tage immer eingetragen sein, auch wenn es ein leeres array ist, hierbei ist die einzige ausnahme wenn es keine öffnugnszeiten sondern nur öffnug für termine gibt, dann ist oefnungszeiten ein string der sagt "nur termine". Du musst dich immer komplett an dieses format halten ohne ausnahme. Antwote nur mit dem json, ohne codeblock und ohne irgendwelchen anderen text. Gib nur einen Doktor an. Wenn es mehrere gibt wähle den mit mehr daten."""
     system = system_template.format(json_format)
     doctor_raw = callApi(prompt, "openai/gpt-4o-mini", system)
+    doctor_raw = doctor_raw.replace('"not set"', '""')
     try:
         doctor_json = json.loads(doctor_raw)
+        doctor_json['adresse'] = doctor_json_source['adresse']
+        doctor_json['name'] = doctor_json_source['arztname']
         doctors.append(doctor_json)
-    except:
+    except Exception as e:
         if not retried:
             print("Retrying converting detials to doctor json")
-            _append_converted_doctor(information, doctors, True)
+            _append_converted_doctor(information, doctor_json_source, doctors, True)
         else:
-            print("Failed to convert doctor details to json")
+            print("Failed to convert doctor details to json: "+ str(e))
             print(doctor_raw)
 
 def _extend_doctor_json(doctor_json, doctors, count):
     info_text = _get_doctor_information(doctor_json)
-    _append_converted_doctor(info_text, doctors)
+    adresse = doctor_json['adresse']
+    _append_converted_doctor(info_text, doctor_json, doctors)
     print(str(100 * int(len(doctors))/int(count)) + "%")
 
 def extendDoctors(doctors_json):
@@ -189,7 +187,7 @@ def extendDoctors(doctors_json):
 
 
 def main(specialty, region, count=5):
-    findAllDoctors(count, region, specialty)
+    findAllDoctors(region, specialty, count)
     #info = (find_information(doctors_json))
     ##print(info)
     #print("Verarbeite informationen über die Ärzte...")
@@ -199,10 +197,11 @@ def main(specialty, region, count=5):
 def findAllDoctors(region, specialty,count=5):
     print("Finde passende Ärzte...")
     search = name_search(specialty, region, count)
-    # print(search)
+    #print(search)
     print("Verarbeite Ärzte liste...")
     doctors_json = names_to_json(search)
     doctors_json = doctors_json[:count]
+    print(doctors_json)
     print(str(len(doctors_json)) + " Ärzte gefunden...")
     print("Finde und verarbeite weitere informationen über Ärzte...")
     doctors = extendDoctors(doctors_json)
@@ -211,5 +210,5 @@ def findAllDoctors(region, specialty,count=5):
 
 
 if __name__ == "__main__":
-    main("Neurologie", "Karlsruhe")
+    main("Neurologie", "Bruchsal")
 
