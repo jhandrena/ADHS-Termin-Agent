@@ -44,10 +44,6 @@ def get_user_input(prompt):
     return input(prompt).strip()
 
 
-def is_valid_name(name):
-    return bool(re.match(r'^[A-Za-z\s]+$', name))
-
-
 
 
 if __name__ == "__main__":
