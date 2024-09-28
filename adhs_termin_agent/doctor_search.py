@@ -209,5 +209,5 @@ def findAllDoctors(region, specialty,count=5):
 
 
 if __name__ == "__main__":
-    main("Neurologie", "Bruchsal")
+    main("Neurologie", "Karlsruhe")
 
