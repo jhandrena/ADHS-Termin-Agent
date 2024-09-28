@@ -1,18 +1,40 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { PhoneIcon, Bot } from 'lucide-react'
 import { isMobileDevice } from '@/utils/device-detection'
 import { QRCodeDialog } from '@/components/qr-code-dialog'
+import { Input } from "@/components/ui/input"
 
 export function Step6CallDoctors() {
   const { state } = useDoctorAppointment();
   const { selectedDoctors } = state;
   const [qrCodeOpen, setQRCodeOpen] = useState(false);
   const [currentPhone, setCurrentPhone] = useState('');
+  const [dateTime, setDateTime] = useState('');
+  const [availableDoctors, setAvailableDoctors] = useState(selectedDoctors);
+
+  useEffect(() => {
+    if (dateTime) {
+      fetchAvailableDoctors();
+    }
+  }, [dateTime]);
+
+  const fetchAvailableDoctors = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/doctors/phone?date=${encodeURIComponent(dateTime.split('T')[0])}&time=${encodeURIComponent(dateTime.split('T')[1])}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch available doctors');
+      }
+      const data = await response.json();
+      setAvailableDoctors(data);
+    } catch (error) {
+      console.error('Error fetching available doctors:', error);
+    }
+  };
 
   const handleCall = (phone: string) => {
     if (isMobileDevice()) {
@@ -31,7 +53,19 @@ export function Step6CallDoctors() {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-bold">Ärzte anrufen</h2>
-      {selectedDoctors.map(doctor => (
+      <div className="space-y-2">
+        <label htmlFor="dateTime" className="block text-sm font-medium text-gray-700">
+          Wählen Sie Datum und Uhrzeit für den Anruf:
+        </label>
+        <Input
+          type="datetime-local"
+          id="dateTime"
+          value={dateTime}
+          onChange={(e) => setDateTime(e.target.value)}
+          className="block w-full"
+        />
+      </div>
+      {availableDoctors.map(doctor => (
         <Card key={doctor.id} className="mb-4">
           <CardHeader>
             <CardTitle>{doctor.name}</CardTitle>
