@@ -44,7 +44,7 @@ export function Step3DoctorSelection() {
 
   return (
     <div className="space-y-4">
-      {doctors.length > 0 ? (
+      {doctors.length > 0 && (
         <>
           <div className="flex justify-between items-center">
             <Button onClick={toggleAllDoctors} disabled={isLoading}>
@@ -53,7 +53,8 @@ export function Step3DoctorSelection() {
           </div>
           <p className="text-sm text-muted-foreground">Wählen Sie die Ärzte aus, die Sie kontaktieren möchten. <br/>Im nächsten Schritt werden wir hierzu eine E-Mail formulieren.</p>
         </>
-      ) : (
+      )}
+      {!isLoading && doctors.length === 0 && (
         <p className="text-sm text-muted-foreground">Leider wurden keine Ärzte gefunden. Bitte versuchen Sie es mit einer anderen Suche.</p>
       )}
       {isLoading && doctors.length === 0 ? (
