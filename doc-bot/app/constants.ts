@@ -1,7 +1,6 @@
 export const specialties = [
     "Akupunktur",
     "Allergologie",
-    "Allgemeinmedizin",
     "Anästhesiologie",
     "Augenheilkunde",
     "Chirurgie",

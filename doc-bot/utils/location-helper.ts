@@ -9,9 +9,9 @@ export class LocationHelper {
               const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`);
               const data = await response.json();
               const city = data.address.city || data.address.town || data.address.village || '';
-              const postcode = data.address.postcode || '';
+              
               resolve({
-                location: city ? `${city}, ${postcode}` : postcode,
+                location: city,
                 error: null
               });
             } catch (error) {
