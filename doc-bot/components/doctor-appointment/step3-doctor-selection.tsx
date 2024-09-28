@@ -138,21 +138,23 @@ export function Step3DoctorSelection() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="sm" asChild>
-                        <a href={doctor.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-foreground">
-                          <GlobeIcon className="w-4 h-4 mr-1" />
-                          <span className="hidden sm:inline">Website</span>
-                        </a>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-secondary text-secondary-foreground">
-                      <p>Website besuchen</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                {doctor.website && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" size="sm" asChild>
+                          <a href={doctor.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-foreground">
+                            <GlobeIcon className="w-4 h-4 mr-1" />
+                            <span className="hidden sm:inline">Website</span>
+                          </a>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-secondary text-secondary-foreground">
+                        <p>Website besuchen</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
               </div>
             </CardHeader>
           </Card>
