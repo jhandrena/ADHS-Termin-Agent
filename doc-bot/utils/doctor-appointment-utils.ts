@@ -51,22 +51,22 @@ export const searchDoctors = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data: any[] = await response.json();
+    const data: unknown[] = await response.json();
     
     // Transform the data to match the Doctor interface
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return data.map((doctor: any) => ({
-      id: doctor.id || Math.random().toString(36).substr(2, 9), // Generate a random ID if not provided
       name: doctor.name,
       specialty: specialty, // Use the provided specialty
       email: doctor.email,
-      phone: doctor.telefon || 'N/A',
-      address: doctor.adresse || 'N/A',
-      website: doctor.websiteLink || 'N/A',
+      phone: doctor.telefon,
+      address: doctor.adresse,
+      website: doctor.websiteLink,
       oeffnungszeiten: doctor.oeffnungszeiten || 'Nicht angegeben',
       patienten: {
-        kasse: doctor.patienten?.kasse || false,
-        privat: doctor.patienten?.privat || false,
-        selbstzahler: doctor.patienten?.selbstzahler || 'Nicht angegeben',
+        kasse: doctor.patienten?.kasse === true || 'Nicht angegeben',
+        privat: doctor.patienten?.privat === true || 'Nicht angegeben',
+        selbstzahler: doctor.patienten?.selbstzahler === true || 'Nicht angegeben',
       },
       telefonErreichbarkeit: {
         montag: doctor.telefonErreichbarkeit?.montag || [],
@@ -82,7 +82,7 @@ export const searchDoctors = async (
         online: doctor.terminOptionen?.online || false,
         telefon: doctor.terminOptionen?.telefon || false,
       },
-      websiteLink: doctor.websiteLink || 'N/A',
+      websiteLink: doctor.websiteLink,
     })) as Doctor[];
   } catch (error) {
     console.error("Error fetching doctors:", error);
