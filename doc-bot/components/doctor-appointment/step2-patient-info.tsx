@@ -7,6 +7,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { useDoctorAppointment } from '@/contexts/DoctorAppointmentContext'
 import { Loader2 } from 'lucide-react'
 
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 export function Step2PatientInfo() {
   const { state, setState } = useDoctorAppointment();
   const { patientName, patientEmail, diagnosis, isLoading } = state;
@@ -18,6 +23,8 @@ export function Step2PatientInfo() {
   const handleBack = () => {
     setState(prev => ({ ...prev, step: prev.step - 1 }));
   };
+
+  const isFormValid = patientName && isValidEmail(patientEmail) && diagnosis;
 
   return (
     <div className="space-y-4">
@@ -48,6 +55,9 @@ export function Step2PatientInfo() {
           onChange={(e) => setState(prev => ({ ...prev, patientEmail: e.target.value }))}
           autoComplete="email"
         />
+        {patientEmail && !isValidEmail(patientEmail) && (
+          <p className="text-sm text-red-500">Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
+        )}
       </div>
       <div className="space-y-2">
         <Label htmlFor="diagnosis">Diagnose</Label>
@@ -63,7 +73,7 @@ export function Step2PatientInfo() {
         <Button onClick={handleBack}>Zurück</Button>
         <Button 
           onClick={handleNext} 
-          disabled={!patientName || !patientEmail || !diagnosis}
+          disabled={!isFormValid}
         >
           Weiter
         </Button>
