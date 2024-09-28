@@ -1,0 +1,93 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { MapPinIcon, XIcon } from 'lucide-react'
+import { specialties } from '@/app/constants'
+
+interface Step1Props {
+  location: string
+  specialty: string
+  onLocationChange: (location: string) => void
+  onSpecialtyChange: (specialty: string) => void
+  onNext: () => void
+  isLoading: boolean
+}
+
+export function Step1LocationSpecialty({ location, specialty, onLocationChange, onSpecialtyChange, onNext, isLoading }: Step1Props) {
+  const [filteredSpecialties, setFilteredSpecialties] = useState(specialties)
+
+  useEffect(() => {
+    if (specialty) {
+      setFilteredSpecialties(
+        specialties.filter(s =>
+          s.toLowerCase().includes(specialty.toLowerCase())
+        )
+      )
+    } else {
+      setFilteredSpecialties(specialties)
+    }
+  }, [specialty])
+
+  const useCurrentLocation = () => {
+    onLocationChange("Berlin")
+  }
+
+  const clearSpecialty = () => {
+    onSpecialtyChange("")
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex space-x-2">
+        <Input
+          placeholder="z.B. Berlin, München, Hamburg"
+          value={location}
+          onChange={(e) => onLocationChange(e.target.value)}
+          className="flex-grow"
+        />
+        <Button onClick={useCurrentLocation} variant="outline" className="flex items-center">
+          <MapPinIcon className="w-4 h-4 mr-2" />
+          Aktueller Standort
+        </Button>
+      </div>
+      <div className="relative">
+        <Command className="rounded-lg border shadow-md">
+          <CommandInput 
+            placeholder="Suche nach Fachrichtungen..."
+            value={specialty}
+            onValueChange={onSpecialtyChange}
+          />
+          <CommandList>
+            <CommandEmpty>Keine Fachrichtungen gefunden.</CommandEmpty>
+            <CommandGroup>
+              {filteredSpecialties.map((s) => (
+                <CommandItem
+                  key={s}
+                  onSelect={() => onSpecialtyChange(s)}
+                >
+                  {s}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+        {specialty && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-0 top-0 h-full"
+            onClick={clearSpecialty}
+          >
+            <XIcon className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <Button onClick={onNext} disabled={!location || !specialty || isLoading}>
+        {isLoading ? "Suche Ärzte..." : "Weiter"}
+      </Button>
+    </div>
+  )
+}
