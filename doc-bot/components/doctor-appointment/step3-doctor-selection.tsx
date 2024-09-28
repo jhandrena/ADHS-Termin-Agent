@@ -105,39 +105,43 @@ export function Step3DoctorSelection() {
                 </div>
               </div>
               <div className="flex justify-end mt-2 space-x-2">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => handleCall(doctor.phone)}
-                        className="text-primary hover:text-primary-foreground"
-                      >
-                        <PhoneIcon className="w-4 h-4 mr-1" />
-                        <span className="hidden sm:inline">Anrufen</span>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-secondary text-secondary-foreground">
-                      <p>Anrufen</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="sm" asChild>
-                        <a href={`mailto:${doctor.email}`} className="text-primary hover:text-primary-foreground">
-                          <MailIcon className="w-4 h-4 mr-1" />
-                          <span className="hidden sm:inline">E-Mail</span>
-                        </a>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-secondary text-secondary-foreground">
-                      <p>E-Mail senden</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                {doctor.phone && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => handleCall(doctor.phone)}
+                          className="text-primary hover:text-primary-foreground"
+                        >
+                          <PhoneIcon className="w-4 h-4 mr-1" />
+                          <span className="hidden sm:inline">Anrufen</span>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-secondary text-secondary-foreground">
+                        <p>Anrufen</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+                {doctor.email && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" size="sm" asChild>
+                          <a href={`mailto:${doctor.email}`} className="text-primary hover:text-primary-foreground">
+                            <MailIcon className="w-4 h-4 mr-1" />
+                            <span className="hidden sm:inline">E-Mail</span>
+                          </a>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-secondary text-secondary-foreground">
+                        <p>E-Mail senden</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
                 {doctor.website && (
                   <TooltipProvider>
                     <Tooltip>
