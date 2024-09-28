@@ -13,6 +13,16 @@ def parse_output_json() -> list:
 def get_list_of_callable_doctors_at(date_str, time, doctors):
     date = datetime.datetime.strptime(date_str, "%d.%m.%Y")
     weekday = date.strftime("%A").lower()
+    weekday_translation = {
+        "monday": "montag",
+        "tuesday": "dienstag",
+        "wednesday": "mittwoch",
+        "thursday": "donnerstag",
+        "friday": "freitag",
+        "saturday": "samstag",
+        "sunday": "sonntag"
+    }
+    weekday = weekday_translation[weekday]
     callable_doctors = []
     for doctor in doctors:
         if not doctor['terminOptionen']['email'] and doctor['telefon'] != "not set":
