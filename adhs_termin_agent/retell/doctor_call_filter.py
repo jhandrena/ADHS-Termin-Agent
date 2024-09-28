@@ -61,6 +61,7 @@ def get_next_callable_doctor(date_str, time, doctors):
         date += datetime.timedelta(days=1)
         time = "00:00"  # Reset time to start of the day
 
+if __name__ == "__main__":
     doctors = parse_output_json()
 
     #date = input("Bitte geben Sie das Datum ein (TT.MM.JJJJ): ")
@@ -70,3 +71,5 @@ def get_next_callable_doctor(date_str, time, doctors):
 
     for doctor in callable_doctors_at:
         print(f"Name: {doctor['name']}, Telefon: {doctor['telefon']}")
+
+    print(get_next_callable_doctor())
