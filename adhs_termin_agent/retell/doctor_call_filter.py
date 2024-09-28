@@ -34,7 +34,33 @@ def get_list_of_callable_doctors_at(date_str, time, doctors):
     return callable_doctors
 
 
-if __name__ == "__main__":
+def get_next_callable_doctor(date_str, time, doctors):
+    date = datetime.datetime.strptime(date_str, "%d.%m.%Y")
+    weekday_translation = {
+        "monday": "montag",
+        "tuesday": "dienstag",
+        "wednesday": "mittwoch",
+        "thursday": "donnerstag",
+        "friday": "freitag",
+        "saturday": "samstag",
+        "sunday": "sonntag"
+    }
+
+    while True:
+        weekday = date.strftime("%A").lower()
+        weekday = weekday_translation[weekday]
+
+        for doctor in doctors:
+            if not doctor['terminOptionen']['email'] and doctor['telefon'] != "not set":
+                if weekday in doctor['telefonErreichbarkeit']:
+                    for time_slot in doctor['telefonErreichbarkeit'][weekday]:
+                        if time_slot['von'] > time:
+                            return doctor
+
+        # Move to the next day
+        date += datetime.timedelta(days=1)
+        time = "00:00"  # Reset time to start of the day
+
     doctors = parse_output_json()
 
     #date = input("Bitte geben Sie das Datum ein (TT.MM.JJJJ): ")
