@@ -196,7 +196,7 @@ def main(specialty, region, count=40):
     #print(information_to_doctors(info))
 
 
-def findAllDoctors(region, specialty,count=40):
+def findAllDoctors(region, specialty,count=5):
     print("Finde passende Ärzte...")
     search = name_search(specialty, region, count)
     #print(search)

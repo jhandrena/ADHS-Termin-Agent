@@ -1,0 +1,189 @@
+[
+    {
+        "name": "Dr. med. Michael H. Stienen",
+        "email": "info@praxis-drstienen.de",
+        "telefon": "0721 669801-11",
+        "websiteLink": "www.praxis-drstienen.de",
+        "terminOptionen": {
+            "telefon": true,
+            "email": true,
+            "online": false
+        },
+        "patienten": {
+            "privat": true,
+            "kasse": false,
+            "selbstzahler": true
+        },
+        "telefonErreichbarkeit": {
+            "montag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                }
+            ],
+            "dienstag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                },
+                {
+                    "von": "14:00",
+                    "bis": "17:00"
+                }
+            ],
+            "mittwoch": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                }
+            ],
+            "donnerstag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                },
+                {
+                    "von": "14:00",
+                    "bis": "17:00"
+                }
+            ],
+            "freitag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                }
+            ],
+            "samstag": [],
+            "sonntag": []
+        },
+        "oeffnungszeiten": "nur termine"
+    },
+    {
+        "name": "Gemeinschaftspraxis für Neurologie, Psychiatrie und Psychotherapie",
+        "email": "praxis@neurologie-psychiatrie-karlsruhe.de",
+        "telefon": "0721 / 38 80 30",
+        "websiteLink": "http://www.neurologie-psychiatrie-karlsruhe.de",
+        "terminOptionen": {
+            "telefon": true,
+            "email": true,
+            "online": false
+        },
+        "patienten": {
+            "privat": false,
+            "kasse": true,
+            "selbstzahler": false
+        },
+        "telefonErreichbarkeit": {
+            "montag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                },
+                {
+                    "von": "15:00",
+                    "bis": "17:30"
+                }
+            ],
+            "dienstag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                },
+                {
+                    "von": "15:00",
+                    "bis": "17:30"
+                }
+            ],
+            "mittwoch": [
+                {
+                    "von": "not found",
+                    "bis": "not found"
+                }
+            ],
+            "donnerstag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                },
+                {
+                    "von": "15:00",
+                    "bis": "17:30"
+                }
+            ],
+            "freitag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                }
+            ],
+            "samstag": [
+                {
+                    "von": "not found",
+                    "bis": "not found"
+                }
+            ],
+            "sonntag": [
+                {
+                    "von": "not found",
+                    "bis": "not found"
+                }
+            ]
+        },
+        "oeffnungszeiten": {
+            "montag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                },
+                {
+                    "von": "15:00",
+                    "bis": "17:30"
+                }
+            ],
+            "dienstag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                },
+                {
+                    "von": "15:00",
+                    "bis": "17:30"
+                }
+            ],
+            "mittwoch": [
+                {
+                    "von": "not found",
+                    "bis": "not found"
+                }
+            ],
+            "donnerstag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                },
+                {
+                    "von": "15:00",
+                    "bis": "17:30"
+                }
+            ],
+            "freitag": [
+                {
+                    "von": "08:00",
+                    "bis": "12:00"
+                }
+            ],
+            "samstag": [
+                {
+                    "von": "not found",
+                    "bis": "not found"
+                }
+            ],
+            "sonntag": [
+                {
+                    "von": "not found",
+                    "bis": "not found"
+                }
+            ]
+        }
+    }
+]
